@@ -9,4 +9,10 @@ class Facilities extends Model
 {
     use HasFactory;
     protected $table="facilities";
+    public function FacilitiesType(){
+        return $this->hasOne('App\Models\FacilitiesType', 'id', 'facilitiesTypeId');
+    }
+    public function FacilitiesRent(){
+        return $this->hasMany('App\Models\FacilityRent', 'facilities_id');
+    }
 }

@@ -4,25 +4,20 @@
 
     <style>
         @if(isset($data))
-                @if($data->isCompany=='0')
-                         .group_company {
-            display: none;
-        }
-
-        @else
+            @if($data->isCompany=='0')
+                .group_company {
+                    display: none;
+                }
+            @else
                 .group_individual, {
-            display: none;
-        }
-
-        @endif
+                    display: none;
+                }
+            @endif
         @else
             .notus, .group_company{
-            display: none;
-        }
-
+                display: none;
+            }
         @endif
-
-
     </style>
 
 

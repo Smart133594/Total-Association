@@ -79,21 +79,13 @@ Route::middleware([CheckAdminLogin::class])->group(function () {
     Route::get('/facilities-rental/', [FacilitiesController::class, 'index'])->name('facilities-rental');
     Route::get('/facilities-status/{id}', [FacilitiesController::class, 'status'])->name('status');
     Route::get('/facilitiestype-status/{id}', [FacilitiestypeController::class, 'status'])->name('status');
-    Route::get('/record-a-note/{id}', [FacilitiesController::class, 'recordanote'])->name('recordanote');
+    Route::get('/record-note/{id}', [FacilitiesController::class, 'recordanote'])->name('recordanote');
     Route::get('/paymentinfo/{id}', [FacilitiesController::class, 'paymentinfo'])->name('paymentinfo');
-    Route::get('/rent-the-facilities/{id}', [FacilitiesController::class, 'rent']);
     Route::get('/facilities-rental-event/{id}', [FacilitiesController::class, 'events']);
     Route::get('/edit_rent/{id}', [FacilitiesController::class, 'edit_rent']);
     Route::get('/contract/{id}', [FacilitiesController::class, 'contract']);
-
-    Route::get('/facilities-suspend/{id}', [FacilitiesController::class, 'status'])->name('status');
-    Route::get('/payment-info/{id}', [FacilitiesController::class, 'paymentinfo'])->name('paymentinfo');
-    Route::get('/record-note/{id}', [FacilitiesController::class, 'recordanote'])->name('recordanote');
     Route::get('/rent-facilities/{id}', [FacilitiesController::class, 'rent']);
-    Route::get('/facilities-event/{id}', [FacilitiesController::class, 'events']);
-    Route::get('/edit_the_rent/{id}', [FacilitiesController::class, 'edit_rent']);
     Route::get('/checkavail/{from}/{to}/{id}', [FacilitiesController::class, 'checkavail']);
-    Route::get('/upload-contract/{id}', [FacilitiesController::class, 'contract']);
 
     Route::post('/insertfacilitiesfees', [FacilitiesfeeController::class, 'insertfacilitiesfees']);
     Route::get('/facilitiestable/{ref}', [FacilitiesfeeController::class, 'facilitiestable']);
@@ -138,7 +130,9 @@ Route::middleware([CheckAdminLogin::class])->group(function () {
 
     Route::post('/fine-update', [FinesController::class, 'fineupdate'])->name('fine-update');
     Route::get('/fine-resendemail/{id}', [FinesController::class, 'resendemail'])->name('fine-resendemail');
-
+    // find incident on property page
+    Route::get('/fine-incident/{id}', [IncidentController::class, 'findIncident'])->name('fine-incident');
+    // ----------------------------
 
     Route::get('/approve-pet-entry/{id}', [PetController::class, 'approve'])->name('pet.approve');
     Route::get('/pet-declined/{id}', [PetController::class, 'declined'])->name('pet.declined');
@@ -173,6 +167,9 @@ Route::middleware([CheckAdminLogin::class])->group(function () {
         Route::get('/get-ownerdetails/{id?}', [ResidentController::class, 'getownerdetails'])->name('getownerdetails');
         Route::get('/gets-owner/{id?}', [PetController::class, 'getsowner'])->name('getsowner');
         Route::get('/get-residents/{id?}', [GuestController::class, 'getresidents'])->name('getresidents');
+        // guest add/remove blacklist
+        Route::post('/addblacklist/{id?}', [GuestController::class, 'addBlacklist'])->name('addBlacklist');
+        Route::get('/rmBlacklist/{id?}', [GuestController::class, 'rmBlacklist'])->name('rmBlacklist');
         Route::get('/getbuilding/{id?}', [ajaxController::class, 'getbuilding'])->name('getbuilding');
         Route::get('/paymentbracket/{id?}', [ajaxController::class, 'paymentbracket'])->name('paymentbracket');
         Route::get('/getproperty/{id?}', [ajaxController::class, 'getproperty'])->name('getproperty');

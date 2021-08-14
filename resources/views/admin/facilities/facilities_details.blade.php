@@ -35,16 +35,16 @@
                                         <h2>Facilities Details</h2>
                                     </div>
                                     <p><b>Occupied:</b></p>
-                                    <p><b>Type:</b> {{$data->typeName}}</p>
-                                    <p><b>Term:</b> {{$data->termType}}</p>
+                                    <p><b>Type:</b> {{$data->FacilitiesType->typeName}}</p>
+                                    <p><b>Term:</b> {{$data->FacilitiesType->termType}}</p>
                                     <p><b>Rental Periods:</b><br>
 
                                         @php $price="";
-                                                        if($data->isHourly==1){ $price.=" Hourly -"; }
-                                                        if($data->isDaily==1){ $price.=" Daily -"; }
-                                                        if($data->isWeekly==1){ $price.=" Weekly -"; }
-                                                        if($data->isMonthly==1){ $price.=" Monthly -"; }
-                                                        if($data->isYearly==1){ $price.=" Yearly -"; }
+                                                        if($data->FacilitiesType->isHourly==1){ $price.=" Hourly -"; }
+                                                        if($data->FacilitiesType->isDaily==1){ $price.=" Daily -"; }
+                                                        if($data->FacilitiesType->isWeekly==1){ $price.=" Weekly -"; }
+                                                        if($data->FacilitiesType->isMonthly==1){ $price.=" Monthly -"; }
+                                                        if($data->FacilitiesType->isYearly==1){ $price.=" Yearly -"; }
                                                         echo $price=substr($price,0,-2);
                                         @endphp
                                         </p>
@@ -55,11 +55,11 @@
 
 
                                         @php $price="";
-                                                        if($data->isHourly==1){ $price.=" $".$data->HourlyPrice."/Hourly -"; }
-                                                        if($data->isDaily==1){ $price.=" $".$data->DailyPrice."/Daily -"; }
-                                                        if($data->isWeekly==1){ $price.=" $".$data->WeeklyPrice."/Weekly -"; }
-                                                        if($data->isMonthly==1){ $price.=" $".$data->MonthlyPrice."/Monthly -"; }
-                                                        if($data->isYearly==1){ $price.=" $".$data->YearlyPrice."/Yearly -"; }
+                                                        if($data->FacilitiesType->isHourly==1){ $price.=" $".$data->FacilitiesType->HourlyPrice."/Hourly -"; }
+                                                        if($data->FacilitiesType->isDaily==1){ $price.=" $".$data->FacilitiesType->DailyPrice."/Daily -"; }
+                                                        if($data->FacilitiesType->isWeekly==1){ $price.=" $".$data->FacilitiesType->WeeklyPrice."/Weekly -"; }
+                                                        if($data->FacilitiesType->isMonthly==1){ $price.=" $".$data->FacilitiesType->MonthlyPrice."/Monthly -"; }
+                                                        if($data->FacilitiesType->isYearly==1){ $price.=" $".$data->FacilitiesType->YearlyPrice."/Yearly -"; }
                                                         echo $price=substr($price,0,-2);
                                         @endphp
 
@@ -86,7 +86,7 @@
                                     </thead>
                                     <tbody id="tbody1">
                                     @php $x=1; @endphp
-                                    @foreach($rental_history as $r)
+                                    @foreach($data->FacilitiesRent as $r)
                                         <tr>
                                             <td>{{$x}}</td>
                                             <td>{{$r->RentrsName}}</td>
@@ -145,7 +145,7 @@
                                     </thead>
                                     <tbody id="tbody3">
                                     @php $x=1; @endphp
-                                    @foreach($rental_history as $r)
+                                    @foreach($data->FacilitiesRent as $r)
                                         <tr>
                                             <td>{{$x}}</td>
                                             <td>{{$r->RentrsName}}</td>
@@ -206,7 +206,7 @@
                                     </thead>
                                     <tbody id="tbody5">
                                     @php $x=1; @endphp
-                                    @foreach($rental_history as $r)
+                                    @foreach($data->FacilitiesRent as $r)
                                         <tr>
                                             <td>{{$x}}</td>
                                             <td>{{$r->RentrsName}}</td>

@@ -62,8 +62,12 @@
                                         <td>{{$property->address1}}<br> {{$property->address2}}<br> {{$property->city}}, {{$property->state}}, {{$property->pincode}}</td>
                                     </tr>
                                     </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-striped thead-primary w-100 dataTable no-footer">
                                     <thead>
-                                    <th colspan="2">Owner Basic Information</th>
+                                    <th colspan="2">Resident Basic Information</th>
                                     </thead>
                                     <tbody>
                                     @if($data->isCompany==1)

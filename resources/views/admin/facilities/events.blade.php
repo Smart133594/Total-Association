@@ -8,7 +8,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb pl-0">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}"><i class="material-icons">home</i> Home</a></li>
-                        @if(request()->is('facilities-event/*'))
+                        @if(request()->is('facilities-rental-event/*'))
                             <li class="breadcrumb-item " aria-current="page"><a href="#">Settings</a></li>
                             <li class="breadcrumb-item " aria-current="page"><a href="#">Facilities</a></li>
                         @else
@@ -49,8 +49,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @if(!empty($data) &&  $data->count()>0)
-                                    @foreach($data as $key=>$val)
+                                    @foreach($facilities->FacilitiesRent as $key=>$val)
                                         <tr role="row" class="odd">
                                             <td class="sorting_1" onclick="goto('/owner/{{ $val->edit_id }}')">{{$key+1}}</td>
                                             <td> {{$val->RentrsName}}</td>
@@ -74,10 +73,10 @@
                                                         <i class="fas fa-th"></i>
                                                     </a>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                        @if(request()->is('facilities-event'))
+                                                        @if(request()->is('facilities-rental-event'))
                                                             <a class="dropdown-item" href="#" onclick="goto('/edit_rent/{{ $val->edit_id }}')">Edit</a>
                                                         @else
-                                                            <a class="dropdown-item" href="#" onclick="goto('/edit_the_rent/{{ $val->edit_id }}')">Edit</a>
+                                                            <a class="dropdown-item" href="#" onclick="goto('/edit_rent{{ $val->edit_id }}')">Edit</a>
                                                         @endif
                                                         @if($val->paymentStatus==0)
                                                             <a class="dropdown-item" href="/approve-facility-payments/{{ $val->edit_id }}">Approve Payment </a>
@@ -87,7 +86,6 @@
                                             </td>
                                         </tr>
                                     @endforeach
-                                @endif
                                 </tbody>
                             </table>
                         </div>

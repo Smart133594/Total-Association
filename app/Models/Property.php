@@ -9,4 +9,10 @@ class Property extends Model
 {
     use HasFactory;
     protected $table="properties";
+    public function PropertyType(){
+        return $this->hasOne('App\Models\Propertytype', 'id', 'typeId');
+    }
+    public function Building(){
+        return $this->hasMany('App\Models\Building', 'id', 'buildingId');
+    }
 }

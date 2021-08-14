@@ -9,7 +9,7 @@ use App\Models\Resident;
 use App\Models\Property;
 use App\Models\Setting;
 use App\Models\Subassociation;
-use App\Models\Userdocuments;
+use App\Models\OwnerResidentDocuments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -230,18 +230,18 @@ class ResidentController extends Controller
 
     public function uploaddoc($ref)
     {
-        $doc = Userdocuments::where('ref', $ref)->where('type', 'resident')->get();
+        $doc = OwnerResidentDocuments::where('ref', $ref)->where('type', 'resident')->get();
         return view('admin.member.resident.docform', ['ref' => $ref, 'data' => $doc]);
     }
 
     public function uploadresidentdocument(Request $request)
     {
 
-        $chk = Userdocuments::where('ref', $request->ref)->where('documentName', $request->documentName)->where('type', 'resident')->count();
+        $chk = OwnerResidentDocuments::where('ref', $request->ref)->where('documentName', $request->documentName)->where('type', 'resident')->count();
         if ($chk == 0) {
-            $store = new Userdocuments();
+            $store = new OwnerResidentDocuments();
         } else {
-            $store = Userdocuments::where('ref', $request->ref)->where('documentName', $request->documentName)->where('type', 'resident')->first();
+            $store = OwnerResidentDocuments::where('ref', $request->ref)->where('documentName', $request->documentName)->where('type', 'resident')->first();
         }
 
         $store->uploadOn = date('Y-m-d');

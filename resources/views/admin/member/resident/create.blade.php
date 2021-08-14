@@ -4,28 +4,24 @@
 
     <style>
         @if(isset($data))
-                    @if($data->isCompany=='0')
-                             .group_company {
-                        display: none;
-                    }
-
-                    @else
-                             .group_individual {
-                        display: none;
-                    }
-
-                    @endif
-         @else
+            @if($data->isCompany=='0')
+                .group_company {
+                    display: none;
+                }
+            @else
+                .group_individual {
+                    display: none;
+                }
+            @endif
+        @else
             .group_company {
-            display: none;
-        }
-        .notus {
-            display: none;
-        }
-
+                display: none;
+            }
+            .notus {
+                display: none;
+            }
         @endif
     </style>
-
 
 
     <div class="ms-content-wrapper">

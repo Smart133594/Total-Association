@@ -10,8 +10,10 @@ use App\Models\Property;
 use App\Models\Propertytype;
 use App\Models\Resident;
 use App\Models\Subassociation;
+use App\Models\GuestsBlacklist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Auth;
 
 class GuestController extends Controller
 {
@@ -37,8 +39,9 @@ class GuestController extends Controller
         }
 
 
-        $properties = Property::leftjoin('property_types', 'property_types.id', '=', 'properties.typeId')
-            ->get(['properties.*', 'property_types.type']);
+        $properties = Property::get();
+        // $properties = Property::leftjoin('property_types', 'property_types.id', '=', 'properties.typeId')
+            // ->get(['properties.*', 'property_types.type']);
         foreach ($properties as $k => $v) {
             $building = Building::where('id', $v->buildingId)->first();
             $property[$v->id] = $v;
@@ -46,7 +49,6 @@ class GuestController extends Controller
         }
 
 
-        $owner = Owner::leftjoin('properties', 'properties.id', '=', 'owners.propertyId')->orderby('id', 'desc');
         //filter
 
         $guest = Guest::leftjoin('properties', 'properties.id', '=', 'guests.propertyId')
@@ -191,5 +193,22 @@ class GuestController extends Controller
         foreach ($resident as $r) {
             echo '<option value="' . $r->id . '">' . $r->firstName . ' ' . $r->lastName . '</option>';
         }
+    }
+    public function addBlacklist($id, Request $request)
+    {
+        $id = Crypt::decryptString($id);
+        $description = $request->block_desc;
+        GuestsBlacklist::create([
+            'guestid' => $id,
+            'isblock' => true,
+            'blockuserid' => Auth::user()->id,
+            'description' => $description
+        ]);
+        return redirect('guest');
+    }
+    public function rmBlacklist($id)
+    {
+        GuestsBlacklist::where('id', $id)->delete();
+        return redirect()->back();
     }
 }

@@ -9,7 +9,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb pl-0">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}"><i class="material-icons">home</i> Home</a></li>
-                        @if(request()->is('facilities-suspend/*'))
+                        @if(request()->is('facilities-status/*'))
                             <li class="breadcrumb-item " aria-current="page"><a href="#">Settings</a></li>
                             <li class="breadcrumb-item " aria-current="page"><a href="#">Facilities</a></li>
                         @else
@@ -61,7 +61,7 @@
                                 </div>
 
                             </div>
-<input type="hidden" name="status" value="0">
+                            <input type="hidden" name="status" value="0">
                             <input type="submit"  class="btn btn-primary d-block" id="submit" value="Suspand">
                         </form>
                     </div>

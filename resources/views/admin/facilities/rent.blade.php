@@ -92,23 +92,23 @@
                                             <h2>Facilities Details</h2>
                                         </div>
                                         <p><b>Occupied:</b></p>
-                                        <p><b>Type:</b> {{$data->typeName}}</p>
-                                        <p><b>Term:</b> {{$data->termType}}</p>
+                                        <p><b>Type:</b> {{$facilities->FacilitiesType->typeName}}</p>
+                                        <p><b>Term:</b> {{$facilities->FacilitiesType->termType}}</p>
                                         <p><b>Rental Periods:</b><br>
-                                            @if($data->isHourly==1) Hourly @endif
-                                            @if($data->isDaily==1)  Daily @endif
-                                            @if($data->isWeekly==1) Weekly  @endif
-                                            @if($data->isMonthly==1)Monthly  @endif
-                                            @if($data->isYearly==1) Yearly @endif </p>
-                                        <p><b>Location:</b> {!! $data->location !!}</p>
+                                            @if($facilities->FacilitiesType->isHourly==1) Hourly @endif
+                                            @if($facilities->FacilitiesType->isDaily==1)  Daily @endif
+                                            @if($facilities->FacilitiesType->isWeekly==1) Weekly  @endif
+                                            @if($facilities->FacilitiesType->isMonthly==1)Monthly  @endif
+                                            @if($facilities->FacilitiesType->isYearly==1) Yearly @endif </p>
+                                        <p><b>Location:</b> {!! $facilities->location !!}</p>
                                         <p><b>Current Renter:</b></p>
-                                        <p><b>Paid Until:</b> @if($data->paidUntil) {{ date("M d, Y", strtotime($data->paidUntil))}}</p>@endif
+                                        <p><b>Paid Until:</b> @if($facilities->paidUntil) {{ date("M d, Y", strtotime($facilities->paidUntil))}}</p>@endif
                                         <p><b>Current Cost:</b>
-                                            @if($data->isHourly==1) ${{$data->HourlyPrice}}/Hourly  @endif
-                                            @if($data->isDaily==1)  ${{$data->DailyPrice}}/Daily @endif
-                                            @if($data->isWeekly==1) ${{$data->WeeklyPrice}}/Weekly @endif
-                                            @if($data->isMonthly==1) ${{$data->MonthlyPrice}}/Monthly @endif
-                                            @if($data->isYearly==1) ${{$data->YearlyPrice}}/Yearly @endif </p>
+                                            @if($facilities->FacilitiesType->isHourly==1) ${{$facilities->FacilitiesType->HourlyPrice}}/Hourly  @endif
+                                            @if($facilities->FacilitiesType->isDaily==1)  ${{$facilities->FacilitiesType->DailyPrice}}/Daily @endif
+                                            @if($facilities->FacilitiesType->isWeekly==1) ${{$facilities->FacilitiesType->WeeklyPrice}}/Weekly @endif
+                                            @if($facilities->FacilitiesType->isMonthly==1) ${{$facilities->FacilitiesType->MonthlyPrice}}/Monthly @endif
+                                            @if($facilities->FacilitiesType->isYearly==1) ${{$facilities->FacilitiesType->YearlyPrice}}/Yearly @endif </p>
                                     </div>
                                 </div>
 {{--                                <div class="col-md-6">--}}
@@ -181,7 +181,7 @@
                                             @if($setting['is_subassociations']=="0" || isset($facilities))
                                                 @foreach($property as $p)
                                                     <option value="{{$p->id}}" type="{{$p->type}}" @if($facilities ?? '') @if($facilities->propertyId==$p->id) selected @endif @endif>{{$p->type}}
-                                                        /{{$p->building}}
+                                                        /{{$p->Building->first()->building}}
                                                         /{{$p->aptNumber}}</option>
                                                 @endforeach
                                             @endif
@@ -348,7 +348,7 @@
                                     </div>
 
                                 </div>
-                                @if($data->videoRequired==1)
+                                @if($facilities->FacilitiesType->videoRequired==1)
                                     <div class="col-md-12">
                                         <hr>
                                         <div class="group_text">
@@ -361,7 +361,7 @@
                                         </div>
                                     </div>
                                 @endif
-                                @if($data->contractRequired==1)
+                                @if($facilities->FacilitiesType->contractRequired==1)
                                     @if($facilities ?? '')
                                         <div class="col-md-12">
                                             <hr>
@@ -523,13 +523,13 @@
             minDate: '{{date('Y-m-d', strtotime("+1 day"))}}',
             disabledDates: [{!! $disabledDates !!}],
             formatDate: 'Y-m-d',
-            @if($data->isHourly!=1)
+            @if($facilities->FacilitiesType->isHourly!=1)
             format: 'Y-m-d',
             @else
             format: 'Y-m-d H:i',
             @endif
             mask: false,
-            @if($data->isHourly!=1)
+            @if($facilities->FacilitiesType->isHourly!=1)
             timepicker: false,
             @endif
             onChangeDateTime: datePickerTime,
@@ -572,7 +572,7 @@
                     right: 'today'
                     // right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                 },
-                @if($data->calenderType=="Days")
+                @if($facilities->FacilitiesType->calenderType=="Days")
 
                 defaultView: 'timeGridWeek',
                 @else

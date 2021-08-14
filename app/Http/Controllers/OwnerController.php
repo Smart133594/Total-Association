@@ -7,7 +7,7 @@ use App\Models\Owner;
 use App\Models\Property;
 use App\Models\Setting;
 use App\Models\Subassociation;
-use App\Models\Userdocuments;
+use App\Models\OwnerResidentDocuments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -71,7 +71,6 @@ class OwnerController extends Controller
         foreach ($owner as $k => $v) {
             $owner[$k]['edit_id'] = Crypt::encryptString($v->id);
         }
-
         return view('admin.member.owner.index', ['alldata' => $owner, 'property' => $property, 'filter' => $filter]);
 
     }
@@ -207,18 +206,18 @@ class OwnerController extends Controller
 
     public function uploaddoc($ref)
     {
-        $doc = Userdocuments::where('ref', $ref)->where('type', 'owner')->get();
+        $doc = OwnerResidentDocuments::where('ref', $ref)->where('type', 'owner')->get();
         return view('admin.member.owner.docform', ['ref' => $ref, 'data' => $doc]);
     }
 
     public function uploadownerdocument(Request $request)
     {
 
-        $chk = Userdocuments::where('ref', $request->ref)->where('documentName', $request->documentName)->where('type', 'owner')->count();
+        $chk = OwnerResidentDocuments::where('ref', $request->ref)->where('documentName', $request->documentName)->where('type', 'owner')->count();
         if ($chk == 0) {
-            $store = new Userdocuments();
+            $store = new OwnerResidentDocuments();
         } else {
-            $store = Userdocuments::where('ref', $request->ref)->where('documentName', $request->documentName)->where('type', 'owner')->first();
+            $store = OwnerResidentDocuments::where('ref', $request->ref)->where('documentName', $request->documentName)->where('type', 'owner')->first();
         }
 
         $store->uploadOn = date('Y-m-d');

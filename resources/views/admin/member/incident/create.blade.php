@@ -2,40 +2,32 @@
 @section('title', 'Incident')
 @section('content')
     <style>
-
-
-        @if($data ?? '')
+        /* @if($data ?? '')
             @if($data->individual==1)
-        .individual_group {
-            display: block
-        }
-
-        @endif
-
+                .individual_group {
+                    display: block
+                }
+            @endif
             @if($data->individualType=="Unregistered")
                 .individual_group1 {
-            display: block
-        }
-
-        .individual_group2 {
-            display: none
-        }
-
-        @else
+                    display: block
+                }
                 .individual_group2 {
-            display: none
-        }
-
-        .individual_group1 {
-            display: block
-        }
-
-        @endif
+                    display: none
+                }
+            @else
+                .individual_group2 {
+                    display: none
+                }
+                .individual_group1 {
+                    display: block
+                }
+            @endif
         @else
-       .individual_group, .police, .individual_group2 {
-            display: none
-        }
-        @endif
+            .individual_group, .police, .individual_group2 {
+                display: none
+            }
+        @endif */
     </style>
     <div class="ms-content-wrapper">
         <div class="row">
@@ -74,9 +66,11 @@
                                         <label for="exampleEmail">Property</label>
                                         <select class="form-control" id="propertyId" name="propertyId" required>
                                             @foreach($property as $p)
-                                                <option value="{{ $p->id }}" @if($data ?? '') @if($p->id==$data->propertyId) selected @endif @endif>
-
-                                                    {{$property[$p->id]->building}} {{$allassociation[$property[$p->id]->associationId]}} - @if($property[$p->id]->type=="Multi Dwelling") {{$property[$p->id]->aptNumber}} @else {{$property[$p->id]->address1}} @endif
+                                                <option value="{{ $p->id }}" 
+                                                    @if($data ?? '') @if($p->id==$data->propertyId) selected @endif @endif
+                                                    @if($p->id==$propertyid) selected @endif
+                                                    >
+                                                    {{$p->PropertyType->building}} {{$allassociation[$p->associationId]}} - @if($p->PropertyType->type=="Multi Dwelling") {{$p->aptNumber}} @else {{$p->address1}} @endif
                                                 </option>
                                             @endforeach
                                         </select>

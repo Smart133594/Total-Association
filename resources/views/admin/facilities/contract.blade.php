@@ -9,7 +9,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb pl-0">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}"><i class="material-icons">home</i> Home</a></li>
-                        @if(request()->is('rent-facilities/*') ||  request()->is('edit_the_rent/*'))
+                        @if(request()->is('rent-facilities/*') ||  request()->is('edit_rent*'))
                             <li class="breadcrumb-item " aria-current="page"><a href="#">Settings</a></li>
                             <li class="breadcrumb-item " aria-current="page"><a href="#">Facilities</a></li>
                         @else

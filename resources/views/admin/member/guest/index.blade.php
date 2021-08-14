@@ -95,11 +95,11 @@
                                     <th>Email</th>
                                     <th>Duration</th>
                                     <th class="no-sort">Status</th>
+                                    <th class="no-sort">Blacklist</th>
                                     <th class="no-sort">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @if(!empty($alldata) &&  $alldata->count()>0)
                                     @foreach($alldata as $key=>$val)
                                         <tr role="row" class="odd">
                                             <td class="sorting_1" >{{$key+1}}</td>
@@ -108,10 +108,9 @@
                                             <td>{{$val->firstName}} {{$val->middleName}} {{$val->lastName}}</td>
                                             <td>{{$val->phoneNumber}}</td>
                                             <td>{{$val->email}}</td>
-
                                             <td>{{ date("d M", strtotime($val->startingDate))}} - {{ date("d M Y", strtotime($val->endDate))}} </td>
                                             <td>@if($val->status==1)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif </td>
-
+                                            <td>@if($val->BlackList && $val->BlackList->isblock) {{ $val->BlackList->description }} @else<i class="fas fa-dot-circle dot-green"></i>@endif </td>
                                             <td class="action">
                                                <a href="/guest/{{ $val->edit_id }}/edit"><i class="fas fa-pencil-alt ms-text-primary"></i></a>
                                                 {{--<form action="{{ route('master-association.destroy',$val->id) }}" method="post">
@@ -126,14 +125,18 @@
                                                     </a>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                                         <a class="dropdown-item" href="/guest/{{ $val->edit_id }}/edit">See Info</a>
-                                                        <a class="dropdown-item" href="/bulk-communication">Send Email</a>
-                                                        <a class="dropdown-item" href="/letter-generator">Send Letter</a>
+                                                        <a class="dropdown-item" href="/bulk-communication?type=Guests&user={{ $val->edit_id }}"> Send Email </a>
+                                                        <a class="dropdown-item" href="/letter-generator?type=Guests&user={{ $val->edit_id }}"> Send Letter </a>
+                                                        @if ($val->BlackList && $val->BlackList->isblock)
+                                                            <a class="dropdown-item" href="/rmBlacklist/{{ $val->BlackList->id }}">Un-Blacklist</a>
+                                                        @else 
+                                                            <a class="dropdown-item" href="javascript:" data-toggle="modal" data-target="#block_modal_{{ $val->id }}" >Blacklist</a>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </td>
                                         </tr>
                                     @endforeach
-                                @endif
                                 </tbody>
                             </table>
                         </div>
@@ -142,6 +145,30 @@
             </div>
         </div>
     </div>
+    <!-- Modal -->
+    @foreach($alldata as $key=>$val)
+    <div class="modal fade" id="block_modal_{{ $val->id }}" tabindex="-1" role="dialog" aria-labelledby="block_modal_label_{{ $val->id }}" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form class="modal-content" action="addblacklist/{{ $val->edit_id }}" method="post">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="block_modal_label_{{ $val->id }}">Add user to blacklist</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modal-details">
+                    <textarea class="form-control" name="block_desc" id="block_desc" placeholder="the reason for Add user to the blacklist" required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-danger" value="Block">
+                </div>
+            </form>
+        </div>
+    </div>
+    @endforeach
+
     <script>
         $(document).ready(function () {
             $('#data-table').DataTable({

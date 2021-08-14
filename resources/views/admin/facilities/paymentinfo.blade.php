@@ -1,61 +1,46 @@
 @extends('admin.layouts.master')
 @section('title', 'Payment Info')
 @section('content')
-
     <style>
         @if($facilities ?? '')
-                @if($facilities->isResident==0)
-                 .resident {
-            display: none;
-        }
-
-        .notresident {
-            display: block;
-        }
-
-        @else
-                 .resident {
-            display: block;
-        }
-
-        .notresident {
-            display: none;
-        }
-
-        @endif
-                @if($facilities->paymentType==0)
-                 .cc {
-            display: none;
-        }
-
-        .cheque {
-            display: block;
-        }
-
-        @else
-                 .cc {
-            display: block;
-        }
-
-        .cheque {
-            display: none;
-        }
-
-        @endif
-
-
-
+            @if($facilities->isResident==0)
+                .resident {
+                    display: none;
+                }
+                .notresident {
+                    display: block;
+                }
+            @else
+                .resident {
+                    display: block;
+                }
+                .notresident {
+                    display: none;
+                }
+            @endif
+            @if($facilities->paymentType==0)
+                .cc {
+                    display: none;
+                }
+                .cheque {
+                    display: block;
+                }
+            @else
+                .cc {
+                    display: block;
+                }
+                .cheque {
+                    display: none;
+                }
+            @endif
         @else
             .notresident {
-            display: none;
-        }
-
-        .cheque {
-            display: none;
-        }
+                display: none;
+            }
+            .cheque {
+                display: none;
+            }
         @endif
-
-
     </style>
     <div class="ms-content-wrapper">
         <div class="row">
@@ -63,7 +48,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb pl-0">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}"><i class="material-icons">home</i> Home</a></li>
-                        @if(request()->is('payment-info/*'))
+                        @if(request()->is('paymentinfo/*'))
                             <li class="breadcrumb-item " aria-current="page"><a href="#">Settings</a></li>
                             <li class="breadcrumb-item " aria-current="page"><a href="#">Facilities</a></li>
                         @else
@@ -94,23 +79,23 @@
                                             <h2>Facilities Details</h2>
                                         </div>
                                         <p><b>Occupied:</b></p>
-                                        <p><b>Type:</b> {{$data->typeName}}</p>
-                                        <p><b>Term:</b> {{$data->termType}}</p>
+                                        <p><b>Type:</b> {{$data->FacilitiesType->typeName}}</p>
+                                        <p><b>Term:</b> {{$data->FacilitiesType->termType}}</p>
                                         <p><b>Rental Periods:</b><br>
-                                            @if($data->isHourly==1) Hourly ,@endif
-                                            @if($data->isDaily==1)  Daily ,@endif
-                                            @if($data->isWeekly==1) Weekly, @endif
-                                            @if($data->isMonthly==1)Monthly ,@endif
-                                            @if($data->isYearly==1) Yearly @endif </p>
+                                            @if($data->FacilitiesType->isHourly==1) Hourly ,@endif
+                                            @if($data->FacilitiesType->isDaily==1)  Daily ,@endif
+                                            @if($data->FacilitiesType->isWeekly==1) Weekly, @endif
+                                            @if($data->FacilitiesType->isMonthly==1)Monthly ,@endif
+                                            @if($data->FacilitiesType->isYearly==1) Yearly @endif </p>
                                         <p><b>Location:</b> {!! $data->location !!}</p>
                                         <p><b>Current Renter:</b></p>
                                         <p><b>Paid Until:</b> @if($data->paidUntil) {{ date("M d, Y", strtotime($data->paidUntil))}}</p>@endif
                                         <p><b>Current Cost:</b>
-                                            @if($data->isHourly==1) ${{$data->HourlyPrice}}/Hourly ,@endif
-                                            @if($data->isDaily==1)  ${{$data->DailyPrice}}/Daily ,@endif
-                                            @if($data->isWeekly==1) ${{$data->WeeklyPrice}}/Weekly, @endif
-                                            @if($data->isMonthly==1) ${{$data->MonthlyPrice}}/Monthly ,@endif
-                                            @if($data->isYearly==1) ${{$data->YearlyPrice}}/Yearly @endif </p>
+                                            @if($data->FacilitiesType->isHourly==1) ${{$data->FacilitiesType->HourlyPrice}}/Hourly ,@endif
+                                            @if($data->FacilitiesType->isDaily==1)  ${{$data->FacilitiesType->DailyPrice}}/Daily ,@endif
+                                            @if($data->FacilitiesType->isWeekly==1) ${{$data->FacilitiesType->WeeklyPrice}}/Weekly, @endif
+                                            @if($data->FacilitiesType->isMonthly==1) ${{$data->FacilitiesType->MonthlyPrice}}/Monthly ,@endif
+                                            @if($data->FacilitiesType->isYearly==1) ${{$data->FacilitiesType->YearlyPrice}}/Yearly @endif </p>
 
                                     </div>
                                 </div>

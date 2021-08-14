@@ -42,7 +42,7 @@
                                                                                                                                                                                    onclick="getgroup(0)">&nbsp;
                                         Group
                                     </div>
-                                    @if(!isset($_GET['type']) || !isset($_GET['user']))
+                                    @if(!isset($_GET['type']) || !isset($userid))
                                         @if($setting['is_subassociations']=="1")
 
                                             <div class="form-group Individual">
@@ -87,15 +87,16 @@
                                             <option value="">--choose--</option>
                                             <option value="Owners" @if(isset($_GET['type']) && $_GET['type']=="Owners") selected @endif>Owners</option>
                                             <option value="Residents" @if(isset($_GET['type']) && $_GET['type']=="Residents") selected @endif>Residents</option>
+                                            <option value="Guests" @if(isset($_GET['type']) && $_GET['type']=="Guests") selected @endif>Guests</option>
                                         </select>
                                     </div>
                                     <div class="form-group Individual">
                                         <label for="exampleEmail"> Select the Person</label>
                                         <select class="form-control" id="person" name="whome">
                                             <option value="">--choose--</option>
-                                            @if(isset($_GET['user']) && !empty($person))
+                                            @if(isset($userid) && !empty($person))
                                                 @foreach($person as $p)
-                                                    <option value="{{$p->id}}" @if(isset($_GET['user']) && $_GET['user']==$p->id) selected @endif>{{$p->firstName}} {{$p->lastName}}</option>
+                                                    <option value="{{$p->id}}" @if(isset($userid) && $userid==$p->id) selected @endif>{{$p->firstName}} {{$p->lastName}}</option>
                                                 @endforeach
                                             @endif
                                         </select>

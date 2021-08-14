@@ -7,18 +7,15 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
-use Hash, Auth, Validator;
+use Hash, Auth, Validator, DB;
 use App\Models\Group;
-use DB;
 
 class UsersController extends Controller
 {
     public function store(Request $request)
     {
         $name = "User";
-
-            $path = "manager";
-
+        $path = "manager";
 
 
 //        if ($request->role == 1 || $request->role == 2) {
@@ -97,7 +94,6 @@ class UsersController extends Controller
         }
         $validate = array('name', 'mobile');
         return view('admin.user.manager', ['alldata' => $cust, 'validate' => $validate]);
-
     }
 
     public function create()

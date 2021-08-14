@@ -131,7 +131,8 @@
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                                         <a class="dropdown-item" href="/{{$path}}/{{ $val->edit_id }}/">See Info</a>
                                                         <a class="dropdown-item" href="/incident?filter=resident&id={{ $val->edit_id }}">Incidents</a>
-                                                        <a class="dropdown-item" href="/fines?filter=resident&id={{ $val->edit_id }}">Issue Fine</a>
+                                                        <a class="dropdown-item" href="/fine-incident/{{ $val->edit_id }}">Fine Incident</a>
+                                                        {{-- <a class="dropdown-item" href="/fines?filter=resident&id={{ $val->edit_id }}">Issue Fine</a> --}}
                                                         <a class="dropdown-item" href="#">Create Appointment</a>
                                                         <a class="dropdown-item" href="#">Access Control</a>
                                                     </div>

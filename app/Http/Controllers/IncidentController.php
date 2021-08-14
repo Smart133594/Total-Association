@@ -9,7 +9,6 @@ use App\Models\Incident;
 use App\Models\Owner;
 use App\Models\Resident;
 use App\Models\Setting;
-use App\Models\Userdocuments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\Property;
@@ -90,14 +89,25 @@ class IncidentController extends Controller
         }
 
 
-        $properties = Property::leftjoin('property_types', 'property_types.id', '=', 'properties.typeId')
-            ->leftjoin('buildings', 'buildings.id', '=', 'properties.buildingId')
-            ->get(['properties.*', 'property_types.type', 'buildings.building']);
-        foreach ($properties as $k => $v) {
-            $property[$v->id] = $v;
-        }
+        $property = Property::get();
         $validate = array('incidentTitle', 'incidentDescription', 'propertyId', 'individual', 'dateTime', 'outcome', 'responsiblePersonId');
         return view('admin.member.incident.create', ['validate' => $validate, 'property' => $property, 'ref' => $ref]);
+    }
+    public function findIncident($id)
+    {
+        $id = Crypt::decryptString($id);
+        $ref = Incident::first();
+        if ($ref) {
+            $ref = $ref->id + 1;
+        } else {
+            $ref = 1;
+        }
+
+
+        $property = Property::get();
+        $validate = array('incidentTitle', 'incidentDescription', 'propertyId', 'individual', 'dateTime', 'outcome', 'responsiblePersonId');
+
+        return view('admin.member.incident.create', ['validate' => $validate, 'property' => $property, 'ref' => $ref, 'propertyid' => $id]);
     }
 
     public function store(Request $request)
@@ -186,12 +196,8 @@ class IncidentController extends Controller
     public function edit($id)
     {
         $id = Crypt::decryptString($id);
-        $properties = Property::leftjoin('property_types', 'property_types.id', '=', 'properties.typeId')
-            ->leftjoin('buildings', 'buildings.id', '=', 'properties.buildingId')
-            ->get(['properties.*', 'property_types.type', 'buildings.building']);
-        foreach ($properties as $k => $v) {
-            $property[$v->id] = $v;
-        }
+      
+        $property = Property::get();
 
         $incident = Incident::where('id', $id)->first();
         if ($incident->individualType == "Owner") {

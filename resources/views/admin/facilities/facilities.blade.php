@@ -72,12 +72,11 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @if(!empty($alldata) &&  $alldata->count()>0)
                                     @foreach($alldata as $key=>$val)
                                         <tr role="row" class="odd">
                                             <td class="sorting_1" onclick="goto('/owner/{{ $val->edit_id }}')">{{$key+1}}</td>
                                             <td onclick="goto('/{{$path}}/{{ $val->edit_id }}')"> {{$val->Facility}}</td>
-                                            <td onclick="goto('/{{$path}}/{{ $val->edit_id }}')">{{$val->typeName}}</td>
+                                            <td onclick="goto('/{{$path}}/{{ $val->edit_id }}')">{{$val->FacilitiesType->typeName}}</td>
                                             <td onclick="goto('/{{$path}}/{{ $val->edit_id }}')">@if($val->vacency==0 && $val->isYearly!=1)<i class="fas fa-dot-circle dot-green"></i>@else<i
                                                     class="fas fa-dot-circle dot-red"></i>@endif</td>
                                             <td onclick="goto('/{{$path}}/{{ $val->edit_id }}')">{{ $val->toDate }}</td>
@@ -100,11 +99,11 @@
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                                         @if(request()->is('facilities'))
                                                             <a class="dropdown-item" href="#" onclick="goto('/{{$path}}/{{ $val->edit_id }}')">Info</a>
-                                                            <a class="dropdown-item" href="/facilities-event/{{ $val->edit_id }}">Rental Events List</a>
+                                                            <a class="dropdown-item" href="/facilities-rental-event/{{ $val->edit_id }}">Rental Events List</a>
                                                             @if($val->vacency==1)
                                                                 <a class="dropdown-item" href="/record-note/{{ $val->current_occupaier_rent_id }}">Record a Note</a>
-                                                                <a class="dropdown-item" href="/payment-info/{{ $val->current_occupaier_rent_id }}">payment Info</a>
-                                                                @if($val->contractRequired==1)
+                                                                <a class="dropdown-item" href="/paymentinfo/{{ $val->current_occupaier_rent_id }}">payment Info</a>
+                                                                @if($val->FacilitiesType->contractRequired==1)
                                                                     <a class="dropdown-item" href="/contract/{{ $val->current_occupaier_rent_id }}">Contract</a>
                                                                 @endif
                                                             @endif
@@ -118,10 +117,10 @@
                                                                 <a class="dropdown-item" href="/letter-generator">Send Letter to Current Occupier</a>
                                                             @endif
                                                             @if($val->status==1)
-                                                                <a class="dropdown-item" href="/facilities-suspend/{{ $val->edit_id }}">Suspend Facility </a>
-                                                                {{--                                                                <a class="dropdown-item" href="/rent-facilities/{{ $val->edit_id }}">Rent the Facility </a>--}}
+                                                                <a class="dropdown-item" href="/facilities-status/{{ $val->edit_id }}">Suspend Facility </a>
+                                                                                                                               <a class="dropdown-item" href="/rent-facilities/{{ $val->edit_id }}">Rent the Facility </a>
                                                             @else
-                                                                <a class="dropdown-item" href="/facilities-suspend/{{ $val->edit_id }}">Activate Facility </a>
+                                                                <a class="dropdown-item" href="/facilities-status/{{ $val->edit_id }}">Activate Facility </a>
                                                             @endif
 
 
@@ -129,10 +128,10 @@
                                                             <a class="dropdown-item" href="#" onclick="goto('/{{$path}}/{{ $val->edit_id }}')">Info</a>
                                                             <a class="dropdown-item" href="/facilities-rental-event/{{ $val->edit_id }}">Rental Events List</a>
                                                             @if($val->vacency==1)
-                                                                <a class="dropdown-item" href="/record-a-note/{{ $val->current_occupaier_rent_id }}">Record a Note</a>
+                                                                <a class="dropdown-item" href="/record-note/{{ $val->current_occupaier_rent_id }}">Record a Note</a>
                                                                 <a class="dropdown-item" href="/paymentinfo/{{ $val->current_occupaier_rent_id }}">payment Info</a>
-                                                                @if($val->contractRequired==1)
-                                                                    <a class="dropdown-item" href="/upload-contract/{{ $val->current_occupaier_rent_id }}">Contract</a>
+                                                                @if($val->FacilitiesType->contractRequired==1)
+                                                                    <a class="dropdown-item" href="/contract/{{ $val->current_occupaier_rent_id }}">Contract</a>
                                                                 @endif
                                                             @endif
                                                             @if($val->isResident==1)
@@ -146,7 +145,7 @@
                                                             @endif
                                                             @if($val->status==1)
                                                                 <a class="dropdown-item" href="/facilities-status/{{ $val->edit_id }}">Suspend Facility </a>
-                                                                {{--                                                                <a class="dropdown-item" href="/rent-the-facilities/{{ $val->edit_id }}">Rent the Facility </a>--}}
+                                                                                                                               <a class="dropdown-item" href="/rent-facilities/{{ $val->edit_id }}">Rent the Facility </a>
                                                             @else
                                                                 <a class="dropdown-item" href="/facilities-status/{{ $val->edit_id }}">Activate Facility </a>
                                                             @endif
@@ -157,7 +156,6 @@
                                             </td>
                                         </tr>
                                     @endforeach
-                                @endif
                                 </tbody>
                             </table>
                         </div>

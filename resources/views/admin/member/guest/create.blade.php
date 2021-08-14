@@ -59,13 +59,13 @@
                         <li class="breadcrumb-item active" aria-current="page"><a href="{{route('guest.create')}}">@if($data ?? '') Update @else Add @endif</a></li>
                     </ol>
                 </nav>
-                <div class="ms-panel">
-                    <div class="ms-panel-header ms-panel-custome">
-                        <h6>@if($data ?? '') Update @else Add @endif Guest</h6>
-                    </div>
-                    <div class="ms-panel-body">
-                        @include('admin.includes.msg')
-                        <form id="admin-form" class="main-form" method="post" action="{{route('guest.store')}}" enctype="multipart/form-data">
+                <form id="admin-form" class="main-form" method="post" action="{{route('guest.store')}}" enctype="multipart/form-data">
+                    <div class="ms-panel">
+                        <div class="ms-panel-header ms-panel-custome">
+                            <h6>@if($data ?? '') Update @else Add @endif Guest</h6>
+                        </div>
+                        <div class="ms-panel-body">
+                            @include('admin.includes.msg')
                             @csrf
                             @if($data ?? '')
                                 <input type="hidden" name="id" value="{{ $data->id }}">
@@ -74,8 +74,6 @@
                                 <h2>Property Information</h2>
                             </div>
                             <div class="row">
-
-
                                 <div class="col-md-10">
                                     @if($setting['is_subassociations']=="1")
                                         <div class="form-group">
@@ -138,22 +136,15 @@
                                                 @endif
                                             </select>
                                         </div>
-
                                 </div>
-{{--                                <div class="col-md-10">--}}
-{{--                                    <div class="form-group">--}}
-{{--                                        <label for="examplePassword">Resident</label>--}}
-{{--                                        <select type="text" class="form-control" id="residentId" name="residentId">--}}
-{{--                                            <option value="">--Choose--</option>--}}
-{{--                                            @if($data ?? '')--}}
-{{--                                                @foreach($resident as $r)--}}
-{{--                                                    <option value="{{$r->id}}" @if($data ?? '') @if($data->residentId==$r->id) selected @endif @endif>{{$r->firstName}} {{$r->lastName}}</option>--}}
-{{--                                                @endforeach--}}
-{{--                                            @endif--}}
-{{--                                        </select>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
                             </div>
+                        </div>
+                    </div>
+                    <div class="ms-panel">
+                        <div class="ms-panel-header ms-panel-custome">
+                            <h6>@if($data ?? '') Update @else Add @endif Guest</h6>
+                        </div>
+                        <div class="ms-panel-body">
                             <div class="group_text">
                                 <h2>Guests Basic Information</h2>
                             </div>
@@ -285,9 +276,9 @@
                             </div>
 
                             <input type="submit" class="btn btn-primary d-block" value="Save">
-                        </form>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>

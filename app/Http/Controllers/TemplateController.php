@@ -117,6 +117,10 @@ class TemplateController extends Controller
 
     public function bulkcommunication()
     {
+        $userid = null;
+        if($_GET['user']){
+            $userid = Crypt::decryptString($_GET['user']);
+        }
         $template = Template::get();
         $template_variable = TemplateVariable::where('onlyfacility',0)->get();
         $validate = array();
@@ -131,14 +135,17 @@ class TemplateController extends Controller
         $person="";
         if(isset($_GET['type'])) {
             if ($_GET['type'] == "Owners") {
-                $person = Owner::where('id', $_GET['user'])->get();
+                $person = Owner::where('id', $userid)->get();
             }
             if ($_GET['type'] == "Residents") {
-                $person = Resident::where('id', $_GET['user'])->get();
+                $person = Resident::where('id', $userid)->get();
+            }
+            if ($_GET['type'] == "Guests") {
+                $person = Guest::where('id', $userid)->get();
             }
         }
 
-         return view('admin.member.template.bulkmail', ['template' => $template,"person"=>$person ,'validate' => $validate, 'template_variable' => $template_variable,'subasso'=>$subasso,'property'=>$property]);
+         return view('admin.member.template.bulkmail', ['template' => $template,"person"=>$person ,'validate' => $validate, 'template_variable' => $template_variable,'subasso'=>$subasso,'property'=>$property, 'userid' => $userid]);
     }
 
     public function sendbulkmail(Request $request)
@@ -220,6 +227,10 @@ class TemplateController extends Controller
         echo $template->template;
     }
     public function lettergenerator(){
+        $userid = null;
+        if($_GET['user']){
+            $userid = Crypt::decryptString($_GET['user']);
+        }
         $template = Template::get();
         $template_variable = TemplateVariable::where('onlyfacility',0)->get();
         $validate = array();
@@ -234,14 +245,17 @@ class TemplateController extends Controller
         $person="";
         if(isset($_GET['type'])) {
             if ($_GET['type'] == "Owners") {
-                $person = Owner::where('id', $_GET['user'])->get();
+                $person = Owner::where('id', $userid)->get();
             }
             if ($_GET['type'] == "Residents") {
-                $person = Resident::where('id', $_GET['user'])->get();
+                $person = Resident::where('id', $userid)->get();
+            }
+            if ($_GET['type'] == "Guests") {
+                $person = Guest::where('id', $userid)->get();
             }
         }
 
-        return view('admin.member.template.letter', ['template' => $template,'person'=>$person, 'validate' => $validate, 'template_variable' => $template_variable,'property'=>$property,'subasso'=>$subasso]);
+        return view('admin.member.template.letter', ['template' => $template,'person'=>$person, 'validate' => $validate, 'template_variable' => $template_variable,'property'=>$property,'subasso'=>$subasso, 'userid' => $userid]);
     }
     public function  downloadletter(Request $request){
 

@@ -24,22 +24,20 @@ class facilitiesController extends Controller
     {
         $facilities_type = FacilitiesType::get();
 
-        $facilities = Facilities::leftjoin('facilities_types', 'facilities_types.id', '=', 'facilities.facilitiesTypeId');
+        $facilities = Facilities::get();
         //filter
         if (isset($_GET['status']) && !empty($_GET['status'])) {
             if ($_GET['status'] == 1) {
-                $facilities = $facilities->where('facilities.status', 1);
+                $facilities = $facilities->where('status', 1);
             } elseif ($_GET['status'] == 2) {
-                $facilities = $facilities->where('facilities.status', 0);
+                $facilities = $facilities->where('status', 0);
             }
 
         }
         if (isset($_GET['type']) && !empty($_GET['type'])) {
-            $facilities = $facilities->where('facilities.facilitiesTypeId', $_GET['type']);
+            $facilities = $facilities->where('facilitiesTypeId', $_GET['type']);
         }
-        //filter
-        $facilities = $facilities->get(['facilities_types.typeName','facilities_types.contractRequired', 'facilities.*']);
-
+        //filter end---------
 
         foreach ($facilities as $k => $v) {
             $rent = FacilityRent::where('facilities_id', $v->id)->orderBy('id', 'desc')->first();
@@ -58,14 +56,11 @@ class facilitiesController extends Controller
                 $facilities[$k]['toDate'] = $rent->toDate;
             }
             $facilities[$k]['edit_id'] = Crypt::encryptString($v->id);
-
-
         }
 
 
         return view('admin.facilities.facilities', ['alldata' => $facilities, 'facilities_type' => $facilities_type]);
     }
-
     public function create()
     {
         $facilities_type = FacilitiesType::get();
@@ -129,17 +124,8 @@ class facilitiesController extends Controller
     public function show($id)
     {
         $id = Crypt::decryptString($id);
-        $data = Facilities::leftjoin('facilities_types', 'facilities_types.id', '=', 'facilities.facilitiesTypeId')
-            ->where('facilities.id', $id)
-            ->first(['facilities_types.*', 'facilities.Facility', 'facilities.paidUntil', 'facilities.location']);
-
-
-        //extraTable
-        $rental_history = FacilityRent::where('facilities_id', $data->id)->get();
-
-        //extraTable
-
-        return view('admin.facilities.facilities_details', ['data' => $data, 'rental_history' => $rental_history]);
+        $data = Facilities::first();
+        return view('admin.facilities.facilities_details', ['data' => $data]);
     }
 
     public function rent($id)
@@ -160,22 +146,21 @@ class facilitiesController extends Controller
             }
         }
         $disabledDates = substr($disabledDates, 0, -1);
-//calculate block dates
+        //calculate block dates
 
-
-        $data = Facilities::leftjoin('facilities_types', 'facilities_types.id', '=', 'facilities.facilitiesTypeId')
-            ->where('facilities.id', $id)
-            ->first(['facilities_types.*', 'facilities.Facility', 'facilities.paidUntil', 'facilities.location']);
 
         $subasso = Subassociation::where('status', 1)->get();
-        $property = Property::leftjoin('property_types', 'property_types.id', '=', 'properties.typeId')
-            ->get(['properties.*', 'property_types.type']);
-        foreach ($property as $k => $v) {
-            $building = Building::where('id', $v->buildingId)->first();
-            $property[$k]['building'] = $building['building'];
-        }
+        $property = Property::get();
+        $facilities = Facilities::where('id', $id)->first();
+        $building = Building::where('associationId', $facilities->associationId)->get();
         $rent = FacilityRent::where('facilities_id', $id)->get();
-        return view('admin.facilities.rent', ['data' => $data, 'id' => $id, 'subasso' => $subasso, 'property' => $property, 'building' => $building, 'rent' => $rent, 'disabledDates' => $disabledDates]);
+        return view('admin.facilities.rent', [
+            'id' => $id, 'subasso' => $subasso, 'property' => $property,
+             'building' => $building, 
+            'facilities' => $facilities,
+            'rent' => $rent,
+            'disabledDates' => $disabledDates
+        ]);
     }
 
 
@@ -201,19 +186,10 @@ class facilitiesController extends Controller
         $disabledDates = substr($disabledDates, 0, -1);
 //calculate block dates
 
-        $data = Facilities::leftjoin('facilities_types', 'facilities_types.id', '=', 'facilities.facilitiesTypeId')
-            ->where('facilities.id', $facilities->facilities_id)
-            ->first(['facilities_types.*', 'facilities.Facility', 'facilities.paidUntil', 'facilities.location']);
 
-
+        $property = Property::get();
+        $rent = FacilityRent::where('facilities_id', $id)->get();
         $subasso = Subassociation::where('status', 1)->get();
-        $property = Property::leftjoin('property_types', 'property_types.id', '=', 'properties.typeId')
-            ->get(['properties.*', 'property_types.type']);
-        foreach ($property as $k => $v) {
-            $building = Building::where('id', $v->buildingId)->first();
-            $property[$k]['building'] = $building['building'];
-        }
-
         $person = "";
         $building = Building::where('associationId', $facilities->associationId)->get();
         if ($facilities->whome_type == "Owners") {
@@ -223,9 +199,8 @@ class facilitiesController extends Controller
             $person = Resident::where('id', $facilities->whome)->get();
         }
 
-
-        $rent = FacilityRent::where('facilities_id', $id)->get();
-        return view('admin.facilities.rent', ['data' => $data, 'building' => $building, 'person' => $person, 'id' => $facilities->facilities_id, 'subasso' => $subasso, 'property' => $property, 'building' => $building, 'facilities' => $facilities, 'rent' => $rent, 'disabledDates' => $disabledDates]);
+        return view('admin.facilities.rent', [
+           'building' => $building, 'person' => $person, 'id' => $facilities->facilities_id, 'subasso' => $subasso, 'property' => $property, 'facilities' => $facilities, 'rent' => $rent, 'disabledDates' => $disabledDates]);
     }
 
 
@@ -278,37 +253,25 @@ class facilitiesController extends Controller
     public function events($id)
     {
         $id = Crypt::decryptString($id);
-        $facilities = Facilities::leftjoin('facilities_types', 'facilities_types.id', '=', 'facilities.facilitiesTypeId')
-            ->where('facilities.id', $id)
-            ->first(['facilities_types.*', 'facilities.Facility', 'facilities.paidUntil', 'facilities.location']);
-
-        $data = FacilityRent::where('facilities_id', $id)->get();
-        foreach ($data as $k => $v) {
-            $data[$k]['edit_id'] = Crypt::encryptString($v->id);
+        $facilities = Facilities::where('id', $id)->first();
+        foreach ($facilities->FacilitiesRent as $k => $v) {
+            $facilities->FacilitiesRent[$k]['edit_id'] = Crypt::encryptString($v->id);
         }
-
-        return view('admin.facilities.events', ['facilities' => $facilities, 'data' => $data]);
+        return view('admin.facilities.events', ['facilities' => $facilities]);
     }
 
     public function recordanote($id)
     {
         $id = Crypt::decryptString($id);
-        $facilities = FacilityRent::where('id', $id)->first();
-
-
-        $data = Facilities::leftjoin('facilities_types', 'facilities_types.id', '=', 'facilities.facilitiesTypeId')
-            ->where('facilities.id', $facilities->facilities_id)
-            ->first(['facilities_types.*', 'facilities.Facility', 'facilities.paidUntil', 'facilities.location']);
+        $facilitieRent = FacilityRent::where('id', $id)->first();
+        $facilities = $facilitieRent->Facilities->first();
 
         $subasso = Subassociation::where('status', 1)->get();
-        $property = Property::leftjoin('property_types', 'property_types.id', '=', 'properties.typeId')
-            ->get(['properties.*', 'property_types.type']);
-        foreach ($property as $k => $v) {
-            $building = Building::where('id', $v->buildingId)->first();
-            $property[$k]['building'] = $building['building'];
-        }
+        $property = Property::get();
+        $building = Building::where('associationId', $facilities->associationId)->get();
         $rent = FacilityRent::where('facilities_id', $id)->get();
-        return view('admin.facilities.record_note', ['data' => $data, 'id' => $id, 'subasso' => $subasso, 'property' => $property, 'building' => $building, 'facilities' => $facilities, 'rent' => $rent]);
+        
+        return view('admin.facilities.record_note', ['facilities' => $facilities, 'id' => $id, 'subasso' => $subasso, 'property' => $property, 'building' => $building, 'facilitieRent' => $facilitieRent, 'rent' => $rent]);
     }
 
     public function paymentinfo($id)
@@ -316,19 +279,11 @@ class facilitiesController extends Controller
         $id = Crypt::decryptString($id);
         $facilities = FacilityRent::where('id', $id)->first();
 
-
-        $data = Facilities::leftjoin('facilities_types', 'facilities_types.id', '=', 'facilities.facilitiesTypeId')
-            ->where('facilities.id', $facilities->facilities_id)
-            ->first(['facilities_types.*', 'facilities.Facility', 'facilities.paidUntil', 'facilities.location']);
-
+        $data = $facilities->Facilities->first();
 
         $subasso = Subassociation::where('status', 1)->get();
-        $property = Property::leftjoin('property_types', 'property_types.id', '=', 'properties.typeId')
-            ->get(['properties.*', 'property_types.type']);
-        foreach ($property as $k => $v) {
-            $building = Building::where('id', $v->buildingId)->first();
-            $property[$k]['building'] = $building['building'];
-        }
+        $property = Property::get();
+        $building = Building::where('associationId', $facilities->associationId)->get();
         $rent = FacilityRent::where('facilities_id', $id)->get();
         return view('admin.facilities.paymentinfo', ['data' => $data, 'id' => $id, 'subasso' => $subasso, 'property' => $property, 'building' => $building, 'facilities' => $facilities, 'rent' => $rent]);
     }
@@ -554,12 +509,9 @@ class facilitiesController extends Controller
             ->first(['facilities_types.*', 'facilities.Facility', 'facilities.paidUntil', 'facilities.location']);
 
         $subasso = Subassociation::where('status', 1)->get();
-        $property = Property::leftjoin('property_types', 'property_types.id', '=', 'properties.typeId')
-            ->get(['properties.*', 'property_types.type']);
-        foreach ($property as $k => $v) {
-            $building = Building::where('id', $v->buildingId)->first();
-            $property[$k]['building'] = $building['building'];
-        }
+        $property = Property::get();
+        $building = Building::where('associationId', $facilities->associationId)->get();
+
         $rent = FacilityRent::where('facilities_id', $id)->get();
         return view('admin.facilities.contract', ['data' => $data, 'id' => $id, 'subasso' => $subasso, 'property' => $property, 'building' => $building, 'facilities' => $facilities, 'rent' => $rent,'disabledDates'=>$disabledDates]);
     }
