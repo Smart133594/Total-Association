@@ -285,8 +285,8 @@
         data: formData,
         processData: false, 
         contentType: false, 
-        success: function (data) {
-          console.log("success");
+        complete: function () {
+          location.reload();
         }
     });
     })
