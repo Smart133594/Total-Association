@@ -96,7 +96,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($owners as $val)
+                            @foreach ($property->Owner as $val)
                                 <tr>
                                     <td onclick="goto('/owner/{{ $val->owner_id }}')">
                                         {{ $val->firstName }}
@@ -162,7 +162,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($residents as $val)
+                            @foreach ($property->Resident as $val)
                                 <tr>
                                     <td onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->firstName }}
                                         {{ $val->middleName }} {{ $val->lastName }}</td>
@@ -224,7 +224,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($guest as $val)
+                            @foreach ($property->Guest as $val)
                                 <tr>
                                     <td onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->property_id }}</td>
                                     <td onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->rfname }}
@@ -285,16 +285,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($pet as $val)
+                            @foreach ($property->Pet as $val)
                                 <tr>
                                     <td><img src="/thumb/{{ $val->image }}"
                                             style="border-radius:0;height:50px;width:auto;max-width:100px"></td>
                                     <td onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->petName }}</td>
-                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">{{ $pettype[$val->pettypeId] }}
+                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->PetType->petType }}
                                     </td>
                                     <td onclick="goto('/owner/{{ $val->owner_id }}')">
-                                        @if (isset($owner[$val->ownerId]))
-                                            {{ $owner[$val->ownerId] }}@endif
+                                        @if (isset($val->Owner))
+                                            {{ $val->Owner->firstName }} {{ $val->Owner->lastName }}
+                                            @endif
                                     </td>
                                     <td onclick="goto('/owner/{{ $val->owner_id }}')">
                                         @if ($val->status == 1)<i

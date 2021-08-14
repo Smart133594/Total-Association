@@ -79,15 +79,35 @@
                                         <tr role="row" class="odd">
                                             <td class="sorting_1" onclick="goto('/showproperties/{{ $val->edit_id }}')">{{$key+1}}</td>
                                             @if($setting['is_subassociations']=="1")
-                                                <td onclick="goto('/showproperties/{{ $val->edit_id }}')">{{$val->name}}</td>
+                                                <td onclick="goto('/showproperties/{{ $val->edit_id }}')">{{$val->Subassociation->name}}</td>
                                             @endif
-                                            <td onclick="goto('/showproperties/{{ $val->edit_id }}')"> @if($val->buildingId>0){{$buld[$val->buildingId]}}@endif </td>
+                                            <td onclick="goto('/properties/{{ $val->edit_id }}')"> @if($val->buildingId>0){{$val->Building->building}}@endif </td>
                                             <td onclick="goto('/showproperties/{{ $val->edit_id }}')">{{$val->aptNumber}}</td>
-                                            <td onclick="goto('/showproperties/{{ $val->edit_id }}')">@if(isset($owner[$val->id])) {{$owner[$val->id]}} @else N/A @endif</td>
-                                            <td onclick="goto('/showproperties/{{ $val->edit_id }}')">@if(isset($resident[$val->id])) {{$resident[$val->id]}} @else N/A @endif</td>
-                                            <td onclick="goto('/showproperties/{{ $val->edit_id }}')"> @if($val->status=="1")<span style="color: #13ce18">Current</span> @else <span style="color: #ff0000">Deliquent</span></i>@endif
-
+                                            <td onclick="goto('/properties/{{ $val->edit_id }}')">
+                                                @if(isset($val->Owner) && count($val->Owner) > 0)
+                                                    @foreach ($val->Owner as $index=>$item)
+                                                        @if($index != 0) 
+                                                        /
+                                                        @endif
+                                                        @if ($item->isCompany == 1)
+                                                            {{ $item->companyLegalName }}
+                                                        @else
+                                                        {{ $item->firstName . ' ' . $item->lastName}}
+                                                        @endif
+                                                    @endforeach
+                                                @else N/A @endif
                                             </td>
+                                            <td onclick="goto('/properties/{{ $val->edit_id }}')">
+                                                @if(isset($val->Resident) && count($val->Resident) > 0)
+                                                    @foreach ($val->Resident as $index=>$item)
+                                                        @if($index != 0) 
+                                                        /
+                                                        @endif
+                                                        {{ $item->firstName . ' ' . $item->lastName}}
+                                                    @endforeach
+                                                @else N/A @endif
+                                            </td>
+                                            <td onclick="goto('/showproperties/{{ $val->edit_id }}')"> @if($val->status=="1")<span style="color: #13ce18">Current</span> @else <span style="color: #ff0000">Deliquent</span></i>@endif</td>
                                             <td onclick="goto('/showproperties/{{ $val->edit_id }}')">@if(isset($resident[$val->id])) <i class="fas fa-dot-circle dot-green"></i> @else <i class="fas fa-dot-circle dot-red"></i>  @endif</td>
                                             <td class="action">
                                                 {{--<a href="/properties/{{ $val->edit_id }}/edit"><i class="fas fa-pencil-alt ms-text-primary"></i></a>--}}

@@ -9,4 +9,7 @@ class Subassociation extends Model
 {
     use HasFactory;
     protected $table="sub_associations";
+    public function Properties(){
+        return $this->hasMany('App\Models\Property', 'associationId');
+    }
 }

@@ -29,62 +29,30 @@ class PropertyController extends Controller
         }else{
             $filter['building'] = Building::where('status', 1)->get();
         }
-
-        $building = Building::where('status', 1)->get();
-        foreach ($building as $k => $v) {
-            $buld[$v->id] = $v->building;
-        }
-
-        $owners = Owner::where('status', 1)->get();
-        foreach ($owners as $k => $v) {
-            if ($v->isCompany == 1) {
-                if (isset($owner[$v->propertyId])) {
-                    $owner[$v->propertyId] = $owner[$v->propertyId] ." / ".$v->companyLegalName;
-                }else{
-                    $owner[$v->propertyId] = $v->companyLegalName;
-                }
-            } else {
-                if (isset($owner[$v->propertyId])) {
-                    $owner[$v->propertyId] = $owner[$v->propertyId] ." / ". $v->firstName . ' ' . $v->lastName;
-                } else {
-                    $owner[$v->propertyId] = $v->firstName . ' ' . $v->lastName;
-                }
-
-            }
-        }
-        $residents = Resident::where('status', 1)->get();
-        foreach ($residents as $k => $v) {
-            $resident[$v->propertyId] = $v->firstName . ' ' . $v->lastName;
-        }
-
-        $property = Property::leftjoin('sub_associations', 'sub_associations.id', '=', 'properties.associationId')
-            ->orderby('id', 'desc');
+        $property = Property::orderby('id', 'desc');
 
         //filter
         if (isset($_GET['status']) && !empty($_GET['status'])) {
             if ($_GET['status'] == 1) {
-                $property = $property->where('properties.status', 1);
+                $property = $property->where('status', 1);
             } elseif ($_GET['status'] == 2) {
-                $property = $property->where('properties.status', 0);
+                $property = $property->where('status', 0);
             }
         } else {
-            $property = $property->where('properties.status', 1);
+            $property = $property->where('status', 1);
         }
 
         if (isset($_GET['association']) && !empty($_GET['association'])) {
-            $property = $property->where('properties.associationId', $_GET['association']);
+            $property = $property->where('associationId', $_GET['association']);
         }
         if (isset($_GET['building']) && !empty($_GET['building'])) {
-            $property = $property->where('properties.buildingId', $_GET['building']);
+            $property = $property->where('buildingId', $_GET['building']);
         }
-
-        //filter
-        $property = $property->get(['properties.*', 'sub_associations.name']);
-
+        $property = $property->get();
         foreach ($property as $k => $v) {
             $property[$k]['edit_id'] = Crypt::encryptString($v->id);
         }
-        return view('admin.properties.properties.index', ['alldata' => $property, 'buld' => $buld, 'resident' => $resident, 'owner' => $owner, 'filter' => $filter]);
+        return view('admin.properties.properties.index', ['alldata' => $property, 'filter' => $filter]);
     }
 
     public function create()
@@ -185,77 +153,46 @@ class PropertyController extends Controller
     }
 
     public function owner_property()
-    {
+    { 
         $filter['association'] = Subassociation::where('status', 1)->get();
         if (isset($_GET['association']) && !empty($_GET['association'])) {
             $filter['building'] = Building::where('status', 1)->where('associationId',$_GET['association'])->get();
         }else{
             $filter['building'] = Building::where('status', 1)->get();
         }
-
-        $building = Building::where('status', 1)->get();
-        foreach ($building as $k => $v) {
-            $buld[$v->id] = $v->building;
-        }
-
-        $owners = Owner::where('status', 1)->get();
-        foreach ($owners as $k => $v) {
-            if ($v->isCompany == 1) {
-                if (isset($owner[$v->propertyId])) {
-                    $owner[$v->propertyId] = $owner[$v->propertyId] ." / ".$v->companyLegalName;
-                }else{
-                    $owner[$v->propertyId] = $v->companyLegalName;
-                }
-            } else {
-                if (isset($owner[$v->propertyId])) {
-                    $owner[$v->propertyId] = $owner[$v->propertyId] ." / ". $v->firstName . ' ' . $v->lastName;
-                } else {
-                    $owner[$v->propertyId] = $v->firstName . ' ' . $v->lastName;
-                }
-
-            }
-        }
-        $residents = Resident::where('status', 1)->get();
-        foreach ($residents as $k => $v) {
-            $resident[$v->propertyId] = $v->firstName . ' ' . $v->lastName;
-        }
-        $property = Property::leftjoin('sub_associations', 'sub_associations.id', '=', 'properties.associationId')
-            ->orderby('id', 'desc');
-
+        $property = Property::orderby('id', 'desc');
 
         //filter
         if (isset($_GET['status']) && !empty($_GET['status'])) {
             if ($_GET['status'] == 1) {
-                $property = $property->where('properties.status', 1);
+                $property = $property->where('status', 1);
             } elseif ($_GET['status'] == 2) {
-                $property = $property->where('properties.status', 0);
+                $property = $property->where('status', 0);
             }
         } else {
-            $property = $property->where('properties.status', 1);
+            $property = $property->where('status', 1);
         }
 
         if (isset($_GET['association']) && !empty($_GET['association'])) {
-            $property = $property->where('properties.associationId', $_GET['association']);
+            $property = $property->where('associationId', $_GET['association']);
         }
         if (isset($_GET['building']) && !empty($_GET['building'])) {
-            $property = $property->where('properties.buildingId', $_GET['building']);
+            $property = $property->where('buildingId', $_GET['building']);
         }
 
         //filter
-        $property = $property->get(['properties.*', 'sub_associations.name']);
+        $property = $property->get();
         foreach ($property as $k => $v) {
             $property[$k]['edit_id'] = Crypt::encryptString($v->id);
         }
 
-        return view('admin.properties.properties.owner-property', ['alldata' => $property, 'buld' => $buld, 'owner' => $owner, 'resident' => $resident, 'filter' => $filter]);
+        return view('admin.properties.properties.owner-property', ['alldata' => $property, 'filter' => $filter]);
     }
 
     public function show($id)
     {
         $id = Crypt::decryptString($id);
-        $property = Property::leftjoin('property_types', 'property_types.id', '=', 'properties.typeId')
-            ->where('properties.id', $id)
-            ->first(['properties.*', 'property_types.type']);
+        $property = Property::where('id', $id)->first();
         $building = Building::where('id', $property->buildingId)->first();
         if ($building) {
             $property['building'] = $building->building;
@@ -265,37 +202,19 @@ class PropertyController extends Controller
         $association = Subassociation::where('id', $property->associationId)->first();
         $property['sub_association'] = $association->name;
 
-        //owner
-        $owners = Owner::where('propertyId', $id)->get();
-
-        $residents = Resident::where('propertyId', $id)->get();
-
-        $guest = Guest::where('propertyId', $id)->get();
-
-        $pet = Pet::where('propertyId', $id)->get();
-
-        //owner
-        $pettypes = Pettype::get();
-        $owner = array();
-        $pettype = array();
-        foreach ($pettypes as $p) {
-            $pettype[$p->id] = $p->petType;
+        foreach ($property->Owner as $k => $p) {
+            $property->Owner[$k]['owner_id'] = Crypt::encryptString($p->id);
         }
-        foreach ($owners as $k => $p) {
-            $owner[$p->id] = $p->firstName . " " . $p->lastName;
-            $owners[$k]['owner_id'] = Crypt::encryptString($p->id);;
+        foreach ($property->Resident as $k => $p) {
+            $property->Resident[$k]['owner_id'] = Crypt::encryptString($p->ownerId);;
         }
-        foreach ($residents as $k => $p) {
-            $residents[$k]['owner_id'] = Crypt::encryptString($p->ownerId);;
+        foreach ($property->Guest as $k => $p) {
+            $property->Guest[$k]['owner_id'] = Crypt::encryptString($p->ownerId);;
         }
-        foreach ($guest as $k => $p) {
-            $guest[$k]['owner_id'] = Crypt::encryptString($p->ownerId);;
-        }
-        foreach ($pet as $k => $p) {
-            $pet[$k]['owner_id'] = Crypt::encryptString($p->ownerId);;
+        foreach ($property->Pet as $k => $p) {
+            $property->Pet[$k]['owner_id'] = Crypt::encryptString($p->ownerId);;
         }
 
-
-        return view('admin.properties.properties.show', ["property" => $property, 'owners' => $owners, 'owner' => $owner, 'pet' => $pet, 'guest' => $guest, 'residents' => $residents, 'pettype' => $pettype]);
+        return view('admin.properties.properties.show', ["property" => $property]);
     }
 }
