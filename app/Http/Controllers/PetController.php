@@ -25,7 +25,7 @@ class PetController extends Controller
         $pettypes = Pettype::get();
         $owners = Owner::get();
         foreach ($properties as $p) {
-            $property[$p->id] = $p->id;
+            $property[$p->id] = $p->Building ? $p->Building->building : $p->id;
         }
         foreach ($pettypes as $p) {
             $pettype[$p->id] = $p->petType;
