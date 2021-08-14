@@ -2,7 +2,7 @@
 @section('title', 'Incident')
 @section('content')
     <style>
-        /* @if($data ?? '')
+        @if($data ?? '')
             @if($data->individual==1)
                 .individual_group {
                     display: block
@@ -27,7 +27,7 @@
             .individual_group, .police, .individual_group2 {
                 display: none
             }
-        @endif */
+        @endif
     </style>
     <div class="ms-content-wrapper">
         <div class="row">
