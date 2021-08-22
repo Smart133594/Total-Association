@@ -50,7 +50,7 @@
                 </div>
                 <div style="width: 180px" class="mb-3">
                     <label for="status">Worker</label>
-                    <select name="workerid" id="workerid" class="form-control">
+                    <select name="workerid" id="workerid" class="form-control" required>
                         @if (_OBJVALUE($department, "Workers"))
                             @foreach (_OBJVALUE($department, "Workers") as $worker)
                             <option value="{{ $worker->id }}"  {{ _OBJVALUE($departmentTask, 'workerid') == $worker->id ? 'selected' : '' }}>{{     $worker->firstname }} {{ $worker->middlename }} {{ $worker->lastname }}</option>

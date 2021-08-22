@@ -202,7 +202,7 @@
                     @if (_OBJVALUE($worker, "avatar"))
                     <img src="/upload/{{ _OBJVALUE($worker, 'avatar') }}" alt="Photo" style="width: 100%; height:100%; object-fit:cover">
                     @else
-                        <h5 class="vertical-center">avatar</h5>
+                        <div class="vertical-center">avatar</div>
                     @endif
                 </div>
                 <input type="file" id="choose-avatar" name="choose-avatar" accept="image/*" />
