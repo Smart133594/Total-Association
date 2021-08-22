@@ -51,14 +51,14 @@ class DepartmentController extends Controller
     {
         //
         $departmentid = $request->departmentid;
-        $departmentTaskid = intval($request->departmentTaskid);
+        $departmentTaskid = $request->departmentTaskid;
         $departmentid = Crypt::decryptString($departmentid);
-        $departmentTaskid = Crypt::decryptString($departmentTaskid);
         $workerid = $request->workerid;
         if(!$workerid) {
             $workerid = 0; 
         }
-        if($departmentTaskid > 0) {
+        if($departmentTaskid) {
+            $departmentTaskid = Crypt::decryptString($departmentTaskid);
             DepartmentTask::where('id', $departmentTaskid)
                 ->update([
                     'workerid' => $workerid, 

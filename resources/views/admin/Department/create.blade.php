@@ -34,7 +34,7 @@
                 @include('admin.includes.msg')
                 @csrf
                 <input type="hidden" name="departmentid" value="{{ _OBJVALUE($department, 'edit_id') }}">
-                <input type="hidden" name="departmentTaskid" value="{{ _OBJVALUE($department, 'edit_id') }}">
+                <input type="hidden" name="departmentTaskid" value="{{ _OBJVALUE($departmentTask, 'edit_id') }}">
                 <h5>Add/Edut Task</h5>
                 <div class="mb-3">
                     <label for="task">Task</label>
