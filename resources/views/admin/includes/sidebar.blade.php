@@ -59,6 +59,17 @@
                </ul>
             </li>
             <li class="menu-item">
+              <a href="#" class="has-chevron" data-toggle="collapse" data-target="#employers" aria-expanded="false" aria-controls="report">
+              <span><i class="fas fa-laptop"></i>Employers</span>
+              </a>
+              <ul id="employers" class="collapse" aria-labelledby="report" data-parent="#side-nav-accordion">
+                 <li> <a href="{{route('work-force.index')}}"  class="work-force">Work Force</a> </li>
+                 <li> <a href="{{route('punch-clock.index')}}"  class="punch-clock ">Punch Clock </a> </li>
+                 <li> <a href="{{route('department.index')}}"  class="department">To Do List (Per Department)</a> </li>
+                 <li> <a href="{{route('work-log.index')}}"  class="work-log">Work Log</a> </li>
+              </ul>
+            </li>
+            <li class="menu-item">
                <a href="#" class="has-chevron" data-toggle="collapse" data-target="#FinesAndViolations" aria-expanded="false" aria-controls="report">
                <span><i class="material-icons fs-16">assignment_late</i>Fines and Violations</span>
                </a>
@@ -67,17 +78,6 @@
                   <li> <a href="{{ route('fines.index') }}" class="fines">Fines</a></li>
                </ul>
             </li>
-            <!-- /Fines and Violations -->
-{{-- 
-            <!-- Incidents -->
-            <li class="menu-item">
-               <a href="#" class="has-chevron" data-toggle="collapse" data-target="#Incidents" aria-expanded="false" aria-controls="report">
-               <span><i class="fas fa-exclamation-triangle"></i>Incidents</span>
-               </a>
-               <ul id="Incidents" class="collapse" aria-labelledby="report" data-parent="#side-nav-accordion">
-                  <li> <a href="{{ route('incident.index') }}" class="incident">Incidents Log</a></li>
-               </ul>
-            </li> --}}
                 <li class="menu-item">
                     <a href="#" class="has-chevron" data-toggle="collapse" data-target="#FacilitiesRental" aria-expanded="false" aria-controls="report">
                         <span><i class="fas fa-building"></i>Facilities Rental</span>
@@ -119,18 +119,6 @@
                         <li> <a href="{{ route('facilities-type.index')}}" class="facilities-type">Facilities Type</a> </li>
                     </ul>
                   </li>
-                  {{-- <li> <a href="#">Associationse</a> </li>
-                  <li> <a href="#">Management</a> </li>
-                  <li class="menu-item">
-                     <a href="#" class="has-chevron" data-toggle="collapse" data-target="#Apps2" aria-expanded="false" aria-controls="authentication">Apps</a>
-                     <ul id="Apps2" class="collapse" aria-labelledby="authentication" data-parent="#SettingsLast">
-                        <li> <a href="#">End User</a> </li>
-                        <li> <a href="#">Security</a> </li>
-                        <li> <a href="#">Front Desk</a> </li>
-                     </ul>
-                  </li>
-                  <li> <a href="#">System Maintenance</a> </li>
-                  <li> <a href="#">Error Log</a> </li> --}}
                   @if($setting['is_pat_allowd']=="1")
                     <li class="menu-item">
                         <a href="#" class="has-chevron" data-toggle="collapse" data-target="#pets" aria-expanded="false" aria-controls="authentication">Pets</a>

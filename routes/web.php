@@ -25,7 +25,10 @@ use App\Http\Controllers\FinesController;
 use App\Http\Controllers\FacilitiesfeeController;
 use App\Http\Controllers\FacilitiestypeController;
 use App\Http\Controllers\facilitiesController;
-
+use App\Http\Controllers\WorkForceController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\WorkLogController;
+use App\Http\Controllers\PunchClockController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -72,8 +75,12 @@ Route::middleware([CheckAdminLogin::class])->group(function () {
     Route::Resource('fines', FinesController::class);
     Route::Resource('facilities-type', FacilitiestypeController::class);
     Route::Resource('facilities', facilitiesController::class);
-
-
+    // employeers
+    Route::resource('work-force', WorkForceController::class);
+    Route::resource('department', DepartmentController::class);
+    Route::resource('work-log', WorkLogController::class);
+    Route::resource('punch-clock', PunchClockController::class);
+    Route::post('/exportPunchClock', [PunchClockController::class, 'exportTimeSheet']);
     /*facilities*/
     Route::get('/facilities-rental/{id}', [facilitiesController::class, 'show']);
     Route::get('/facilities-rental/', [FacilitiesController::class, 'index'])->name('facilities-rental');

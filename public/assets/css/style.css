@@ -4252,6 +4252,7 @@ a .badge[class*='badge-outline-'] {
   background-color: #fff;
   -webkit-transition: 0.3s;
   transition: 0.3s;
+  opacity: .8;
 }
 
 #preloader-wrap.loaded {

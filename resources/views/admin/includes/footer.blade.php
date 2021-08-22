@@ -100,7 +100,7 @@
 
 
     let phoneNo = document.getElementById('phoneNo');
-    phoneNo.addEventListener('keydown', (event) => {
+    phoneNo?.addEventListener('keydown', (event) => {
         var regex = new RegExp("^[0-9-a-z!@#$%*?]");
         var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
         //  console.log("|"+key+"|");
@@ -111,7 +111,7 @@
     });
 
     let whatsapp = document.getElementById('whatsapp');
-    whatsapp.addEventListener('keydown', (event) => {
+    whatsapp?.addEventListener('keydown', (event) => {
         var regex = new RegExp("^[0-9-a-z!@#$%*?]");
         var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
         if (!regex.test(key) && key != " " && key != "\t" && key != '`' && key != '\b' && key != '.') {
@@ -121,7 +121,7 @@
     });
 
     let fax = document.getElementById('fax');
-    fax.addEventListener('keydown', (event) => {
+    fax?.addEventListener('keydown', (event) => {
         var regex = new RegExp("^[0-9-a-z!@#$%*?]");
         var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
         if (!regex.test(key) && key != " " && key != "\t" && key != '`' && key != '\b' && key != '.') {
