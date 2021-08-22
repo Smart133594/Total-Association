@@ -141,8 +141,13 @@ class DepartmentController extends Controller
      */
     public function destroy($id)
     {
-        //
         $id = Crypt::decryptString($id);
-        dd($id);
+        $delete = DepartmentTask::where('id', $id)->delete();
+        if($delete){
+            session()->flash('error', "Deleted Successfully.");
+        }else{
+            session()->flash('error', "Something went wrong.");
+        }
+        return redirect()->back();
     }
 }
