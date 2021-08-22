@@ -51,7 +51,7 @@ class DepartmentController extends Controller
     {
         //
         $departmentid = $request->departmentid;
-        $departmentTaskid = $request->departmentTaskid;
+        $departmentTaskid = intval($request->departmentTaskid);
         $departmentid = Crypt::decryptString($departmentid);
         $departmentTaskid = Crypt::decryptString($departmentTaskid);
         $workerid = $request->workerid;
@@ -59,12 +59,16 @@ class DepartmentController extends Controller
             $workerid = 0; 
         }
         if($departmentTaskid > 0) {
-            DepartmentTask::find($departmentTaskid)
-            ->update($request->merge([
-                'workerid' => $workerid, 
-                'departmentid' => $departmentid, 
-                'state' => $request->status
-                ])->all());
+            DepartmentTask::where('id', $departmentTaskid)
+                ->update([
+                    'workerid' => $workerid, 
+                    'departmentid' => $departmentid, 
+                    'state' => $request->status,
+                    'task' => $request->task,
+                    'date' => $request->date,
+                    'priority' => $request->priority,
+                    'description' => $request->description,
+                ]);
         }else{
             $departmentTaskid = DepartmentTask::create($request->merge([
                 'workerid' => $workerid,
