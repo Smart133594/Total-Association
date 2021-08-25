@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class PunchClock extends Model
 {
     use HasFactory;
-    protected $fillable = ['workerid', 'in_date', 'out_date', 'note'];
+    protected $fillable = ['workerid', 'in_date', 'out_date', 'note', 'state', 'association', 'lat', 'lng'];
 }

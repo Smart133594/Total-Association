@@ -7777,10 +7777,10 @@ body.ms-dark-theme, .ms-dark-theme a,
     top: auto;
   }
 
-  .ms-auth-bg,
+  /* .ms-auth-bg,
   .ms-auth-col:first-child {
     display: none;
-  }
+  } */
 
   .ms-content-wrapper.ms-auth {
     min-height: 100vh;

@@ -64,7 +64,7 @@
                 <div class="ms-panel-custome mb-3">
                     <h5> Punch clock</h5>
                     <div class="m-0 p-0">
-                        {{-- <button class="btn btn-primary btn-sm m-0" onclick="openModal()">Add time entity</button> --}}
+                        <button class="btn btn-primary btn-sm m-0" onclick="openModal()">Add time entity</button>
                         <button class="btn btn-primary btn-sm m-0" data-toggle="modal" data-target="#time_sheet">Export Time Sheet</button>
                     </div>
                 </div>
@@ -86,8 +86,8 @@
                                 <td>{{ $index+1 }}</td>
                                 <td>{{ date('d/m/Y', strtotime($item->in_date)) }}</td>
                                 <td>{{ date('h:i', strtotime($item->in_date)) }}</td>
-                                <td>{{ $item->out_date ? date('d/m/Y', strtotime($item->out_date)) : '-' }}</td>
-                                <td>{{ $item->out_date ? date('h:i', strtotime($item->out_date)) : '-' }}</td>
+                                <td>{{ date('d/m/Y', strtotime($item->out_date)) }}</td>
+                                <td>{{ date('h:i', strtotime($item->out_date)) }}</td>
                                 <td>{{ $item->duration }}</td>
                                 <td>
                                     <div class="dropdown show">
@@ -95,7 +95,7 @@
                                             <i class="fas fa-th"></i>
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            {{-- <div class="dropdown-item" href="#" onclick="openModal({{ $item }})" >Edit</div> --}}
+                                            <div class="dropdown-item" href="#" onclick="openModal({{ $item }})" >Edit</div>
                                             <form action="{{ route('punch-clock.destroy', $item->id) }}" method="post">
                                                 @method("delete")
                                                 @csrf

@@ -33,16 +33,20 @@ class PunchClockController extends Controller
         $total_duration = 0;
         $time = '';
         foreach ($punchClock as $key => $value) {
-            $duration = strtotime($value->out_date) - strtotime($value->in_date);
+            if($value->out_date) {
+                $duration = strtotime($value->out_date) - strtotime($value->in_date);
 
-            $total_duration += $duration;
-
-            $hours = intval($duration/3600);
-            $duration=$duration%3600;
-            $mins = intval($duration/60);
-            $times = ($hours < 10 ? 0 : '').$hours.':'.($mins < 10 ? 0 : '').$mins;
-
-            $punchClock[$key]['duration'] = $times;
+                $total_duration += $duration;
+    
+                $hours = intval($duration/3600);
+                $duration=$duration%3600;
+                $mins = intval($duration/60);
+                $times = ($hours < 10 ? 0 : '').$hours.':'.($mins < 10 ? 0 : '').$mins;
+    
+                $punchClock[$key]['duration'] = $times;
+            }else{
+                $punchClock[$key]['duration'] = "Current Clocked In";
+            }
         }
 
 
@@ -58,7 +62,7 @@ class PunchClockController extends Controller
         $userid = $request->userid;
         $pay_period_to = $request->pay_period_to;
         $decimal_total = $request->decimal_total;
-        $time_format = $request->time_format;
+        $time_24_format = $request->time_24_format;
 
 
         $punchClock = PunchClock::where('workerid', $userid);
@@ -73,17 +77,28 @@ class PunchClockController extends Controller
         foreach ($punchClock as $key => $value) {
             $index = $key+1;
            
-            
+            $string_format = "h:i";
+            if($time_24_format) {
+                $string_format = "h:i a";
+            }
             $clocked_in_dt = date('d/m/Y', strtotime($value->in_date));
-            $clocked_in_time = date('h:i', strtotime($value->in_date));
-            $clocked_out_dt = date('d/m/Y', strtotime($value->out_date));
-            $clocked_out_time = date('h:i', strtotime($value->out_date));
+            $clocked_in_time = date($string_format, strtotime($value->in_date));
+            $clocked_out_dt = $value->out_date ? date('d/m/Y', strtotime($value->out_date)) : '-';
+            $clocked_out_time = $value->out_date ? date($string_format, strtotime($value->out_date)) : '-';
 
-            $duration = strtotime($value->out_date) - strtotime($value->in_date);
-            $hours = intval($duration/3600);
-            $duration=$duration%3600;
-            $mins = intval($duration/60);
-            $times = ($hours < 10 ? 0 : '').$hours.':'.($mins < 10 ? 0 : '').$mins;
+            if($value->out_date){
+                $duration = strtotime($value->out_date) - strtotime($value->in_date);
+                $hours = intval($duration/3600);
+                $duration=$duration%3600;
+                $mins = intval($duration/60);
+                if($decimal_total){
+                    $times = ($hours < 10 ? 0 : '').$hours.':'.($mins < 10 ? 0 : '').$mins;
+                }else{
+                    $times = "$hours hour".($hours>1 ? "s" :"")." $mins minute".($mins > 1) ? "s" : "";
+                }
+            }else{
+                $times = "Clocked In";
+            }
 
             $result .= "<tr>
                             <td>$index</td>
