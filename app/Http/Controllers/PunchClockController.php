@@ -23,11 +23,16 @@ class PunchClockController extends Controller
         }
         if(isset($request->pay_from)){
             $pay_from = $request->pay_from;
-            $punchClock = $punchClock->where('in_date', '>=', $pay_from);
+            $punchClock = $punchClock->where(function ($query)  use ($pay_from){
+                $query->where('in_date', '>=', $pay_from)->orWhere('in_date', null);
+            });
         }
         if(isset($request->pay_to)){
             $pay_to = $request->pay_to;
-            $punchClock = $punchClock->where('out_date', '<=', $pay_to);
+            $punchClock = $punchClock->where(function ($query) use ($pay_to) {
+                $query->where('out_date', '<=', $pay_to)->orWhere('out_date', null);
+            });
+            // $punchClock = $punchClock->where('out_date', '<=', $pay_to);
         }
         $punchClock = $punchClock->get();
         $total_duration = 0;

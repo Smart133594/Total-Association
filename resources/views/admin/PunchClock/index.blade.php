@@ -265,7 +265,7 @@
         if(!userid){
             toastr.warning('Please choose employeer.', 'Warning');
         }
-        if(!pay_period_from || !pay_period_to || to_date.getTime() < from_date.getTime()){
+        if(pay_period_from && pay_period_to && to_date.getTime() < from_date.getTime()){
             toastr.warning('Input the valid from time and to time.', 'Warning');
             return;
         }

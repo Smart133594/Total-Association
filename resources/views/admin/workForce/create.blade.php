@@ -55,7 +55,7 @@
         </ol>
     </nav>
 
-    <form class="ms-panel main-form" method="post" action="{{route('work-force.store')}}" enctype="multipart/form-data">
+    <form class="ms-panel main-form" id="work_force_form" method="post" action="{{route('work-force.store')}}" enctype="multipart/form-data">
         <div class="ms-panel-header ms-panel-custome">
             <h4>Worker Add/Edit</h4>
         </div>
@@ -250,15 +250,15 @@
                 </div>
                 <div class="col-md-3">
                     <label for="punch_clock_code">Punch Clock Code</label>
-                    <input type="text" name="punch_clock_code" id="punch_clock_code" class="form-control" value="{{ _OBJVALUE($worker, 'access_control_device') }}">
+                    <input type="number" name="punch_clock_code" id="punch_clock_code" class="form-control" value="{{ _OBJVALUE($worker, 'punch_clock_code') }}">
                 </div>
                 <div class="col-md-3">
                     <label for="employee_pwd">Employee App Password</label>
-                    <input type="password" name="employee_pwd" id="employee_pwd" class="form-control" >
+                    <input type="password" name="employee_pwd" id="employee_pwd" class="form-control" value="{{ _OBJVALUE($worker, 'employee_pwd') }}" >
                 </div>
                 <div class="col-md-3">
                     <label for="manage_pwd">Management Software Password</label>
-                    <input type="password" name="manage_pwd" id="manage_pwd" class="form-control" >
+                    <input type="password" name="manage_pwd" id="manage_pwd" class="form-control" value="{{ _OBJVALUE($worker, 'manage_pwd') }}" >
                 </div>
             </div>
             <hr />
@@ -297,6 +297,15 @@
 </div>
 <script>
     const init_date = '{{ _OBJVALUE($worker, 'date') }}';
+
+    $("#work_force_form").submit(e => {
+        const code = $("#punch_clock_code").val();
+        if(`${code}`.length != 6){
+            toastr.warning('Punch clock code must be 6 letters digital.', 'Warning');
+            e.preventDefault();
+        }
+    });
+
     function changeDate(init_val = 0) {
         const year = $("#year").val();
         const month = $("#month").val();
