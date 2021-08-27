@@ -53,13 +53,15 @@ class BaseController extends Controller
         $association = $request->association;
         $now = $request->date;
         // $now = date("Y-m-d h:i:s", time());
+        $type = 0;
         if($state == 0){
+            $type = 1;
             PunchClock::where('id', $id)->update(['out_date' => $now, 'state' => 1]);
         }else{
             $id = PunchClock::create(['workerid' => $workerid, 'association' => $association, 'in_date' => $now, 'state' => 0])->id;
         }
 
-        PunchClockMeta::create($request->merge(['punchclockid'=> $id, 'state' => $state])->all());
+        PunchClockMeta::create($request->merge(['punchclockid'=> $id, 'type' => $type])->all());
 
         return response()->json(['success'=>true], 200);
     }
