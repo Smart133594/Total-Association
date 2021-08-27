@@ -273,5 +273,12 @@ class PunchClockController extends Controller
     public function destroy(PunchClock $punchClock)
     {
         //
+        $delete = $punchClock->delete();
+        if($delete){
+            session()->flash('error', "Deleted Successfully.");
+        }else{
+            session()->flash('error', "Something went wrong.");
+        }
+        return redirect()->back();
     }
 }
