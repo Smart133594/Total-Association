@@ -61,12 +61,12 @@
             </div>
         </div>
     </div>
-<script>
-    $(document).ready(function() {
-        $('.data-table').DataTable();
-    });
-    function goto(url) {
-        window.location.href = url;
-    }
-</script>
+    <script>
+        $(document).ready(function() {
+            $('.data-table').DataTable();
+        });
+        function goto(url) {
+            window.location.href = url;
+        }
+    </script>
 @endsection

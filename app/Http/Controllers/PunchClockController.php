@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PunchClock;
 use App\Models\WorkForce;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class PunchClockController extends Controller
 {
@@ -59,7 +60,10 @@ class PunchClockController extends Controller
         $total_duration=$total_duration%3600;
         $mins = intval($total_duration/60);
         $times = ($hours < 10 ? 0 : '').$hours.':'.($mins < 10 ? 0 : '').$mins;
-
+       
+        foreach ($punchClock as $key => $value) {
+            $punchClock[$key]['edit_id'] = Crypt::encryptString($value->id);
+        }
         return view('admin.PunchClock.index', compact('workers', 'punchClock', 'times'));
     }
     public function exportTimeSheet(Request $request)
@@ -104,31 +108,64 @@ class PunchClockController extends Controller
             }else{
                 $times = "Clocked In";
             }
+            
+            $meta = $value->PunchClockMeta();
+            $worker = $value->Worker;
+            if($worker == null ) {
+                $worker = ['firstname' => '', 'lastname' => '', 'middlename' => '', 'birthday' => ''];
+            }
+            $in_meta = $meta['in_meta'];
+            $out_meta = $meta['out_meta'];
 
             $result .= "<tr>
                             <td>$index</td>
+                            <td>$worker->firstname $worker->middlename $worker->lastname</td>
+                            <td>$worker->birthday</td>
                             <td>$clocked_in_dt</td>
                             <td>$clocked_in_time</td>
+                        ". ($in_meta == null ? "<td/><td/><td/>" : 
+                        "
+                            <td>($in_meta->latitude, $in_meta->longitude)</td>
+                            <td>$in_meta->country $in_meta->area $in_meta->city</td>
+                            <td>$in_meta->postal_code</td>
+                        ")."
                             <td>$clocked_out_dt</td>
                             <td>$clocked_out_time</td>
                             <td>$times</td>
+                        ". ($out_meta == null ? "<td/><td/><td/>" : 
+                        "
+                            <td>($out_meta->latitude, $out_meta->longitude)</td>
+                            <td>$out_meta->country $out_meta->area $out_meta->city</td>
+                            <td>$out_meta->postal_code</td>
+                        ")."
                         </tr>";
         }
         $result = " <table>
                         <thead>
                             <tr>
-                                <td>No</td>
-                                <td>Clocked In Date</td>
-                                <td>Clocked In Time</td>
-                                <td>Clocked Out Date</td>
-                                <td>Clocked Out Time</td>
-                                <td>Total</td>
+                                <td rowspan='2'>No</td>
+                                <td rowspan='2'>Worker Name</td>
+                                <td rowspan='2'>Worker birthday</td>
+                                <td colspan='5'>Clocked In</td>
+                                <td colspan='5'>Clocked Out</td>
+                                <td rowspan='2'>Total</td>
+                            </tr>
+                            <tr>
+                                <td>Date</td>
+                                <td>Time</td>
+                                <td>latitude, longitude</td>
+                                <td>country area city </td>
+                                <td>postal code</td>
+                                <td>Date</td>
+                                <td>Time</td>
+                                <td>latitude, longitude</td>
+                                <td>country area city </td>
+                                <td>postal code</td>
                             </tr>
                         </thead>
                         <tbody>$result</tbody>
                     </table>";
-
-                    return $result;
+        return $result;
     }
 
     /**
@@ -177,9 +214,31 @@ class PunchClockController extends Controller
      * @param  \App\Models\PunchClock  $punchClock
      * @return \Illuminate\Http\Response
      */
-    public function show(PunchClock $punchClock)
+    public function show($id)
     {
         //
+        $id = Crypt::decryptString($id);
+        
+        //
+        $punchClock = PunchClock::where('id', $id)->first();
+
+        if($punchClock->out_date) {
+            $duration = strtotime($punchClock->out_date) - strtotime($punchClock->in_date);
+
+            $hours = intval($duration/3600);
+            $duration=$duration%3600;
+            $mins = intval($duration/60);
+            $times = ($hours < 10 ? 0 : '').$hours.':'.($mins < 10 ? 0 : '').$mins;
+
+            $punchClock['duration'] = $times;
+        }else{
+            $punchClock['duration'] = "Current Clocked In";
+        }
+
+        $meta = $punchClock->PunchClockMeta();
+        $punchClock->in_meta = $meta['in_meta'];
+        $punchClock->out_meta = $meta['out_meta'];
+        return view('admin.PunchClock.detail', compact('punchClock'));
     }
 
     /**

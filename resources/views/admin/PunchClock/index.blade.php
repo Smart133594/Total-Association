@@ -82,20 +82,22 @@
                     </thead>
                     <tbody>
                         @foreach ($punchClock as $index => $item)
+                            <?php $detail_uri = '/punch-clock/'.$item->edit_id ?>
                             <tr>
-                                <td>{{ $index+1 }}</td>
-                                <td>{{ date('d/m/Y', strtotime($item->in_date)) }}</td>
-                                <td>{{ date('h:i', strtotime($item->in_date)) }}</td>
-                                <td>{{ $item->out_date ? date('d/m/Y', strtotime($item->out_date)) : '-' }}</td>
-                                <td>{{ $item->out_date ? date('h:i', strtotime($item->out_date)) : '-' }}</td>
-                                <td>{{ $item->duration }}</td>
+                                <td onclick="goto('{{ $detail_uri }}')">{{ $index+1 }}</td>
+                                <td onclick="goto('{{ $detail_uri }}')">{{ date('d/m/Y', strtotime($item->in_date)) }}</td>
+                                <td onclick="goto('{{ $detail_uri }}')">{{ date('h:i', strtotime($item->in_date)) }}</td>
+                                <td onclick="goto('{{ $detail_uri }}')">{{ $item->out_date ? date('d/m/Y', strtotime($item->out_date)) : '-' }}</td>
+                                <td onclick="goto('{{ $detail_uri }}')">{{ $item->out_date ? date('h:i', strtotime($item->out_date)) : '-' }}</td>
+                                <td onclick="goto('{{ $detail_uri }}')">{{ $item->duration }}</td>
                                 <td>
                                     <div class="dropdown show">
                                         <a class="cust-btn dropdown-toggle note-action" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="fas fa-th"></i>
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            {{-- <div class="dropdown-item" href="#" onclick="openModal({{ $item }})" >Edit</div> --}}
+                                            <a class="dropdown-item" href="{{ $detail_uri }}" >Detail</a>
+                                            {{-- <a class="dropdown-item" href="#" onclick="openModal({{ $item }})" >Edit</a> --}}
                                             <form action="{{ route('punch-clock.destroy', $item->id) }}" method="post">
                                                 @method("delete")
                                                 @csrf
@@ -116,105 +118,105 @@
 
 
 
-    <!-- Modal -->
-    <div class="modal fade" id="log_modal" tabindex="-1" role="dialog" aria-labelledby="log_modal_label" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <form method="post" id="log_form" enctype="multipart/form-data" action="{{route('punch-clock.store')}}">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="log_modal_label">Add Time Entry</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+<!-- Modal -->
+<div class="modal fade" id="log_modal" tabindex="-1" role="dialog" aria-labelledby="log_modal_label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="post" id="log_form" enctype="multipart/form-data" action="{{route('punch-clock.store')}}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="log_modal_label">Add Time Entry</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @csrf
+                <input type="hidden" name="employee" id="employee">
+                <input type="hidden" name="editid" id="editid">
+                <div class="modal-body form-row mt-3">
+                    <div class="col-md-6 mb-4">
+                        <label for="add_time_from">Pay from</label>
+                        <input type="datetime-local" name="add_time_from" id="add_time_from" class="form-control" required>
                     </div>
-                    @csrf
-                    <input type="hidden" name="employee" id="employee">
-                    <input type="hidden" name="editid" id="editid">
-                    <div class="modal-body form-row mt-3">
-                        <div class="col-md-6 mb-4">
-                            <label for="add_time_from">Pay from</label>
-                            <input type="datetime-local" name="add_time_from" id="add_time_from" class="form-control" required>
+                    <div class="col-md-6">
+                        <label for="add_time_to">Pay to</label>
+                        <input type="datetime-local" name="add_time_to" id="add_time_to" class="form-control" required>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <textarea name="add_time_note" id="add_time_note" rows="5" class="form-control" placeholder="Note" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" value="Save Log" class="btn btn-success">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- export time sheet -->
+<div class="modal fade" id="time_sheet" tabindex="-1" role="dialog" aria-labelledby="time_sheet_label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="time_sheet_label">Export Time Sheet</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                <div class="modal-body mt-3">
+                    <ul class="ms-list d-flex">
+                        <li class="ms-list-item pl-0">
+                            <label class="ms-checkbox-wrap">
+                                <input type="radio" name="worker_type" value="employee" >
+                                <i class="ms-checkbox-check"></i>
+                            </label>
+                            <span> Employee </span>
+                        </li>
+                        <li class="ms-list-item">
+                            <label class="ms-checkbox-wrap">
+                                <input type="radio" name="worker_type" value="all" checked="">
+                                <i class="ms-checkbox-check"></i>
+                            </label>
+                            <span> All </span>
+                        </li>
+                    </ul>
+                    <select name="export_user" id="export_user" class="form-control mb-3">
+                    </select>
+                    <label for="">pay Period</label>
+                    <div class="form-row mb-3">
+                        <div class="col-md-6">
+                            <input type="date" name="pay_period_from" id="pay_period_from" class="form-control">
                         </div>
                         <div class="col-md-6">
-                            <label for="add_time_to">Pay to</label>
-                            <input type="datetime-local" name="add_time_to" id="add_time_to" class="form-control" required>
-                        </div>
-                        <div class="col-md-12 mb-3">
-                            <textarea name="add_time_note" id="add_time_note" rows="5" class="form-control" placeholder="Note" required></textarea>
+                            <input type="date" name="pay_period_to" id="pay_period_to" class="form-control">
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <input type="submit" value="Save Log" class="btn btn-success">
+                    <div class="mb-3">
+                        <label class="ms-checkbox-wrap">
+                            <input type="checkbox" name="decimal_total" id="decimal_total" checked>
+                            <i class="ms-checkbox-check"></i>
+                        </label>
+                        <span> Total In Decimal format </span>
                     </div>
-                </form>
-            </div>
+                    <div class="mb-3">
+                        <label class="ms-checkbox-wrap">
+                            <input type="checkbox" name="time_24_format" id="time_24_format" checked>
+                            <i class="ms-checkbox-check"></i>
+                        </label>
+                        <span> Time in 24 hour format. </span>
+                    </div>
+                </div>
+                <div class="modal-footer mb-3">
+                    <input type="button" value="Export Time Sheets" class="btn btn-primary" onclick="exprtSheet()">
+                </div>
+            </form>
         </div>
     </div>
-
-
-    
-    <!-- export time sheet -->
-    <div class="modal fade" id="time_sheet" tabindex="-1" role="dialog" aria-labelledby="time_sheet_label" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="time_sheet_label">Export Time Sheet</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                  
-                    <div class="modal-body mt-3">
-                        <ul class="ms-list d-flex">
-                            <li class="ms-list-item pl-0">
-                                <label class="ms-checkbox-wrap">
-                                    <input type="radio" name="worker_type" value="employee" >
-                                    <i class="ms-checkbox-check"></i>
-                                </label>
-                                <span> Employee </span>
-                            </li>
-                            <li class="ms-list-item">
-                                <label class="ms-checkbox-wrap">
-                                    <input type="radio" name="worker_type" value="all" checked="">
-                                    <i class="ms-checkbox-check"></i>
-                                </label>
-                                <span> All </span>
-                            </li>
-                        </ul>
-                        <select name="export_user" id="export_user" class="form-control mb-3">
-                        </select>
-                        <label for="">pay Period</label>
-                        <div class="form-row mb-3">
-                            <div class="col-md-6">
-                                <input type="date" name="pay_period_from" id="pay_period_from" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <input type="date" name="pay_period_to" id="pay_period_to" class="form-control">
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="ms-checkbox-wrap">
-                                <input type="checkbox" name="decimal_total" id="decimal_total" checked>
-                                <i class="ms-checkbox-check"></i>
-                            </label>
-                            <span> Total In Decimal format </span>
-                        </div>
-                        <div class="mb-3">
-                            <label class="ms-checkbox-wrap">
-                                <input type="checkbox" name="time_24_format" id="time_24_format" checked>
-                                <i class="ms-checkbox-check"></i>
-                            </label>
-                            <span> Time in 24 hour format. </span>
-                        </div>
-                    </div>
-                    <div class="modal-footer mb-3">
-                        <input type="button" value="Export Time Sheets" class="btn btn-primary" onclick="exprtSheet()">
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div id="export_table" style="display: none"></div>
-    </div>
+    <div id="export_table" style="display: none"></div>
+</div>
 
 <script>
     const workers = JSON.parse(`<?php echo json_encode($workers)?>`);
@@ -349,6 +351,10 @@
         $("#add_time_note").val(add_time_note);
         $("#editid").val(editid);
         $("#log_modal").modal('show');
+    }
+    // -----------
+    function goto(url) {
+        window.location.href = url;
     }
 </script>
 @endsection

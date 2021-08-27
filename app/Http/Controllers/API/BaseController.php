@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Models\WorkForce;
 use App\Models\PunchClock;
-use App\Models\PunchClockLocation;
+use App\Models\PunchClockMeta;
 
 class BaseController extends Controller
 {
@@ -59,8 +59,13 @@ class BaseController extends Controller
             $id = PunchClock::create(['workerid' => $workerid, 'association' => $association, 'in_date' => $now, 'state' => 0])->id;
         }
 
-        PunchClockLocation::create($request->merge(['punchclockid'=> $id, 'state' => $state])->all());
+        PunchClockMeta::create($request->merge(['punchclockid'=> $id, 'state' => $state])->all());
 
         return response()->json(['success'=>true], 200);
+    }
+    public function upload(Request $request)
+    {
+        $name = $this->uploadimage($request, "image");
+        return response()->json(['success'=>true, 'name' => $name], 200);
     }
 }

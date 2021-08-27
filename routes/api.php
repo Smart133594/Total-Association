@@ -22,4 +22,5 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::post('/clock-state', [BaseController::class, 'clockState']);
     Route::post('/clock-update', [BaseController::class, 'clockUpdate']);
+    Route::post('/upload', [BaseController::class, 'upload']);
 });
