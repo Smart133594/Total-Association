@@ -17,9 +17,7 @@ use App\Http\Controllers\API\BaseController;
 Route::post('/login', [BaseController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/health', function (Request $request) {
-        return $request->user();
-    });
+    Route::post('/health', [BaseController::class, 'health']);
     Route::post('/clock-state', [BaseController::class, 'clockState']);
     Route::post('/clock-update', [BaseController::class, 'clockUpdate']);
     Route::post('/upload', [BaseController::class, 'upload']);

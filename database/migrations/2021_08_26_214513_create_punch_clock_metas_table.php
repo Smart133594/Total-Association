@@ -16,8 +16,8 @@ class CreatePunchClockMetasTable extends Migration
         Schema::create('punch_clock_metas', function (Blueprint $table) {
             $table->id();
             $table->integer('punchclockid');
-            $table->float('latitude');
-            $table->float('longitude');
+            $table->float('latitude')->nullable();
+            $table->float('longitude')->nullable();
             $table->string('country')->nullable();
             $table->string('area')->nullable();
             $table->string('postal_code')->nullable();
