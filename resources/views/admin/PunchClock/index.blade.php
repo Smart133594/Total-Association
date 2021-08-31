@@ -339,7 +339,7 @@ then just press go.
                 <div>Phone Number: ${worker.phone}</div><br>
                 <div>Email Address: ${worker.email}</div><br>
             </div>
-            <img src="/upload/${worker.avatar}" alt="Photo" class="mr-3" style="width: 150px; height:150px">`;
+            <img src="/upload/${worker.avatar}" alt="Photo" class="mr-3" style="max-width: 150px; max-height:150px; object-fit:contain">`;
             $("#user_info").append(html);
         }
         isAll = 'all';
