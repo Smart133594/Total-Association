@@ -129,6 +129,14 @@
                     </li>
                   @endif
                   <li> <a href="{{route('fine-setting')}}" class="fine-setting">Fine</a></li>
+                  <li class="menu-item">
+                    <a href="#" class="has-chevron" data-toggle="collapse" data-target="#punch_settings" aria-expanded="false" aria-controls="authentication">Punch Clock</a>
+                    <ul id="punch_settings" class="collapse" aria-labelledby="authentication" data-parent="#MemberResidents">
+                      <li> <a href="{{route('access-settings.index')}}" class="access-settings">Access Devices</a></li>
+                      <li> <a href="{{route('punchclock-auth.index')}}" class="punchclock-auth">Punch Clock Auth</a></li>
+                    </ul>
+                  </li>
+
                 </ul>
             </li>
 

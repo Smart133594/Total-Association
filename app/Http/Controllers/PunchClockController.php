@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\PunchClock;
+use App\Models\Department;
+use App\Models\PunchClockMeta;
 use App\Models\WorkForce;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -18,6 +20,7 @@ class PunchClockController extends Controller
     {
         //
         $workers = WorkForce::get();
+        $departs = Department::get();
         $punchClock = new PunchClock;
         if(isset($request->employees)) {
             $punchClock = $punchClock->where('workerid', $request->employees);
@@ -53,9 +56,17 @@ class PunchClockController extends Controller
             }else{
                 $punchClock[$key]['duration'] = "Current Clocked In";
             }
+
+            // $punchClock->in_meta->AccessDevice->serial_number;
+            $meta = $value->PunchClockMeta;
+            foreach ($meta as $key => $ele) {
+                if($ele->type == 0) {
+                    $punchClock[$key]->in_meta = $ele;
+                }else{
+                    $punchClock[$key]->out_meta = $ele;
+                }
+            }
         }
-
-
         $hours = intval($total_duration/3600);
         $total_duration=$total_duration%3600;
         $mins = intval($total_duration/60);
@@ -64,7 +75,8 @@ class PunchClockController extends Controller
         foreach ($punchClock as $key => $value) {
             $punchClock[$key]['edit_id'] = Crypt::encryptString($value->id);
         }
-        return view('admin.PunchClock.index', compact('workers', 'punchClock', 'times'));
+
+        return view('admin.PunchClock.index', compact('workers', 'punchClock', 'times', 'departs'));
     }
     public function exportTimeSheet(Request $request)
     {
@@ -72,7 +84,6 @@ class PunchClockController extends Controller
         $pay_period_to = $request->pay_period_to;
         $decimal_total = $request->decimal_total;
         $time_24_format = $request->time_24_format;
-
 
         $punchClock = PunchClock::where('workerid', $userid);
         if(isset($request->pay_period_from)){
@@ -94,12 +105,18 @@ class PunchClockController extends Controller
             $clocked_in_time = date($string_format, strtotime($value->in_date));
             $clocked_out_dt = $value->out_date ? date('d/m/Y', strtotime($value->out_date)) : '-';
             $clocked_out_time = $value->out_date ? date($string_format, strtotime($value->out_date)) : '-';
-
             if($value->out_date){
                 $duration = strtotime($value->out_date) - strtotime($value->in_date);
+
+                if($request->hours_shift) {
+                    if($duration > $request->hours_shift)
+                        $duration -= $request->per_minutes * 60;
+                }
+                
                 $hours = intval($duration/3600);
                 $duration=$duration%3600;
                 $mins = intval($duration/60);
+
                 if($decimal_total){
                     $times = ($hours < 10 ? 0 : '').$hours.':'.($mins < 10 ? 0 : '').$mins;
                 }else{
@@ -218,7 +235,6 @@ class PunchClockController extends Controller
     {
         //
         $id = Crypt::decryptString($id);
-        
         //
         $punchClock = PunchClock::where('id', $id)->first();
 
@@ -235,9 +251,18 @@ class PunchClockController extends Controller
             $punchClock['duration'] = "Current Clocked In";
         }
 
-        $meta = $punchClock->PunchClockMeta();
-        $punchClock->in_meta = $meta['in_meta'];
-        $punchClock->out_meta = $meta['out_meta'];
+        $meta = $punchClock->PunchClockMeta;
+        foreach ($meta as $key => $value) {
+            if($value->type == 0) {
+                $punchClock->in_meta = $value;
+            }else{
+                $punchClock->out_meta = $value;
+            }
+        }
+        // dd($punchClock->in_meta->AccessDevice->serial_number);
+        $punchClock->worker_info = $punchClock->Worker;
+
+        
         return view('admin.PunchClock.detail', compact('punchClock'));
     }
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccessDeviceController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckAdminLogin;
 use App\Http\Controllers\UserController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\FacilitiestypeController;
 use App\Http\Controllers\facilitiesController;
 use App\Http\Controllers\WorkForceController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\PunchClockAuthController;
 use App\Http\Controllers\WorkLogController;
 use App\Http\Controllers\PunchClockController;
 /*
@@ -192,6 +194,9 @@ Route::middleware([CheckAdminLogin::class])->group(function () {
         Route::get('/gettemplate/{id}', [TemplateController::class, 'gettemplate'])->name('gettemplate');
         Route::get('/getresponsible/{type}', [ajaxController::class, 'getresponsible'])->name('getresponsible');
     /*setting*/
+
+        Route::resource('access-settings', AccessDeviceController::class);
+        Route::resource('punchclock-auth', PunchClockAuthController::class);
 
 });
 /*admin*/

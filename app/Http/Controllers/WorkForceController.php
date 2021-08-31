@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Crypt;
 use Brick\PhoneNumber\PhoneNumber;
 use Brick\PhoneNumber\PhoneNumberFormat;
 use Brick\PhoneNumber\PhoneNumberParseException;
+use Throwable;
 
 class WorkForceController extends Controller
 {
@@ -119,14 +120,14 @@ class WorkForceController extends Controller
             $number = PhoneNumber::parse($worker->phone);
             $worker->format_phone = $number->format(PhoneNumberFormat::INTERNATIONAL);
         }
-        catch (PhoneNumberParseException $e) {
+        catch (Throwable $e) {
             $worker->format_phone = $worker->phone;
         }
         try {
             $number = PhoneNumber::parse($worker->whatsapp);
             $worker->format_whatsapp = $number->format(PhoneNumberFormat::INTERNATIONAL);
         }
-        catch (PhoneNumberParseException $e) {
+        catch (Throwable $e) {
             $worker->format_whatsapp = $worker->whatsapp;
         }
         return view("admin.WorkForce.detail", compact('worker'));

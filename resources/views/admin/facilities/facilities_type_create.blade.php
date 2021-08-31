@@ -406,7 +406,6 @@
             var amount = $("#amount").val();
             var ref = $("#ref").val();
 
-
             var formData = new FormData();
             formData.append('ref', ref);
             formData.append('fes_name', fes_name);

@@ -9,4 +9,8 @@ class PunchClockMeta extends Model
 {
     use HasFactory;
     protected $fillable = ['punchclockid', 'latitude', 'longitude', 'country', 'area', 'postal_code', 'city', 'image', 'type', 'deviceid'];
+
+    public function AccessDevice() {
+        return $this->hasOne('App\Models\AccessDevice', 'id', 'deviceid');
+    }
 }
