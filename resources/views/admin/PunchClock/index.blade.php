@@ -34,9 +34,9 @@
             <form class="row" id="filter_form">
             <div class="row">
                 <div class="col-md-4">
-                    <h5>Active Employee</h5>
+                        <h5 class="m-3">Active Employee</h5>
                         <div class="col-md-12">
-                            <select name="status" id="status" class="col-md-3 form-control m-3 hitomi-horizontal" onchange="changeOption()">
+                            <select name="status" id="status" class="col-md-10 form-control m-3 hitomi-horizontal" onchange="changeOption()">
                                 <option value="0" {{ $status == 0 ? 'selected' : '' }}>Active</option>
                                 <option value="1" {{ $status == 1 ? 'selected' : '' }}>Archived</option>
                                 <option value="2" {{ $status == 2 ? 'selected' : '' }}>Both</option>
@@ -130,14 +130,11 @@ then just press go.
                             <tr>
                                 <td onclick="goto('{{ $detail_uri }}')">{{ $index+1 }}</td>
                                 <td onclick="goto('{{ $detail_uri }}')">
-                                    @php
-                                        $img = @$item->meta['image'];
-                                        if($img == null) {
-                                            echo 'No Image';
-                                        } else {
-                                            echo "<img src='/upload/$img' class='image-responsive' style='height: 50px; width: 50px; max-width: 50px !important;'/>";
-                                        }
-                                    @endphp
+                                    @if (@$item->in_meta->image == null)
+                                        No Image
+                                    @else
+                                        <img src="/upload/{{ $item->in_meta->image }}" class='image-responsive' style='height: 50px; width: 50px; max-width: 50px !important;'/>
+                                    @endif
                                 </td>
                                 <td onclick="goto('{{ $detail_uri }}')">{{ date('d/m/Y', strtotime($item->in_date)) }}</td>
                                 <td onclick="goto('{{ $detail_uri }}')">{{ date('h:i', strtotime($item->in_date)) }}</td>
