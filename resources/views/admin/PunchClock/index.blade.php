@@ -34,9 +34,9 @@
             <form class="row" id="filter_form">
             <div class="row">
                 <div class="col-md-4">
-                    <h5>Active Employee</h5>
+                        <h5 class="m-3">Active Employee</h5>
                         <div class="col-md-12">
-                            <select name="status" id="status" class="col-md-3 form-control m-3 hitomi-horizontal" onchange="changeOption()">
+                            <select name="status" id="status" class="col-md-10 form-control m-3 hitomi-horizontal" onchange="changeOption()">
                                 <option value="0" {{ $status == 0 ? 'selected' : '' }}>Active</option>
                                 <option value="1" {{ $status == 1 ? 'selected' : '' }}>Archived</option>
                                 <option value="2" {{ $status == 2 ? 'selected' : '' }}>Both</option>
@@ -365,7 +365,7 @@ then just press go.
                 <div>Phone Number: ${worker.phone}</div><br>
                 <div>Email Address: ${worker.email}</div><br>
             </div>
-            <img src="/upload/${worker.avatar}" alt="Photo" class="mr-3" style="width: 150px; height:150px">`;
+            <img src="/upload/${worker.avatar}" alt="Photo" class="mr-3" style="max-width: 150px; max-height:150px; object-fit:contain">`;
             $("#user_info").append(html);
         }
         isAll = 'all';

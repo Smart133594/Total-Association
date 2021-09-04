@@ -64,9 +64,9 @@
                     <div style="display: flex">
                         <div>Address:</div>
                         <div style="margin-left: 20px">
-                            @if($punchClock->worker_info['address1']){{ $punchClock->worker_info['address1'] }}<br/>@endif
-                            @if($punchClock->worker_info['address2']){{ $punchClock->worker_info['address2'] }}<br/>@endif
-                            {{ $punchClock->worker_info['city'] }}, {{ $punchClock->worker_info['state'] }} {{ $punchClock->worker_info['zipcode'] }}
+                            @if(@$punchClock->worker_info['address1']){{ @$punchClock->worker_info['address1'] }}<br/>@endif
+                            @if(@$punchClock->worker_info['address2']){{ @$punchClock->worker_info['address2'] }}<br/>@endif
+                            {{ @$punchClock->worker_info['city'] }}, {{ @$punchClock->worker_info['state'] }} {{ @$punchClock->worker_info['zipcode'] }}
                         </div>
                     </div>
                     <p></p>
@@ -93,22 +93,22 @@
                         <p>Location: {{ _OBJVALUE($punchClock->in_meta, "city") }}, {{ _OBJVALUE($punchClock->in_meta, "area") }}, {{ _OBJVALUE($punchClock->in_meta, "country") }}</p>
                         <p>Postal code: {{ _OBJVALUE($punchClock->in_meta, "postal_code") }}</p>
                     @endif
-                    @if (_OBJVALUE(_OBJVALUE($punchClock, "in_meta"), "image"))
+                    @if (@$punchClock->in_meta->image)
                         <img src="/upload/{{ $punchClock->in_meta->image }}" alt="Photo" style="width: 80%;">
                     @endif
                 </div>
                 <div class="col-6" style="border-left:1px solid rgba(0, 0, 0, 0.1);">
                     <h5>Clock Out</h5>
                     <hr>
-                    <p>Serial Number: {{ @_OBJVALUE($punchClock->out_meta->AccessDevice, "serial_number") }}</p>
-                    <p>IP Address: {{ @_OBJVALUE($punchClock->out_meta->AccessDevice, "ip_address") }}</p>
-                    <p>Status: {{ @_OBJVALUE($punchClock->out_meta->AccessDevice, "state") == 0 ? "Disactive" : "Active" }}</p>
-                    <p>Date: {{ @_OBJVALUE($punchClock, "out_date") }}</p>
-                    @if (_OBJVALUE($punchClock, "out_meta"))
-                        <p>Location: {{ _OBJVALUE($punchClock->out_meta, "city") }}, {{ _OBJVALUE($punchClock->out_meta, "area") }}, {{ _OBJVALUE($punchClock->out_meta, "country") }}</p>
-                        <p>Postal code: {{ _OBJVALUE($punchClock->out_meta, "postal_code") }}</p>
+                    @if (@$punchClock->out_meta)
+                        <p>Serial Number: {{ @$punchClock->out_meta->AccessDevice->serial_number }}</p>
+                        <p>IP Address: {{ @$punchClock->out_meta->AccessDevice->ip_address }}</p>
+                        <p>Status: {{ @$punchClock->out_meta->AccessDevice->state == 0 ? "Disactive" : "Active" }}</p>
+                        <p>Date: {{ @$punchClock->out_date }}</p>
+                        <p>Location: {{ @$punchClock->out_meta->city }}, {{ @$punchClock->out_meta->area }}, {{ @$punchClock->out_meta->country }}</p>
+                        <p>Postal code: {{ @$punchClock->out_meta->postal_code }}</p>
                     @endif
-                    @if (_OBJVALUE(_OBJVALUE($punchClock, "out_meta"), "image"))
+                    @if (@$punchClock->out_meta->image)
                         <img src="/upload/{{ $punchClock->out_meta->image }}" alt="Photo" style="width: 80%;">
                     @endif
                 </div>

@@ -60,7 +60,7 @@ class PunchClockController extends Controller
 
             // $punchClock->in_meta->AccessDevice->serial_number;
             $meta = $value->PunchClockMeta;
-            foreach ($meta as $key => $ele) {
+            foreach ($meta as $meta_key => $ele) {
                 if($ele->type == 0) {
                     $punchClock[$key]->in_meta = $ele;
                 }else{
