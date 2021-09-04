@@ -16,8 +16,7 @@
             </div>
             <div class="ms-panel-body">
                 @include('admin.includes.msg')
-                <div class="table-responsive">
-                    <table class="table table-striped thead-primary w-100 data-table">
+                    <table class="d-block d-md-table table-responsive table table-striped thead-primary w-100 data-table">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -45,8 +44,8 @@
                                                 <i class="fas fa-th"></i>
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                <a class="dropdown-item" href="{{ $detail_uri }}">Show Info</a>
-                                                <a class="dropdown-item" href="/work-force/{{ $worker->edit_id }}/edit">Edit</a>
+                                                <button class="dropdown-item" onclick="window.location.href='{{ $detail_uri }}'">Show Info</button>
+                                                <button class="dropdown-item" onclick="window.location.href='/work-force/{{ $worker->edit_id }}/edit'">Edit</button>
                                                 <form action="{{ route('work-force.destroy',$worker->edit_id) }}" method="post">
                                                     @method("delete")
                                                     @csrf
@@ -59,7 +58,6 @@
                             @endforeach
                         </tbody>
                     </table>
-                </div>
             </div>
         </div>
     </div>

@@ -111,8 +111,7 @@ then just press go.
                         {{-- <button class="btn btn-primary btn-sm m-0" data-toggle="modal" data-target="#time_sheet">Export Time Sheet</button> --}}
                     </div>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-striped thead-primary w-100 data-table"> 
+                    <table class="table-responsive table table-striped thead-primary w-100 data-table"> 
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -164,7 +163,6 @@ then just press go.
                                 </tr>
                             @endforeach
                         </tbody>
-                    </table>
                 </div>
                 <p>Total Time = {{ $times }}</p>
             </div>

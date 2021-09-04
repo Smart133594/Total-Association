@@ -73,7 +73,7 @@
                                     <h2>Rental History</h2>
                                 </div>
 
-                                <table class="table table-striped thead-primary w-100 dataTable no-footer">
+                                <table class="d-block d-md-table table-responsive table table-striped thead-primary w-100 dataTable no-footer">
                                     <thead>
                                     <tr>
                                         <th>S. No</th>
@@ -114,7 +114,7 @@
                                     <h2>Communication History</h2>
                                 </div>
 
-                                <table class="table table-striped thead-primary w-100 dataTable no-footer">
+                                <table class="d-block d-md-table table-responsive table table-striped thead-primary w-100 dataTable no-footer">
                                     <thead>
                                     <tr>
                                         <th>S. No</th>
@@ -133,7 +133,7 @@
                                 <div class="group_text">
                                     <h2>Notes History</h2>
                                 </div>
-                                <table class="table table-striped thead-primary w-100 dataTable no-footer">
+                                <table class="d-block d-md-table table-responsive table table-striped thead-primary w-100 dataTable no-footer">
                                     <thead>
                                     <tr>
                                         <th>S. No</th>
@@ -173,7 +173,7 @@
                                     <h2>Incident And Fines</h2>
                                 </div>
 
-                                <table class="table table-striped thead-primary w-100 dataTable no-footer">
+                                <table class="d-block d-md-table table-responsive table table-striped thead-primary w-100 dataTable no-footer">
                                     <thead>
                                     <tr>
                                         <th>S. No</th>
@@ -194,7 +194,7 @@
                                     <h2>Videos of Facilities</h2>
                                 </div>
 
-                                <table class="table table-striped thead-primary w-100 dataTable no-footer">
+                                <table class="d-block d-md-table table-responsive table table-striped thead-primary w-100 dataTable no-footer">
                                     <thead>
                                     <tr>
                                         <th>S. No</th>

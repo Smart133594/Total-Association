@@ -68,7 +68,7 @@
                                             @foreach($property as $p)
                                                 <option value="{{ $p->id }}" 
                                                     @if($data ?? '') @if($p->id==$data->propertyId) selected @endif @endif
-                                                    @if($p->id==$propertyid) selected @endif
+                                                    @if($p->id==@$propertyid) selected @endif
                                                     >
                                                     {{$p->PropertyType->building}} {{$allassociation[$p->associationId]}} - @if($p->PropertyType->type=="Multi Dwelling") {{$p->aptNumber}} @else {{$p->address1}} @endif
                                                 </option>
@@ -187,7 +187,7 @@
                                     </div>
 
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="float: right;margin-bottom: 10px">Upload New Document</button>
-                                    <table class="table table-striped thead-primary w-100 dataTable no-footer">
+                                    <table class="table d-block d-md-table table-responsive table-striped thead-primary w-100 dataTable no-footer">
                                         <thead>
                                         <tr>
                                             <th>S. No</th>

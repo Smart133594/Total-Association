@@ -87,65 +87,63 @@
                         </div>
 
 
-                        <div class="table-responsive">
-                            <table id="data-table" class="table table-striped thead-primary w-100">
-                                <thead>
-                                <tr role="row">
-                                    <th>S.No.</th>
-                                    <th>Property</th>
-                                    <th>Name</th>
-                                    <th>Phone Number</th>
-                                    <th>Troubles</th>
+                        <table id="data-table" class="d-block d-md-table table-responsive table table-striped thead-primary w-100">
+                            <thead>
+                            <tr role="row">
+                                <th>S.No.</th>
+                                <th>Property</th>
+                                <th>Name</th>
+                                <th>Phone Number</th>
+                                <th>Troubles</th>
 
-                                    <th class="no-sort">Status</th>
-                                    <th class="no-sort">Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @if(!empty($alldata) &&  $alldata->count()>0)
-                                    @foreach($alldata as $key=>$val)
-                                        <tr role="row" class="odd">
-                                            <td class="sorting_1">{{$key+1}}</td>
-                                            <td> {{ $property[$val->property_id]->building}} {{$association[$val->associationId]}} - @if($property[$val->property_id]->type=="Multi Dwelling")  {{ $property[$val->property_id]->aptNumber}} @else {{ $property[$val->property_id]->address1}}  @endif</td>
-                                            <td>{{$val->firstName}} {{$val->middleName}} {{$val->lastName}}</td>
-                                            <td>{{$val->phoneNumber}}</td>
+                                <th class="no-sort">Status</th>
+                                <th class="no-sort">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @if(!empty($alldata) &&  $alldata->count()>0)
+                                @foreach($alldata as $key=>$val)
+                                    <tr role="row" class="odd">
+                                        <td class="sorting_1">{{$key+1}}</td>
+                                        <td> {{ $property[$val->property_id]->building}} {{$association[$val->associationId]}} - @if($property[$val->property_id]->type=="Multi Dwelling")  {{ $property[$val->property_id]->aptNumber}} @else {{ $property[$val->property_id]->address1}}  @endif</td>
+                                        <td>{{$val->firstName}} {{$val->middleName}} {{$val->lastName}}</td>
+                                        <td>{{$val->phoneNumber}}</td>
 
 
-                                            <td>@if($val->troubles==0)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif </td>
-                                            <td>@if($val->status==1)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif </td>
+                                        <td>@if($val->troubles==0)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif </td>
+                                        <td>@if($val->status==1)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif </td>
 
-                                            <td class="action">
-                                                @if(request()->is('resident'))
-                                                <a href="/resident/{{ $val->edit_id }}/edit"><i class="fas fa-pencil-alt ms-text-primary"></i></a>
-                                                @endif
-                                                {{--<form action="{{ route('master-association.destroy',$val->id) }}" method="post">
-                                                    {{ method_field('delete') }}
-                                                    {{ csrf_field() }}
-                                                    <button type="submit" class="trans-btn" onclick=" return confirm('Are you sure to delete this Master Association !!')"><i class="far fa-trash-alt ms-text-danger"></i></button>
-                                                </form>--}}
-                                                {{--<a href="#"><i class=""></i></a>--}}
-                                                <div class="dropdown">
-                                                    <a class="cust-btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <i class="fas fa-th"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                        <a class="dropdown-item" href="/{{$path}}/{{ $val->edit_id }}/">Resident Info</a>
-                                                        <a class="dropdown-item" href="/incident?filter=resident&id={{ $val->edit_id }}">Incidents</a>
-                                                        <a class="dropdown-item" href="/fine-incident/{{ $val->edit_id }}">Create Incident</a>
-                                                        <a class="dropdown-item" href="/bulk-communication?type=Residents&user={{ $val->edit_id }}">Send Letter</a>
-                                                        <a class="dropdown-item" href="/letter-generator?type=Residents&user={{ $val->edit_id }}">Send Email</a>
-                                                        {{-- <a class="dropdown-item" href="/fines?filter=resident&id={{ $val->edit_id }}">Issue Fine</a> --}}
-                                                        <a class="dropdown-item" href="#">Create Appointment</a>
-                                                        <a class="dropdown-item" href="#">Access Control</a>
-                                                    </div>
+                                        <td class="action">
+                                            @if(request()->is('resident'))
+                                            <a href="/resident/{{ $val->edit_id }}/edit"><i class="fas fa-pencil-alt ms-text-primary"></i></a>
+                                            @endif
+                                            {{--<form action="{{ route('master-association.destroy',$val->id) }}" method="post">
+                                                {{ method_field('delete') }}
+                                                {{ csrf_field() }}
+                                                <button type="submit" class="trans-btn" onclick=" return confirm('Are you sure to delete this Master Association !!')"><i class="far fa-trash-alt ms-text-danger"></i></button>
+                                            </form>--}}
+                                            {{--<a href="#"><i class=""></i></a>--}}
+                                            <div class="dropdown">
+                                                <a class="cust-btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-th"></i>
+                                                </a>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                    <a class="dropdown-item" href="/{{$path}}/{{ $val->edit_id }}/">Resident Info</a>
+                                                    <a class="dropdown-item" href="/incident?filter=resident&id={{ $val->edit_id }}">Incidents</a>
+                                                    <a class="dropdown-item" href="/fine-incident/{{ $val->edit_id }}">Create Incident</a>
+                                                    <a class="dropdown-item" href="/bulk-communication?type=Residents&user={{ $val->edit_id }}">Send Letter</a>
+                                                    <a class="dropdown-item" href="/letter-generator?type=Residents&user={{ $val->edit_id }}">Send Email</a>
+                                                    {{-- <a class="dropdown-item" href="/fines?filter=resident&id={{ $val->edit_id }}">Issue Fine</a> --}}
+                                                    <a class="dropdown-item" href="#">Create Appointment</a>
+                                                    <a class="dropdown-item" href="#">Access Control</a>
                                                 </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                                </tbody>
-                            </table>
-                        </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

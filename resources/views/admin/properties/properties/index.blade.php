@@ -60,8 +60,7 @@
 
                         </div>
                         @include('admin.includes.msg')
-                        <div class="table-responsive">
-                            <table id="data-table" class="table table-striped thead-primary w-100">
+                            <table id="data-table" class="d-block d-md-table table-responsive table table-striped thead-primary w-100">
                                 <thead>
                                 <tr role="row">
                                     <th>S.No.</th>
@@ -142,7 +141,6 @@
                                 @endif
                                 </tbody>
                             </table>
-                        </div>
                     </div>
                 </div>
             </div>

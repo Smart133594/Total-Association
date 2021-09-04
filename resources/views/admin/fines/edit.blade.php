@@ -149,7 +149,7 @@
                                     <h2>Incident Files</h2>
                                 </div>
 
-                                <table class="table table-striped thead-primary w-100 dataTable no-footer">
+                                <table class="table-responsive table table-striped thead-primary w-100 dataTable no-footer">
                                     <thead>
                                     <tr>
                                         <th>S. No</th>

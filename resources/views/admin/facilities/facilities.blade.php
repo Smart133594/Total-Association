@@ -58,8 +58,8 @@
 
 
                         @include('admin.includes.msg')
-                        <div class="table-responsive" style="min-height: 300px">
-                            <table id="data-table" class="table table-striped thead-primary w-100">
+                        <div style="min-height: 300px">
+                            <table id="data-table" class="d-block d-md-table table-responsive table table-striped thead-primary w-100">
                                 <thead>
                                 <tr role="row">
                                     <th>S.No.</th>
@@ -102,7 +102,7 @@
                                                             <a class="dropdown-item" href="/facilities-rental-event/{{ $val->edit_id }}">Rental Events List</a>
                                                             @if($val->vacency==1)
                                                                 <a class="dropdown-item" href="/record-note/{{ $val->current_occupaier_rent_id }}">Record a Note</a>
-                                                                <a class="dropdown-item" href="/paymentinfo/{{ $val->current_occupaier_rent_id }}">payment Info</a>
+                                                                <a class="dropdown-item" href="/paymentinfo/{{ $val->current_occupaier_rent_id }}">Payment Info</a>
                                                                 @if($val->FacilitiesType->contractRequired==1)
                                                                     <a class="dropdown-item" href="/contract/{{ $val->current_occupaier_rent_id }}">Contract</a>
                                                                 @endif

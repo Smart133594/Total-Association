@@ -32,8 +32,7 @@
                             <a href="{{route('department.create', 'department='.$department->edit_id)}}" class="btn btn-sm btn-primary m-0">+</a>
                         </div>
                     </div>
-                    <div class="table-responsive">
-                    <table class="table table-striped thead-primary w-100 data-table">
+                    <table class="d-block d-md-table table-responsive table table-striped thead-primary w-100 data-table">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -70,7 +69,7 @@
                                                 <i class="fas fa-th"></i>
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                <a class="dropdown-item" href="/department/{{ Crypt::encryptString($task->id) }}/edit">Edit</a>
+                                                <button class="dropdown-item" onclick="window.location.href='/department/{{ Crypt::encryptString($task->id) }}/edit'">Edit</button>
                                                 <form action="{{ route('department.destroy',Crypt::encryptString($task->id)) }}" method="post">
                                                     @method("delete")
                                                     @csrf
@@ -83,7 +82,6 @@
                             @endforeach
                         </tbody>
                     </table>
-                    </div>
                     <hr>
                 @endforeach
             </div>

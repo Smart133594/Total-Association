@@ -18,42 +18,38 @@
         </div>
         <div class="ms-panel-body">
             @include('admin.includes.msg')
-            <div class="form-row">
-                <div class="table-responsive">
-                    <table id="data-table" class="table table-striped thead-primary w-100">
-                        <thead>
-                        <tr role="row">
-                            <th>S.No.</th>
-                            <th>Serial Number</th>
-                            <th>IP Address</th>
-                            <th class="no-sort">Status</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($items as $key => $item)
-                                <tr role="row" class="odd">
-                                    <td>{{$key+1}}</td>
-                                    <td>{{$item->serial_number}}</td>
-                                    <td>{{$item->ip_address}}</td>
-                                    <td>
-                                        @if ($item->active == 1)
-                                            <label class="ms-switch">
-                                                <input type="checkbox" id="check_{{$item->id}}" checked onclick="setStatus({{$item->id}})">
-                                                <span class="ms-switch-slider ms-switch-success round"></span>
-                                            </label>
-                                        @else
+                <table id="data-table" class="d-block d-md-table table-responsive table table-striped thead-primary w-100">
+                    <thead>
+                    <tr role="row">
+                        <th>S.No.</th>
+                        <th>Serial Number</th>
+                        <th>IP Address</th>
+                        <th class="no-sort">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($items as $key => $item)
+                            <tr role="row" class="odd">
+                                <td>{{$key+1}}</td>
+                                <td>{{$item->serial_number}}</td>
+                                <td>{{$item->ip_address}}</td>
+                                <td>
+                                    @if ($item->active == 1)
                                         <label class="ms-switch">
-                                                <input type="checkbox" id="check_{{$item->id}}" onclick="setStatus({{$item->id}})">
+                                            <input type="checkbox" id="check_{{$item->id}}" checked onclick="setStatus({{$item->id}})">
                                             <span class="ms-switch-slider ms-switch-success round"></span>
                                         </label>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                                    @else
+                                    <label class="ms-switch">
+                                            <input type="checkbox" id="check_{{$item->id}}" onclick="setStatus({{$item->id}})">
+                                        <span class="ms-switch-slider ms-switch-success round"></span>
+                                    </label>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
         </div>
     </div>
 </div>

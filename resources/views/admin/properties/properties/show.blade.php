@@ -2,8 +2,6 @@
 @section('title', 'Property Details')
 @section('content')
 
-
-
 <div class="ms-content-wrapper">
     <div class="row">
         <div class="col-md-12">
@@ -79,8 +77,8 @@
                         <p>This will show a table of current and past Owners</p>
                     </div>
                 </div>
-                <div class="ms-panel-body table-responsive">
-                    <table class="data-table table table-striped thead-primary w-100 dataTable no-footer">
+                <div class="ms-panel-body">
+                    <table class="table-responsive data-table table table-striped thead-primary w-100 dataTable no-footer">
                         <thead>
                             <tr>
                                 <th>Owner Name</th>
@@ -149,8 +147,8 @@
                         <p>This will show a table of current and past Residents</p>
                     </div>
                 </div>
-                <div class="ms-panel-body table-responsive">
-                    <table class=" data-table table table-striped thead-primary w-100 dataTable no-footer">
+                <div class="ms-panel-body">
+                    <table class="table-responsive table table-striped thead-primary w-100 d-block d-md-table dataTable no-footer">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -209,8 +207,8 @@
                         <p>This will show a table of current and past Guest</p>
                     </div>
                 </div>
-                <div class="ms-panel-body table-responsive">
-                    <table class=" data-table table table-striped thead-primary w-100 dataTable no-footer">
+                <div class="ms-panel-body">
+                    <table class="table-responsive d-block d-md-table data-table table table-striped thead-primary w-100 dataTable no-footer">
                         <thead>
                             <tr>
                                 <th>Property</th>
@@ -273,7 +271,7 @@
                     </div>
                 </div>
                 <div class="ms-panel-body table-responsive">
-                    <table class=" data-table table table-striped thead-primary w-100 dataTable no-footer">
+                    <table class="table-responsive d-block d-md-table data-table table table-striped thead-primary w-100 dataTable no-footer">
                         <thead>
                             <tr>
                                 <th>Images</th>
