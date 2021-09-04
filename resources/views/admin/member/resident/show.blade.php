@@ -1,5 +1,5 @@
 @extends('admin.layouts.master')
-@section('title', 'Properties Details')
+@section('title', 'Resident Info')
 @section('content')
 
 
@@ -22,12 +22,12 @@
                 </nav>
                 <div class="ms-panel">
                     <div class="ms-panel-header ms-panel-custome">
-                        <h6>Resident Details</h6>
+                        <h6>Resident's Info</h6>
                     </div>
 
                     <div class="ms-panel-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <table class="table table-striped thead-primary w-100 dataTable no-footer">
                                     <thead>
                                     <th colspan="2">Property Information</th>
@@ -64,7 +64,12 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-md-6">
+                        </div>
+                    </div>
+
+                    <div class="ms-panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
                                 <table class="table table-striped thead-primary w-100 dataTable no-footer">
                                     <thead>
                                     <th colspan="2">Resident Basic Information</th>
@@ -159,8 +164,6 @@
                                     </tbody>
                                 </table>
                             </div>
-
-
                         </div>
                     </div>
 

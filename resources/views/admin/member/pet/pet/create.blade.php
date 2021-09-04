@@ -17,7 +17,45 @@
                 <form id="admin-form" method="post" action="{{route('pet.store')}}" enctype="multipart/form-data">
                     <div class="ms-panel">
                         <div class="row" style="width: 100%">
-                        <div class="col" >
+                            <div class="col">
+                                <div class="ms-panel-header ms-panel-custome">
+                                    <div class="group_text">
+                                        <h2>Pet Information</h2>
+                                        <p>Please enter the information about the pet</p>
+                                    </div>
+                                </div>
+                                <div class="ms-panel-body">
+                                    <div class="form-group">
+                                        <label for="exampleEmail">Pet Name</label>
+                                        <input type="text" class="form-control" id="petName" name="petName" value="@if($data ?? ''){{$data->petName}}@endif" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="examplePassword">Type</label>
+                                        <select type="text" class="form-control" id="pettypeId" name="pettypeId" onchange="getvaccin(this.value,'{{$ref}}')" required>
+                                            <option value="">--Choose--</option>
+    
+                                            @foreach($pettype as $p)
+                                                <option value="{{$p->id}}" @if($data ?? '') @if($data->pettypeId==$p->id) selected @endif @endif>{{$p->petType}}</option>
+                                            @endforeach
+    
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="examplePassword">Breed And Description</label>
+                                        <input type="text" class="form-control" id="breedAndDesc" name="breedAndDesc" value="@if($data ?? ''){{$data->breedAndDesc}}@endif" required>
+                                    </div>
+                                    @if($data ?? '')
+                                        <div class="col-md-4">
+                                            <img src="/upload/{{$data->image}}" style="width: 100%">
+                                        </div>
+                                    @endif
+                                    <div class="form-group">
+                                        <label for="exampleEmail">Image</label>
+                                        <input type="file" class="form-control" id="image" name="image">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col" >
                             <div class="ms-panel-header ms-panel-custome">
                                 <div class="group_text">
                                     <h2>Pet’s Owner</h2>
@@ -55,44 +93,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="ms-panel-header ms-panel-custome">
-                                <div class="group_text">
-                                    <h2>Pet Information</h2>
-                                    <p>Please enter the information about the pet</p>
-                                </div>
-                            </div>
-                            <div class="ms-panel-body">
-                                <div class="form-group">
-                                    <label for="exampleEmail">Pet Name</label>
-                                    <input type="text" class="form-control" id="petName" name="petName" value="@if($data ?? ''){{$data->petName}}@endif" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="examplePassword">Type</label>
-                                    <select type="text" class="form-control" id="pettypeId" name="pettypeId" onchange="getvaccin(this.value,'{{$ref}}')" required>
-                                        <option value="">--Choose--</option>
-
-                                        @foreach($pettype as $p)
-                                            <option value="{{$p->id}}" @if($data ?? '') @if($data->pettypeId==$p->id) selected @endif @endif>{{$p->petType}}</option>
-                                        @endforeach
-
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="examplePassword">Breed And Description</label>
-                                    <input type="text" class="form-control" id="breedAndDesc" name="breedAndDesc" value="@if($data ?? ''){{$data->breedAndDesc}}@endif" required>
-                                </div>
-                                @if($data ?? '')
-                                    <div class="col-md-4">
-                                        <img src="/upload/{{$data->image}}" style="width: 100%">
-                                    </div>
-                                @endif
-                                <div class="form-group">
-                                    <label for="exampleEmail">Image</label>
-                                    <input type="file" class="form-control" id="image" name="image">
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     </div>
                     <div class="ms-panel">
@@ -110,7 +110,7 @@
                                     $documents_required_by_law=json_decode($setting['documents_required_by_law'],true);
                                     $documents_status=json_decode($setting['documents_status'],true);
                                     @endphp
-
+                                    <div class="table-responsive">
                                     <table class="table table-striped thead-primary w-100 dataTable no-footer">
                                         <thead>
                                         <tr>
@@ -132,7 +132,9 @@
                                                 <td>{{$va}}</td>
                                                 <td class="exp_{{ $class }}"> @if(isset($pet_document[$class]->exp_date)) {{ $pet_document[$class]->exp_date }} @endif</td>
                                                 <td>@if(isset($documents_required_by_law[$k])) @if($documents_required_by_law[$k]==1) Yes @else No @endif @endif</td>
-                                                <td><img src="/assets/img/info.png" data-toggle="modal" data-target="#details" onclick="showdetails('{{$documents_description[$k]}}','{{$ref}}')"></td>
+                                                {{-- <td><img src="/assets/img/info.png" data-toggle="modal" data-target="#details" onclick="showdetails('{{$documents_description[$k]}}','{{$ref}}')"></td> --}}
+                                                <td><img src="/assets/img/info.png" onclick="sweetBasic('{{$documents_description[$k]}}','Details');"></td>
+                                                
                                                 <td style='@if($documents_status[$k]=="Current") color:#4caf50 @else color:#f44336  @endif'>{{ $documents_status[$k]  }}</td>
 
                                                 <td class="action">
@@ -159,6 +161,7 @@
                                         @endif
                                         </tbody>
                                     </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -173,7 +176,7 @@
                         <div class="ms-panel-body">
                             <div class="row">
                                 <div class="col-md-12">
-                                    
+                                    <div class="table-responsive">
                                     <table class="table table-striped thead-primary w-100 dataTable no-footer">
                                         <thead>
                                         <tr>
@@ -190,6 +193,7 @@
 
                                         </tbody>
                                     </table>
+                                    </div>
                                 </div>
                             </div>
 
@@ -219,6 +223,7 @@
                                     @php $support_description=json_decode($setting['support_description'],true); @endphp
                                     @php $support_required_by_law=json_decode($setting['support_required_by_law'],true); @endphp
                                     @php $documents_support_status=json_decode($setting['documents_support_status'],true); @endphp
+                                    <div class="table-responsive">
                                     <table class="table table-striped thead-primary w-100 dataTable no-footer">
                                         <thead>
                                         <tr>
@@ -240,7 +245,8 @@
                                                 <td>{{$va}}</td>
                                                 <td class="exp_{{ $class }}"> @if(isset($pet_document[$class]->exp_date)) {{ $pet_document[$class]->exp_date }} @endif</td>
                                                 <td>@if(isset($support_required_by_law[$k])) @if($support_required_by_law[$k]==1) Yes @else No @endif @endif</td>
-                                                <td><img src="/assets/img/info.png" data-toggle="modal" data-target="#details" onclick="showdetails('{{$support_description[$k]}}','{{$ref}}')"></td>
+                                                {{-- <td><img src="/assets/img/info.png" data-toggle="modal" data-target="#details" onclick="showdetails('{{$support_description[$k]}}','{{$ref}}')"></td> --}}
+                                                <td><img src="/assets/img/info.png" onclick="sweetBasic('{{$support_description[$k]}}','Details')"></td>
                                                 <td style='@if($documents_support_status[$k]=="Current") color:#4caf50 @else color:#f44336  @endif'>{{ $documents_support_status[$k]  }}</td>
 
                                                 <td class="action">
@@ -265,6 +271,7 @@
                                         @endif
                                         </tbody>
                                     </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -326,6 +333,11 @@
     </div>
 
     <script>
+
+        function sweetBasic(description, title) {
+            Swal.fire(title, description);
+        }
+
         function submitform() {
             var tags = $("#tags").val();
             var pet_ref = $("#pet_ref").val();

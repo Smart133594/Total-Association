@@ -88,9 +88,9 @@
                                 <thead>
                                 <tr role="row">
                                     <th>S.No.</th>
+                                    <th>Name</th>
                                     <th>Property</th>
                                     <th>Resident</th>
-                                    <th>Name</th>
                                     <th>Phone</th>
                                     <th>Email</th>
                                     <th>Duration</th>
@@ -103,16 +103,16 @@
                                     @foreach($alldata as $key=>$val)
                                         <tr role="row" class="odd">
                                             <td class="sorting_1" >{{$key+1}}</td>
+                                            <td>{{$val->firstName}} {{$val->middleName}} {{$val->lastName}}</td>
                                             <td> {{ $property[$val->property_id]->building}} {{$allassociation[$val->associationId]}} - @if($property[$val->property_id]->type=="Multi Dwelling")  {{ $property[$val->property_id]->aptNumber}} @else {{ $property[$val->property_id]->address1}}  @endif</td>
                                             <td>{{$val->rfname}} {{$val->rlname}}</td>
-                                            <td>{{$val->firstName}} {{$val->middleName}} {{$val->lastName}}</td>
                                             <td>{{$val->phoneNumber}}</td>
                                             <td>{{$val->email}}</td>
                                             <td>{{ date("d M", strtotime($val->startingDate))}} - {{ date("d M Y", strtotime($val->endDate))}} </td>
                                             <td>@if($val->status==1)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif </td>
                                             <td>@if($val->BlackList && $val->BlackList->isblock) {{ $val->BlackList->description }} @else<i class="fas fa-dot-circle dot-green"></i>@endif </td>
                                             <td class="action">
-                                               <a href="/guest/{{ $val->edit_id }}/edit"><i class="fas fa-pencil-alt ms-text-primary"></i></a>
+                                               {{-- <a href="/guest/{{ $val->edit_id }}/edit"><i class="fas fa-pencil-alt ms-text-primary"></i></a> --}}
                                                 {{--<form action="{{ route('master-association.destroy',$val->id) }}" method="post">
                                                     {{ method_field('delete') }}
                                                     {{ csrf_field() }}
@@ -124,7 +124,7 @@
                                                         <i class="fas fa-th"></i>
                                                     </a>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                        <a class="dropdown-item" href="/guest/{{ $val->edit_id }}/edit">See Info</a>
+                                                        <a class="dropdown-item" href="/guest/{{ $val->edit_id }}/edit">Guest Info</a>
                                                         <a class="dropdown-item" href="/bulk-communication?type=Guests&user={{ $val->edit_id }}"> Send Email </a>
                                                         <a class="dropdown-item" href="/letter-generator?type=Guests&user={{ $val->edit_id }}"> Send Letter </a>
                                                         @if ($val->BlackList && $val->BlackList->isblock)

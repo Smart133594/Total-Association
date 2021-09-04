@@ -1,5 +1,5 @@
 @extends('admin.layouts.master')
-@section('title', 'Properties Details')
+@section('title', 'Property Details')
 @section('content')
 
 
@@ -13,12 +13,12 @@
                             Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page"><a
                             href="{{ route('properties.index') }}">Properties</a></li>
-                    <li class="breadcrumb-item active" aria-current="page"><a href="#">Properties Details</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="#">Property Details</a></li>
                 </ol>
             </nav>
             <div class="ms-panel">
                 <div class="ms-panel-header ms-panel-custome">
-                    <h2>Properties Details</h2>
+                    <h2>Property Details</h2>
                 </div>
                 <div class="ms-panel-body">
                     <div class="row">
@@ -32,7 +32,7 @@
                                         </tr>
                                     @endif
                                     <tr>
-                                        <td>Dwelling</td>
+                                        <td>Type</td>
                                         <td>{{ $property->type }}</td>
                                     </tr>
                                     @if ($property->type == 'Multi Dwelling')

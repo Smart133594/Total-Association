@@ -32,6 +32,7 @@
                             <a href="{{route('department.create', 'department='.$department->edit_id)}}" class="btn btn-sm btn-primary m-0">+</a>
                         </div>
                     </div>
+                    <div class="table-responsive">
                     <table class="table table-striped thead-primary w-100 data-table">
                         <thead>
                             <tr>
@@ -82,6 +83,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    </div>
                     <hr>
                 @endforeach
             </div>

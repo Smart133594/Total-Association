@@ -14,7 +14,7 @@
         <td>{{$va}}</td>
         <td class="exp_{{ $class }}"> @if(isset($pet_document[$class]->exp_date)) {{ $pet_document[$class]->exp_date }} @endif</td>
         <td>@if(isset($vrequired_by_law[$k])) @if($vrequired_by_law[$k]==1) Yes @else No @endif @endif</td>
-        <td><img src="/assets/img/info.png" data-toggle="modal" data-target="#details" onclick="showdetails('{{$vdescription[$k]}}','{{$ref}}')"></td>
+        <td><img src="/assets/img/info.png" onclick="sweetBasic('{{$vdescription[$k]}}','Details')"></td>
         <td style='@if($vdoc_status[$k]=="Current") color:#4caf50 @else color:#f44336  @endif'>{{ $vdoc_status[$k]  }}</td>
 
         <td class="action">

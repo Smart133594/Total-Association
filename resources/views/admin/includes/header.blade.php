@@ -28,6 +28,8 @@
   <link href="/assets/css/toastr.min.css" rel="stylesheet">
   <link href="/assets/css/sweetalert2.min.css" rel="stylesheet">
   <script src="/assets/js/jquery-3.3.1.min.js"></script>
+  <script src="/assets/js/sweet-alerts.js"> </script>
+
   <script src="https://cdn.tiny.cloud/1/tvy0gb4sl9ztjj5sepdudaa6oer1hscx0m1iqnh7tb9wpxz2/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
   <script src="/assets/js/toastr.min.js"> </script>
   <script src="/assets/js/sweetalert2.min.js"> </script>

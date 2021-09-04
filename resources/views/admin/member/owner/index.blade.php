@@ -96,7 +96,7 @@
                                     <th>Owner Name</th>
                                     <th>Phone Number</th>
                                     <th>Company Name</th>
-                                    <th>Incorporation</th>
+                                    <th>Corporation</th>
                                     <th class="no-sort">Status</th>
                                     <th class="no-sort">Action</th>
                                 </tr>
@@ -134,7 +134,7 @@
                                                         <a class="dropdown-item" href="/letter-generator?type=Owners&user={{ $val->edit_id }}"> Send Letter </a>
 
                                                         <a class="dropdown-item" href="/incident?filter=owner&id={{ $val->edit_id }}">Incidents</a>
-                                                        <a class="dropdown-item" href="/fine-incident/{{ $val->edit_id }}">Fine Incident</a>
+                                                        <a class="dropdown-item" href="/fine-incident/{{ $val->edit_id }}">Create Incident</a>
                                                         {{-- <a class="dropdown-item" href="/fines?filter=owner&id={{ $val->edit_id }}">Issue Fine</a> --}}
                                                         <a class="dropdown-item" href="#">Create Appointment</a>
                                                         <a class="dropdown-item" href="#">Access Control</a>

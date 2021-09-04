@@ -37,6 +37,7 @@
                                     <th>Images</th>
                                     <th>Pet Name</th>
                                     <th>Pet Type</th>
+                                    <th>Pet Breed</th>
                                     <th>Property</th>
                                     <th>Owner</th>
                                     <th class="no-sort">Status</th>
@@ -48,9 +49,10 @@
                                     @foreach($alldata as $key=>$val)
                                         <tr role="row" class="odd">
                                             <td class="sorting_1">{{$key+1}}</td>
-                                            <td><img src="/thumb/{{$val->image}}" style="border-radius:0;height:50px;width:auto;max-width:100px"></td>
+                                            <td><img src="/thumb/{{$val->image}}" style="border-radius:0;height:100px;width:auto;max-width:200px"></td>
                                             <td>{{$val->petName}}</td>
                                             <td>{{$pettype[$val->pettypeId]}}</td>
+                                            <td>{{$val->breedAndDesc}}</td>
                                             <td>{{$property[$val->propertyId]}}</td>
                                             <td>{{$owner[$val->ownerId]}}</td>
                                             <td>@if($val->status==1)<i class="fas fa-dot-circle dot-green"></i>@elseif($val->status==0) <i class="fas fa-dot-circle dot-yellow"></i>@else <i class="fas fa-dot-circle dot-red"></i>@endif </td>

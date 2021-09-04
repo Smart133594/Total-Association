@@ -213,12 +213,15 @@ class PetController extends Controller
     public function showdetails($tags, $pet_ref)
     {
         $doc = Petdocument::where('pet_ref', $pet_ref)->where('tags', $tags)->first();;
+        if($doc->documents == '') {
+            echo '<p>Sorry. Not inputed file</p>';
+            return;
+        }
         if (strpos($doc->documents, 'pdf') == false) {
             echo '<img src="/upload/' . $doc->documents . '" style="width:100%">';
         } else {
             echo '<iframe src="/upload/' . $doc->documents . '" style="width:100%;height: 600px"></iframe>';
         }
-
     }
 
     public function uploaddocument(Request $request)

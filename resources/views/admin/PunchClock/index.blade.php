@@ -108,62 +108,64 @@ then just press go.
                     </h5>
                     <div class="m-0 p-0">
                         <button class="btn btn-primary btn-sm m-0" onclick="openModal()"  >Add New Time Entry</button>
-                        <button class="btn btn-primary btn-sm m-0" data-toggle="modal" data-target="#time_sheet">Export Time Sheet</button>
+                        {{-- <button class="btn btn-primary btn-sm m-0" data-toggle="modal" data-target="#time_sheet">Export Time Sheet</button> --}}
                     </div>
                 </div>
-                <table class="table table-striped thead-primary w-100 data-table"> 
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Image Captured</th>
-                            <th>Clock In Date</th>
-                            <th>Clock In Time</th>
-                            <th>Clock Out Date</th>
-                            <th>Clock Out Time</th>
-                            <th>Total</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($punchClock as $index => $item)
-                            <?php $detail_uri = '/punch-clock/'.$item->edit_id ?>
+                <div class="table-responsive">
+                    <table class="table table-striped thead-primary w-100 data-table"> 
+                        <thead>
                             <tr>
-                                <td onclick="goto('{{ $detail_uri }}')">{{ $index+1 }}</td>
-                                <td onclick="goto('{{ $detail_uri }}')">
-                                    @php
-                                        $img = @$item->meta['image'];
-                                        if($img == null) {
-                                            echo 'No Image';
-                                        } else {
-                                            echo "<img src='/upload/$img' class='image-responsive' style='height: 50px; width: 50px; max-width: 50px !important;'/>";
-                                        }
-                                    @endphp
-                                </td>
-                                <td onclick="goto('{{ $detail_uri }}')">{{ date('d/m/Y', strtotime($item->in_date)) }}</td>
-                                <td onclick="goto('{{ $detail_uri }}')">{{ date('h:i', strtotime($item->in_date)) }}</td>
-                                <td onclick="goto('{{ $detail_uri }}')">{{ $item->out_date ? date('d/m/Y', strtotime($item->out_date)) : '-' }}</td>
-                                <td onclick="goto('{{ $detail_uri }}')">{{ $item->out_date ? date('h:i', strtotime($item->out_date)) : '-' }}</td>
-                                <td onclick="goto('{{ $detail_uri }}')">{{ $item->duration }}</td>
-                                <td>
-                                    <div class="dropdown show">
-                                        <a class="cust-btn dropdown-toggle note-action" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-th"></i>
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            <a class="dropdown-item" href="{{ $detail_uri }}" >Detail</a>
-                                            {{-- <a class="dropdown-item" href="#" onclick="openModal({{ $item }})" >Edit</a> --}}
-                                            <form action="{{ route('punch-clock.destroy', $item->id) }}" method="post">
-                                                @method("delete")
-                                                @csrf
-                                                <button type="submit" class="dropdown-item" onclick=" return confirm('Are you sure to delete this? ')">Delete</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </td>
+                                <th>#</th>
+                                <th>Image Captured</th>
+                                <th>Clock In Date</th>
+                                <th>Clock In Time</th>
+                                <th>Clock Out Date</th>
+                                <th>Clock Out Time</th>
+                                <th>Total</th>
+                                <th>Action</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($punchClock as $index => $item)
+                                <?php $detail_uri = '/punch-clock/'.$item->edit_id ?>
+                                <tr>
+                                    <td onclick="goto('{{ $detail_uri }}')">{{ $index+1 }}</td>
+                                    <td onclick="goto('{{ $detail_uri }}')">
+                                        @php
+                                            $img = @$item->in_meta->image;
+                                            if($img == null) {
+                                                echo 'No Image';
+                                            } else {
+                                                echo "<img src='/upload/$img' class='image-responsive' style='height: 50px; width: 50px; max-width: 50px !important;'/>";
+                                            }
+                                        @endphp
+                                    </td>
+                                    <td onclick="goto('{{ $detail_uri }}')">{{ date('d/m/Y', strtotime($item->in_date)) }}</td>
+                                    <td onclick="goto('{{ $detail_uri }}')">{{ date('h:i', strtotime($item->in_date)) }}</td>
+                                    <td onclick="goto('{{ $detail_uri }}')">{{ $item->out_date ? date('d/m/Y', strtotime($item->out_date)) : '-' }}</td>
+                                    <td onclick="goto('{{ $detail_uri }}')">{{ $item->out_date ? date('h:i', strtotime($item->out_date)) : '-' }}</td>
+                                    <td onclick="goto('{{ $detail_uri }}')">{{ $item->duration }}</td>
+                                    <td>
+                                        <div class="dropdown show">
+                                            <a class="cust-btn dropdown-toggle note-action" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-th"></i>
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                <button class="dropdown-item" onclick="window.location.href='{{ $detail_uri }}'" >Detail</button>
+                                                {{-- <a class="dropdown-item" href="#" onclick="openModal({{ $item }})" >Edit</a> --}}
+                                                <form action="{{ route('punch-clock.destroy', $item->id) }}" method="post">
+                                                    @method("delete")
+                                                    @csrf
+                                                    <button type="submit" class="dropdown-item" onclick=" return confirm('Are you sure to delete this? ')">Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
                 <p>Total Time = {{ $times }}</p>
             </div>
             <div>
@@ -206,20 +208,41 @@ then just press go.
                                     <input type="date" name="pay_period_to" id="pay_period_to" class="form-control">
                                 </div>
                             </div>
+<style>
+    @media screen and (max-width: 966px) {
+        #divb { min-width: 20% !important; margin-left: -2% !important; }
+        #divc { margin-left: -3%; }
+        #divd { min-width: 52% !important; }
+        #dive { margin-left: 6% !important; }
+        #divf { min-width: 40% !important; margin-top: 1%; margin-left: -1%; }
+    }
+    #divb { margin-left: -5%; }
+    #divc { margin-left: -3%; }
+    #divd { margin-left: -1%; }
+    #dive { margin-left: -2%; }
+    #divf { margin-left: -1%; }
 
+</style>
                             <div class="mb-3">
                                 <div class="row">
-                                    <div class="col-md-1">
+                                    <div class="col-1" id="diva">
                                         <label class="ms-checkbox-wrap">
                                             <input type="checkbox" name="hours_shift" id="hours_shift" checked>
                                             <i class="ms-checkbox-check"></i>
                                         </label>
                                     </div>
-                                    <div class="col-md-3" style="margin-left: -5%; margin-top: 3px;">If over</div>
+                                    <div class="col-1" id="divb">If over</div>
+                                    <div class="col-2" id="divc"><input type="number" id="in_a" value="0" class="col-12"/></div>
+                                    <div class="col-2" id="divd">Hours shift, Deduct</div>
+                                    <div class="col-2" id="dive"><input type="number" id="in_b" value="0" class="col-12"/></div>
+                                    <div class="col-2" id="divf">Min for Break</div>
+
+                                    {{-- <div class="col-md-3" style="margin-left: -5%; margin-top: 3px;">If over</div>
                                     <div class="col-md-2" style="margin-left: -20%; margin-top: -5px;"><input type="number" id="in_a" value="0" class="form-control col-md-6"/></div>
                                     <div class="col-md-3" style="margin-left: -9%; margin-top: 3px;">Hours shift, Deduct</div>
                                     <div class="col-md-2" style="margin-left: -12%; margin-top: -5px;"><input type="number" id="in_b" value="0" class="form-control col-md-6"/></div>
-                                    <div class="col-md-3" style="margin-left: -9%; margin-top: 3px;">Min for Break</div>
+                                    <div class="col-md-3" style="margin-left: -9%; margin-top: 3px;">Min for Break</div> --}}
+
                                 </div>
                             </div>
                             <div class="mb-3">

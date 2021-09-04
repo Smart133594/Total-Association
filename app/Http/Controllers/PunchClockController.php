@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PunchClock;
 use App\Models\Department;
 use App\Models\PunchClockMeta;
+use App\Models\Subassociation;
 use App\Models\WorkForce;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -93,8 +94,12 @@ class PunchClockController extends Controller
             $punchClock = $punchClock->where('out_date', '<=', $request->pay_period_to);
         }
         $punchClock = $punchClock->get();
-        $result = '';
+        $result = ''; $res2 = ''; $result_duration = 0;
+        $association = null;
         foreach ($punchClock as $key => $value) {
+            if($key==0) {
+                $association = Subassociation::where('id', $value->association)->first();
+            }
             $index = $key+1;
            
             $string_format = "h:i";
@@ -112,7 +117,9 @@ class PunchClockController extends Controller
                     if($duration > $request->hours_shift)
                         $duration -= $request->per_minutes * 60;
                 }
-                
+
+                $result_duration += $duration;
+
                 $hours = intval($duration/3600);
                 $duration=$duration%3600;
                 $mins = intval($duration/60);
@@ -126,13 +133,28 @@ class PunchClockController extends Controller
                 $times = "Clocked In";
             }
             
-            $meta = $value->PunchClockMeta();
+            $meta = $value->PunchClockMeta;
             $worker = $value->Worker;
             if($worker == null ) {
                 $worker = ['firstname' => '', 'lastname' => '', 'middlename' => '', 'birthday' => ''];
             }
-            $in_meta = $meta['in_meta'];
-            $out_meta = $meta['out_meta'];
+
+            $in_meta = null;
+            $out_meta = null;
+
+            $lunch = explode(" ", $value->in_date)[1];
+            $lunch = substr($lunch, 0, 5);
+            $res2.="<tr><td>$index</td>
+            <td>$value->in_date</td>
+            <td>$value->out_date</td>
+            <td>$lunch</td>
+            <td>$times</td>
+        </tr>";
+
+            foreach ($meta as $key => $value) {
+                if($value->AccessDevice->type == 0) $in_meta = $value;
+                else $out_meta = $value;
+            }
 
             $result .= "<tr>
                             <td>$index</td>
@@ -182,6 +204,66 @@ class PunchClockController extends Controller
                         </thead>
                         <tbody>$result</tbody>
                     </table>";
+                    $res1 = '
+<table>
+    <tr>
+        <th colspan="5" style="text-align: center;">Employee Time Sheet</th>
+    </tr>
+
+    <tr><td colspan="5"></td></tr>
+
+    <tr>
+        <td colspan="5">'."$association->legalName".'</td>
+    </tr>
+    <tr>
+        <td colspan="2">'."$association->address1".'</td>
+        <td>Employee Name:</td>
+        <td colspan="2">'."$worker->firstname $worker->middlename $worker->lastname".'</td>
+    </tr>
+    <tr>
+        <td colspan="2">'."$association->address2".'</td>
+        <td>From Date</td>
+        <td colspan="2">'."$request->pay_period_from".'</td>
+    </tr>
+    <tr>
+        <td colspan="2">'."$association->city, $association->state, $association->pincode".'</td>
+        <td>To Date:</td>
+        <td colspan="2">'."$request->pay_period_to".'</td>
+    </tr>
+    <tr>
+        <td colspan="2">'."$association->phoneNo".'</td>
+        <td></td>
+        <td colspan="2"></td>
+    </tr>
+    <tr>
+        <td colspan="2">'.$association->email.'</td>
+        <td></td>
+        <td colspan="2"></td>
+    </tr>
+
+    <tr><td colspan="5"></td></tr>
+
+    <tr>
+        <td>#</td>
+        <td>Login</td>
+        <td>Logout</td>
+        <td>Lunch</td>
+        <td>Total Time</td>
+    </tr>';
+
+    $hours = intval($result_duration/3600);
+    $result_duration=$result_duration%3600;
+    $mins = intval($result_duration/60);
+    $times = ($hours < 10 ? 0 : '').$hours.':'.($mins < 10 ? 0 : '').$mins;
+
+    $res3='
+    <tr>
+        <td style="text-align: right;" colspan="4">Total:</td>
+        <td>'.$times.'</td>
+    </tr>
+</table>';
+                 
+        return "$res1"."$res2"."$res3";
         return $result;
     }
 
@@ -237,6 +319,7 @@ class PunchClockController extends Controller
         $id = Crypt::decryptString($id);
         //
         $punchClock = PunchClock::where('id', $id)->first();
+        $association = Subassociation::where('id', $punchClock->association)->get();
 
         if($punchClock->out_date) {
             $duration = strtotime($punchClock->out_date) - strtotime($punchClock->in_date);
@@ -263,7 +346,7 @@ class PunchClockController extends Controller
         $punchClock->worker_info = $punchClock->Worker;
 
         
-        return view('admin.PunchClock.detail', compact('punchClock'));
+        return view('admin.PunchClock.detail', compact('punchClock', 'association'));
     }
 
     /**

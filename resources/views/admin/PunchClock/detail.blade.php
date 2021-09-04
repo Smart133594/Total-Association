@@ -4,8 +4,8 @@
 <?php 
     function _OBJVALUE($object, $key) {
         try {
-            if($object && isset($object[$key])) {
-                return $object[$key];
+            if(@$object && isset($object[$key])) {
+                return @$object[$key];
             }
         } catch (\Throwable $th) {
         }
@@ -76,7 +76,7 @@
                 </div>
             </div>
             <div style="padding:10px">
-                <h6>Association: {{ _OBJVALUE($punchClock, "association") }}</h6>
+                <h6>Association: {{ @$association[0]->legalName }}</h6>
                 <h6>Current State: {{ _OBJVALUE($punchClock, "state") == 0 ? "Clocked In" : "Clocked Out" }}</h6>
                 <p>{{ _OBJVALUE($punchClock, "note") }}</p>
             </div>
@@ -85,9 +85,9 @@
                 <div class="col-6">
                     <h5>Clock In</h5>
                     <hr>
-                    <p>Serial Number: {{ _OBJVALUE($punchClock->in_meta->AccessDevice, "serial_number") }}</p>
-                    <p>IP Address: {{ _OBJVALUE($punchClock->in_meta->AccessDevice, "ip_address") }}</p>
-                    <p>Status: {{ _OBJVALUE($punchClock->in_meta->AccessDevice, "state") == 0 ? "Disactive" : "Active" }}</p>
+                    <p>Serial Number: {{ @_OBJVALUE($punchClock->in_meta->AccessDevice, "serial_number") }}</p>
+                    <p>IP Address: {{ @_OBJVALUE($punchClock->in_meta->AccessDevice, "ip_address") }}</p>
+                    <p>Status: {{ @_OBJVALUE($punchClock->in_meta->AccessDevice, "state") == 0 ? "Disactive" : "Active" }}</p>
                     <p>Date: {{ _OBJVALUE($punchClock, "in_date") }}</p>
                     @if (_OBJVALUE($punchClock, "in_meta"))
                         <p>Location: {{ _OBJVALUE($punchClock->in_meta, "city") }}, {{ _OBJVALUE($punchClock->in_meta, "area") }}, {{ _OBJVALUE($punchClock->in_meta, "country") }}</p>
