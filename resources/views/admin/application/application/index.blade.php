@@ -1,7 +1,20 @@
 @extends('admin.layouts.master')
 @section('title', 'Application')
 @section('content')
-
+<style>
+    table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 100px;
+    }
+    td.text-flow {
+        white-space: nowrap; 
+        width: 100px; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
     <div class="ms-content-wrapper">
         <div class="row">
             <div class="col-md-12">
@@ -32,7 +45,7 @@
                     </div>
                     <div class="ms-panel-body">
                         @include('admin.includes.msg')
-                            <table id="data-table" class="table-responsive table table-striped thead-primary w-100">
+                            <table id="data-table" class="d-block d-md-table table-responsive table table-striped thead-primary w-100">
                                 <thead>
                                 <tr role="row">
                                     <th>S.No.</th>
@@ -52,11 +65,11 @@
                                     @foreach($alldata as $key=>$val)
                                         <tr role="row" class="odd">
                                             <td class="sorting_1">{{$key+1}}</td>
-                                            <td>{{$val->applicationType}}</td>
+                                            <td class="text-flow">{{$val->applicationType}}</td>
 
-                                            <td>{{$val->firstName}} {{$val->middleName}} {{$val->lastName}}</td>
-                                            <td>{{$val->phoneNo}}</td>
-                                            <td>{{$val->email}}</td>
+                                            <td class="text-flow">{{$val->firstName}} {{$val->middleName}} {{$val->lastName}}</td>
+                                            <td class="text-flow">{{$val->phoneNo}}</td>
+                                            <td class="text-flow">{{$val->email}}</td>
                                             <td>@if($val->paymentStatus==1)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif </td>
                                             <td>@if($val->background_check==1)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif </td>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\DepartmentTask;
 use App\Models\DepartmentNote;
+use App\Models\WorkForce;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Auth;
@@ -19,11 +20,21 @@ class DepartmentController extends Controller
     public function index()
     {
         //
+        $workforce = WorkForce::get();
+        
         $departments = Department::select("*")->orderby('order')->get();
         foreach ($departments as $key => $value) {
             $departments[$key]['edit_id'] = Crypt::encryptString($value->id);
+            
+            if(isset($_GET['emp_'.$value->id])) {
+                $emp_id = $_GET['emp_'.$value->id];
+                if($emp_id > 0) {
+                    $departments[$key]->Tasks = $departments[$key]->Tasks->where('workerid', $emp_id);
+                }
+            }
+
         }
-        return view("admin.Department.index" , compact('departments'));
+        return view("admin.Department.index" , compact('departments', 'workforce'));
     }
 
     /**
@@ -34,11 +45,17 @@ class DepartmentController extends Controller
     public function create(Request $request)
     {
         //
+        $departs = Department::get();
+        $str_departs = '';
+        foreach ($departs as $key => $value) {
+            $str_departs.="<option value='$value->id'>$value->department</option>";
+        }
         $id = Crypt::decryptString($request->department);
         $department = Department::where('id', $id)->first();
         $department['edit_id'] = Crypt::encryptString($department->id);
         $departmentTask = null;
-        return view("admin.Department.create" , compact('department', 'departmentTask'));
+        $display_property = "display: none;";
+        return view("admin.Department.create" , compact('department', 'departmentTask', 'display_property', 'str_departs'));
     }
 
     /**
@@ -50,16 +67,22 @@ class DepartmentController extends Controller
     public function store(Request $request)
     {
         //
-        $departmentid = $request->departmentid;
+        $departmentid = $request->depart; //$request->departmentid;
         $departmentTaskid = $request->departmentTaskid;
-        $departmentid = Crypt::decryptString($departmentid);
+        // $departmentid = Crypt::decryptString($departmentid);
         $workerid = $request->workerid;
         if(!$workerid) {
             $workerid = 0; 
         }
+        
+        $url = '';
+        foreach ($request->files as $kk => $r) {
+            $url = $this->uploadimage($request, $kk);
+        }
         if($departmentTaskid) {
             $departmentTaskid = Crypt::decryptString($departmentTaskid);
-            DepartmentTask::where('id', $departmentTaskid)
+            if($url == '') {
+                DepartmentTask::where('id', $departmentTaskid)
                 ->update([
                     'workerid' => $workerid, 
                     'departmentid' => $departmentid, 
@@ -69,22 +92,36 @@ class DepartmentController extends Controller
                     'priority' => $request->priority,
                     'description' => $request->description,
                 ]);
+            } else {
+                DepartmentTask::where('id', $departmentTaskid)
+                ->update([
+                    'workerid' => $workerid, 
+                    'departmentid' => $departmentid, 
+                    'state' => $request->status,
+                    'task' => $request->task,
+                    'date' => $request->date,
+                    'priority' => $request->priority,
+                    'description' => $request->description,
+                    'image' => $url,
+                ]);
+            }
         }else{
             $departmentTaskid = DepartmentTask::create($request->merge([
                 'workerid' => $workerid,
                 'departmentid' => $departmentid,
-                'state' => $request->status
+                'state' => $request->status,
+                'image' => $url,
             ])->all())->id;
         }
-        foreach ($request->note as $key => $value) {
-            if($value){
-                DepartmentNote::create([
-                    'departmenttaskid' => $departmentTaskid,
-                    'userid' => Auth::user()->id,
-                    'note' => $value
-                ]);
-            }
-        }
+        // foreach ($request->note as $key => $value) {
+        //     if($value){
+        //         DepartmentNote::create([
+        //             'departmenttaskid' => $departmentTaskid,
+        //             'userid' => Auth::user()->id,
+        //             'note' => $value
+        //         ]);
+        //     }
+        // }
         return redirect()->route("department.index");
     }
 
@@ -113,12 +150,22 @@ class DepartmentController extends Controller
     {
         //
         $id = Crypt::decryptString($id);
+        $departs = Department::get();
+        
         $departmentTask = DepartmentTask::where('id', $id)->first();
         // $id = Crypt::decryptString($request->department);
         $department = $departmentTask->Department;
         $departmentTask['edit_id'] = Crypt::encryptString($departmentTask->id);
+        $departid = $departmentTask->departmentid;
+
+        $str_departs = '';
+        foreach ($departs as $key => $value) {
+            $str_departs.="<option value='$value->id'>$value->department</option>";
+        }
+
         $department['edit_id'] = Crypt::encryptString($department->id);
-        return view("admin.Department.create" , compact('department', 'departmentTask'));
+        $display_property = "";
+        return view("admin.Department.create" , compact('departid', 'department', 'departmentTask', 'display_property', 'str_departs'));
     }
 
     /**

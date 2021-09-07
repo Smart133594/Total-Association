@@ -1,7 +1,20 @@
 @extends('admin.layouts.master')
 @section('title', 'Rental Events List')
 @section('content')
-
+<style>
+    table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 100px;
+    }
+    td.text-flow {
+        white-space: nowrap; 
+        width: 100px; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
     <div class="ms-content-wrapper">
         <div class="row">
             <div class="col-md-12">
@@ -40,11 +53,11 @@
                             <table id="data-table" class="d-block d-md-table table-responsive table table-striped thead-primary w-100">
                                 <thead>
                                 <tr role="row">
-                                    <th>S. No</th>
-                                    <th>Renter</th>
-                                    <th>From</th>
-                                    <th>To</th>
-                                    <th>Payment Status</th>
+                                    <th>S.No</th>
+                                    <th style="min-width: 100px">Renter</th>
+                                    <th style="min-width: 100px">From</th>
+                                    <th style="min-width: 100px">To</th>
+                                    <th style="min-width: 100px">Payment Status</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -52,9 +65,9 @@
                                     @foreach($facilities->FacilitiesRent as $key=>$val)
                                         <tr role="row" class="odd">
                                             <td class="sorting_1" onclick="goto('/owner/{{ $val->edit_id }}')">{{$key+1}}</td>
-                                            <td> {{$val->RentrsName}}</td>
-                                            <td>{{$val->fromDate}}</td>
-                                            <td>{{$val->toDate}}</td>
+                                            <td class="text-flow"> {{$val->RentrsName}}</td>
+                                            <td class="text-flow">{{$val->fromDate}}</td>
+                                            <td class="text-flow">{{$val->toDate}}</td>
 
                                             <td>@if($val->paymentStatus==1)<i class="fas fa-dot-circle dot-green"></i>@else<i
                                                     class="fas fa-dot-circle dot-red"></i>@endif </td>

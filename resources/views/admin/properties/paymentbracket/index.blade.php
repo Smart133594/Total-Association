@@ -1,7 +1,20 @@
 @extends('admin.layouts.master')
 @section('title', 'Payment Bracket')
 @section('content')
-
+<style>
+    table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 100px;
+    }
+    td.text-flow {
+        white-space: nowrap; 
+        width: 10px; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
     <div class="ms-content-wrapper">
         <div class="row">
             <div class="col-md-12">
@@ -31,11 +44,11 @@
                                 <thead>
                                 <tr role="row">
                                     <th>S.No.</th>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th>Fee Paid </th>
-                                    <th>Fees Value</th>
-                                    <th>Budget in %</th>
+                                    <th style="min-width: 100px">Name</th>
+                                    <th style="min-width: 100px">Description</th>
+                                    <th style="min-width: 100px">Fee Paid </th>
+                                    <th style="min-width: 100px">Fees Value</th>
+                                    <th style="min-width: 100px">Budget in %</th>
                                     <th class="no-sort">Status</th>
                                     <th class="no-sort">Action</th>
                                 </tr>
@@ -45,11 +58,11 @@
                                     @foreach($alldata as $key=>$val)
                                         <tr role="row" class="odd">
                                             <td class="sorting_1">{{$key+1}}</td>
-                                            <td>{{$val->payBracketName}}</td>
-                                            <td>{!! $val->description !!}</td>
-                                            <td>{{$val->feePaidPerMonth}}</td>
-                                            <td>{{$val->feesValue}}</td>
-                                            <td>{{$val->budget}}</td>
+                                            <td class="text-flow">{{$val->payBracketName}}</td>
+                                            <td class="text-flow">{!! $val->description !!}</td>
+                                            <td class="text-flow">{{$val->feePaidPerMonth}}</td>
+                                            <td class="text-flow">{{$val->feesValue}}</td>
+                                            <td class="text-flow">{{$val->budget}}</td>
                                             <td>@if($val->status==1)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif </td>
                                             <td class="action">
                                                 <a href="/payment-bracket/{{ $val->edit_id }}/edit"><i class="fas fa-pencil-alt ms-text-primary"></i></a>

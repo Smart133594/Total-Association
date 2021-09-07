@@ -1,7 +1,20 @@
 @extends('admin.layouts.master')
 @section('title', 'Building')
 @section('content')
-
+<style>
+    table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 100px;
+    }
+    td.text-flow {
+        white-space: nowrap; 
+        width: 100px; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
     <div class="ms-content-wrapper">
         <div class="row">
             <div class="col-md-12">
@@ -21,7 +34,7 @@
                     </div>
                     <div class="ms-panel-body">
                         <div class="row" style="margin-bottom: 30px">
-                            <div class="col-md-3">
+                            <div class="col-md-3" style="margin-bottom: 1%;">
                                 <form action="" method="get">
                                     <select name="status" class="form-control form-control-sm" onchange="this.form.submit()">
                                         <option value="">Both</option>
@@ -49,10 +62,10 @@
                                 <thead>
                                 <tr role="row">
                                     <th>S.No.</th>
-                                    <th>Building</th>
-                                    <th>Address</th>
-                                    <th>No of Floors</th>
-                                    <th>13th Floor</th>
+                                    <th style="min-width: 100px">Building</th>
+                                    <th style="min-width: 100px">Address</th>
+                                    <th style="min-width: 100px">No of Floors</th>
+                                    <th style="min-width: 100px">13th Floor</th>
                                     <th class="no-sort">Status</th>
                                     <th class="no-sort">Action</th>
                                 </tr>
@@ -62,10 +75,10 @@
                                     @foreach($alldata as $key=>$val)
                                         <tr role="row" class="odd">
                                             <td class="sorting_1">{{$key+1}}</td>
-                                            <td>{{$val->building}} {{$allassociation[$val->associationId]}}</td>
-                                            <td>{!! $val->address !!}</td>
-                                            <td>{{$val->noOfFloors}}</td>
-                                            <td>@if($val->is13==1) Yes @elseif($val->is13==null) NA @else No @endif</td>
+                                            <td class="text-flow">{{$val->building}} {{$allassociation[$val->associationId]}}</td>
+                                            <td class="text-flow">{!! $val->address !!}</td>
+                                            <td class="text-flow">{{$val->noOfFloors}}</td>
+                                            <td class="text-flow">@if($val->is13==1) Yes @elseif($val->is13==null) NA @else No @endif</td>
                                             <td>@if($val->status==1)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif </td>
                                             <td class="action">
                                                 <a href="/buildings/{{ $val->edit_id }}/edit"><i class="fas fa-pencil-alt ms-text-primary"></i></a>

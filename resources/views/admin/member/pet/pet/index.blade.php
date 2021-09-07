@@ -1,7 +1,20 @@
 @extends('admin.layouts.master')
 @section('title', 'Pets')
 @section('content')
-
+    <style>
+        table {
+            table-layout: fixed;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 100px;
+        }
+        td.text-flow {
+            white-space: nowrap; 
+            width: 100px; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
     <div class="ms-content-wrapper">
         <div class="row">
             <div class="col-md-12">
@@ -16,16 +29,20 @@
                 </nav>
                 <div class="ms-panel">
                     <div class="ms-panel-header ms-panel-custome">
-                        <h6>Pets</h6>
-                        <form action="" method="get" style="position: absolute;left: 215px;top: 20px">
-                            <select name="status" class="form-control form-control-sm" onchange="this.form.submit()">
-                                <option value="0" @if(isset($_GET['status']) && !empty($_GET['status'])  && $_GET['status']==0)selected @endif>In Process</option>
-                                <option value="1" @if(isset($_GET['status']) && !empty($_GET['status'])  && $_GET['status']==1)selected @endif>Approved</option>
-                                <option value="2" @if(isset($_GET['status']) && !empty($_GET['status'])  && $_GET['status']==2)selected @endif>Disabled</option>
-                                <option value="3" @if(isset($_GET['status']) && !empty($_GET['status'])  && $_GET['status']==3)selected @endif>All</option>
-                            </select>
-                        </form>
-                        <a href="{{route('pet.create')}}" class="ms-text-primary">Add Pet </a>
+                        <div class="col-2"><h6>Pets</h6></div>
+                        <div class="col-6" style="margin-top: -2px !important;">
+                            <form action="" method="get">
+                                <select name="status" style="width: 100%" class="form-control form-control-sm" onchange="this.form.submit()">
+                                    <option value="0" @if(isset($_GET['status']) && !empty($_GET['status'])  && $_GET['status']==0)selected @endif>In Process</option>
+                                    <option value="1" @if(isset($_GET['status']) && !empty($_GET['status'])  && $_GET['status']==1)selected @endif>Approved</option>
+                                    <option value="2" @if(isset($_GET['status']) && !empty($_GET['status'])  && $_GET['status']==2)selected @endif>Disabled</option>
+                                    <option value="3" @if(isset($_GET['status']) && !empty($_GET['status'])  && $_GET['status']==3)selected @endif>All</option>
+                                </select>
+                            </form>
+                        </div>
+                        <div class="col-4">
+                            <a style="float: right" href="{{route('pet.create')}}" class="ms-text-primary">Add Pet </a>
+                        </div>
                     </div>
                     <div class="ms-panel-body">
                         @include('admin.includes.msg')
@@ -34,9 +51,9 @@
                                 <tr role="row">
                                     <th>S.No.</th>
                                     <th>Images</th>
-                                    <th>Pet Name</th>
-                                    <th>Pet Type</th>
-                                    <th>Pet Breed</th>
+                                    <th style="min-width: 100px">Pet Name</th>
+                                    <th style="min-width: 100px">Pet Type</th>
+                                    <th style="min-width: 100px">Pet Breed</th>
                                     <th>Property</th>
                                     <th>Owner</th>
                                     <th class="no-sort">Status</th>
@@ -48,12 +65,12 @@
                                     @foreach($alldata as $key=>$val)
                                         <tr role="row" class="odd">
                                             <td class="sorting_1">{{$key+1}}</td>
-                                            <td><img src="/thumb/{{$val->image}}" style="border-radius:0;height:100px;width:auto;max-width:200px"></td>
-                                            <td>{{$val->petName}}</td>
-                                            <td>{{$pettype[$val->pettypeId]}}</td>
-                                            <td>{{$val->breedAndDesc}}</td>
-                                            <td>{{$property[$val->propertyId]}}</td>
-                                            <td>{{$owner[$val->ownerId]}}</td>
+                                            <td class="text-flow"><img src="/thumb/{{$val->image}}" style="border-radius:0;height:100px;width:auto;max-width:200px"></td>
+                                            <td class="text-flow">{{$val->petName}}</td>
+                                            <td class="text-flow">{{$pettype[$val->pettypeId]}}</td>
+                                            <td class="text-flow">{{$val->breedAndDesc}}</td>
+                                            <td class="text-flow">{{$property[$val->propertyId]}}</td>
+                                            <td class="text-flow">{{$owner[$val->ownerId]}}</td>
                                             <td>@if($val->status==1)<i class="fas fa-dot-circle dot-green"></i>@elseif($val->status==0) <i class="fas fa-dot-circle dot-yellow"></i>@else <i class="fas fa-dot-circle dot-red"></i>@endif </td>
                                             <td class="action">
                                                 <a href="/pet/{{ $val->edit_id }}/edit"><i class="fas fa-pencil-alt ms-text-primary"></i></a>

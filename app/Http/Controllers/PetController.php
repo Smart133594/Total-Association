@@ -81,7 +81,6 @@ class PetController extends Controller
         $name = "Pet Type";
         $path = "pet";
 
-
         if (isset($request->id)) {
             $store = Pet:: find($request->id);
             foreach ($request->files as $kk => $r) {
@@ -101,6 +100,7 @@ class PetController extends Controller
         foreach ($all as $k => $v) {
             $store->$k = $request->$k;
         }
+
         foreach ($request->files as $kk => $r) {
             if (isset($request->id)) {
                 $store->$kk = $this->replaceimage($request, $kk, $forimgupdate[$kk]);
@@ -130,9 +130,9 @@ class PetController extends Controller
         $data = Pet::where('id', $id)->first();
 
         echo '<table class="table">';
-        echo '<tr><td>Pet Name</td><td>' . $data->petName . '</td></tr>';
-        echo '<tr><td>Breed And Desc</td><td>' . $data->breedAndDesc . '</td></tr>';
-        echo '<tr><td>shotsValidDate</td><td>' . $data->shotsValidDate . '</td></tr>';
+        echo '<tr><td style="width: 150px">Pet Name</td><td>' . $data->petName . '</td></tr>';
+        echo '<tr><td style="width: 150px">Breed And Desc</td><td>' . $data->breedAndDesc . '</td></tr>';
+        echo '<tr><td style="width: 150px">shotsValidDate</td><td>' . $data->shotsValidDate . '</td></tr>';
         echo '<tr><td>Image</td><td> <a href="/upload/' . $data->image . '" target="_blank"><img src="/thumb/' . $data->image . '" style="border-radius:0px;max-width:100px;"></a></td></tr>';
         echo '<tr><td>Documents</td><td> <a href="/upload/' . $data->documents . '" target="_blank">' . $data->documents . '</a></td></tr>';
         if ($data->supportAnimal == 1) {

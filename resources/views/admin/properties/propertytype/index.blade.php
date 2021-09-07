@@ -1,7 +1,20 @@
 @extends('admin.layouts.master')
 @section('title', 'Property type')
 @section('content')
-
+<style>
+    table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 100px;
+    }
+    td.text-flow {
+        white-space: nowrap; 
+        width: 10px; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
     <div class="ms-content-wrapper">
         <div class="row">
             <div class="col-md-12">
@@ -21,7 +34,7 @@
                     </div>
                     <div class="ms-panel-body">
                         <div class="row" style="margin-bottom: 30px">
-                            <div class="col-md-3">
+                            <div class="col-md-3" style="margin-bottom: 1%">
                                 <form action="" method="get">
                                     <select name="status" class="form-control form-control-sm" onchange="this.form.submit()">
                                         <option value="">Both</option>
@@ -48,11 +61,11 @@
                                 <thead>
                                 <tr role="row">
                                     <th>S.No.</th>
-                                    <th>type</th>
-                                    <th>Property Name</th>
-                                    <th>Building</th>
-                                    <th>Maintainence Fee Bracket</th>
-                                    <th>Description</th>
+                                    <th>Type</th>
+                                    <th style="min-width: 100px">Property Name</th>
+                                    <th style="min-width: 100px">Building</th>
+                                    <th style="min-width: 200px">Maintainence Fee Bracket</th>
+                                    <th style="min-width: 100px">Description</th>
                                     <th class="no-sort">Status</th>
                                     <th class="no-sort">Action</th>
                                 </tr>
@@ -62,11 +75,11 @@
                                     @foreach($alldata as $key=>$val)
                                         <tr role="row" class="odd">
                                             <td class="sorting_1">{{$key+1}}</td>
-                                            <td>{{$val->type}}</td>
-                                            <td>{{$val->propertyName}}</td>
-                                            <td>{{$val->building}}</td>
-                                            <td>{{$val->maintainenceFeeBracket}}</td>
-                                            <td>{!! $val->propertyDescription !!}</td>
+                                            <td class="text-flow">{{$val->type}}</td>
+                                            <td class="text-flow">{{$val->propertyName}}</td>
+                                            <td class="text-flow">{{$val->building}}</td>
+                                            <td class="text-flow">{{$val->maintainenceFeeBracket}}</td>
+                                            <td class="text-flow">{!! $val->propertyDescription !!}</td>
                                             <td>@if($val->status==1)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif </td>
                                             <td class="action">
                                                 <a href="/property-type/{{ $val->edit_id }}/edit"><i class="fas fa-pencil-alt ms-text-primary"></i></a>

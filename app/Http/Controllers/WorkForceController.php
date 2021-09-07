@@ -25,6 +25,12 @@ class WorkForceController extends Controller
         //
         $workers = WorkForce::get();
         foreach ($workers as $key => $value) {
+            $departname = "";
+            if($value->Department != null){
+                $departname = $value->Department->department;
+            }
+            $workers[$key]['departname'] = $departname;
+            
             $workers[$key]['edit_id'] = Crypt::encryptString($value->id);
         }
         return view("admin.WorkForce.index", compact('workers'));

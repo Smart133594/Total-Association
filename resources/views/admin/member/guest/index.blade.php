@@ -1,7 +1,20 @@
 @extends('admin.layouts.master')
 @section('title', 'Guest')
 @section('content')
-
+    <style>
+    table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 100px;
+    }
+    td.text-flow {
+        white-space: nowrap; 
+        width: 100px; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    </style>
     <div class="ms-content-wrapper">
         <div class="row">
             <div class="col-md-12">
@@ -83,10 +96,10 @@
 
 
                         @include('admin.includes.msg')
-                            <table id="data-table" class="table-responsive table table-striped thead-primary w-100">
+                            <table id="data-table" class="d-block d-md-table table-responsive table table-striped thead-primary w-100">
                                 <thead>
                                 <tr role="row">
-                                    <th>S.No.</th>
+                                    <th>S.No</th>
                                     <th>Name</th>
                                     <th>Property</th>
                                     <th>Resident</th>
@@ -102,12 +115,12 @@
                                     @foreach($alldata as $key=>$val)
                                         <tr role="row" class="odd">
                                             <td class="sorting_1" >{{$key+1}}</td>
-                                            <td>{{$val->firstName}} {{$val->middleName}} {{$val->lastName}}</td>
-                                            <td> {{ $property[$val->property_id]->building}} {{$allassociation[$val->associationId]}} - @if($property[$val->property_id]->type=="Multi Dwelling")  {{ $property[$val->property_id]->aptNumber}} @else {{ $property[$val->property_id]->address1}}  @endif</td>
-                                            <td>{{$val->rfname}} {{$val->rlname}}</td>
-                                            <td>{{$val->phoneNumber}}</td>
-                                            <td>{{$val->email}}</td>
-                                            <td>{{ date("d M", strtotime($val->startingDate))}} - {{ date("d M Y", strtotime($val->endDate))}} </td>
+                                            <td class="text-flow">{{$val->firstName}} {{$val->middleName}} {{$val->lastName}}</td>
+                                            <td class="text-flow"> {{ $property[$val->property_id]->building}} {{$allassociation[$val->associationId]}} - @if($property[$val->property_id]->type=="Multi Dwelling")  {{ $property[$val->property_id]->aptNumber}} @else {{ $property[$val->property_id]->address1}}  @endif</td>
+                                            <td class="text-flow">{{$val->rfname}} {{$val->rlname}}</td>
+                                            <td class="text-flow">{{$val->phoneNumber}}</td>
+                                            <td class="text-flow">{{$val->email}}</td>
+                                            <td class="text-flow">{{ date("d M", strtotime($val->startingDate))}} - {{ date("d M Y", strtotime($val->endDate))}} </td>
                                             <td>@if($val->status==1)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif </td>
                                             <td>@if($val->BlackList && $val->BlackList->isblock) {{ $val->BlackList->description }} @else<i class="fas fa-dot-circle dot-green"></i>@endif </td>
                                             <td class="action">

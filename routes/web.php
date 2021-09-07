@@ -31,6 +31,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\PunchClockAuthController;
 use App\Http\Controllers\WorkLogController;
 use App\Http\Controllers\PunchClockController;
+use App\Http\Controllers\DepartManageController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -82,6 +83,7 @@ Route::middleware([CheckAdminLogin::class])->group(function () {
     Route::resource('department', DepartmentController::class);
     Route::resource('work-log', WorkLogController::class);
     Route::resource('punch-clock', PunchClockController::class);
+    Route::resource('departmanage', DepartManageController::class);
     Route::post('/exportPunchClock', [PunchClockController::class, 'exportTimeSheet']);
     /*facilities*/
     Route::get('/facilities-rental/{id}', [facilitiesController::class, 'show']);

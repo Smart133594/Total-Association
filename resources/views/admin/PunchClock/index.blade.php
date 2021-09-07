@@ -1,7 +1,20 @@
 @extends('admin.layouts.master')
 @section('title', 'Work Add/Edit')
 @section('content')
-
+<style>
+    table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 100px;
+    }
+    td.text-flow {
+        white-space: nowrap; 
+        width: 100px; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
 <div class="ms-content-wrapper">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb pl-0">
@@ -50,8 +63,8 @@
                 </div>
 
                 <div class="col-md-8">
-                    <h5>Time Period</h5>
-                    <div class="form-row mb-3">
+                    <h5 class="m-3">Time Period</h5>
+                    <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-12" style="margin-top: 2%; margin-bottom: 15%;">
                                 In order to view the work hours of an employee, please select the employee you wish to review.
@@ -111,15 +124,15 @@ then just press go.
                         {{-- <button class="btn btn-primary btn-sm m-0" data-toggle="modal" data-target="#time_sheet">Export Time Sheet</button> --}}
                     </div>
                 </div>
-                    <table class="table-responsive table table-striped thead-primary w-100 data-table"> 
+                    <table class="d-block d-md-table table-responsive table table-striped thead-primary w-100 data-table"> 
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Image Captured</th>
-                                <th>Clock In Date</th>
-                                <th>Clock In Time</th>
-                                <th>Clock Out Date</th>
-                                <th>Clock Out Time</th>
+                                <th style="min-width: 100px">Image Captured</th>
+                                <th style="min-width: 100px">Clock In Date</th>
+                                <th style="min-width: 100px">Clock In Time</th>
+                                <th style="min-width: 100px">Clock Out Date</th>
+                                <th style="min-width: 100px">Clock Out Time</th>
                                 <th>Total</th>
                                 <th>Action</th>
                             </tr>
@@ -139,11 +152,11 @@ then just press go.
                                             }
                                         @endphp
                                     </td>
-                                    <td onclick="goto('{{ $detail_uri }}')">{{ date('d/m/Y', strtotime($item->in_date)) }}</td>
-                                    <td onclick="goto('{{ $detail_uri }}')">{{ date('h:i', strtotime($item->in_date)) }}</td>
-                                    <td onclick="goto('{{ $detail_uri }}')">{{ $item->out_date ? date('d/m/Y', strtotime($item->out_date)) : '-' }}</td>
-                                    <td onclick="goto('{{ $detail_uri }}')">{{ $item->out_date ? date('h:i', strtotime($item->out_date)) : '-' }}</td>
-                                    <td onclick="goto('{{ $detail_uri }}')">{{ $item->duration }}</td>
+                                    <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ date('d/m/Y', strtotime($item->in_date)) }}</td>
+                                    <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ date('h:i', strtotime($item->in_date)) }}</td>
+                                    <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $item->out_date ? date('d/m/Y', strtotime($item->out_date)) : '-' }}</td>
+                                    <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $item->out_date ? date('h:i', strtotime($item->out_date)) : '-' }}</td>
+                                    <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $item->duration }}</td>
                                     <td>
                                         <div class="dropdown show">
                                             <a class="cust-btn dropdown-toggle note-action" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -208,7 +221,7 @@ then just press go.
                             </div>
 <style>
     @media screen and (max-width: 966px) {
-        #divb { min-width: 20% !important; margin-left: -2% !important; }
+        #divb { min-width: 22% !important; margin-left: -2% !important; }
         #divc { margin-left: -3%; }
         #divd { min-width: 52% !important; }
         #dive { margin-left: 6% !important; }

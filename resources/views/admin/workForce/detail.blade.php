@@ -92,13 +92,13 @@
                 <div class="col-md-12">
                     <hr>
                     <h5>Last Work Days</h5>
-                    <table class="table table-striped thead-primary w-100 data-table">
+                    <table class="d-block d-md-table table-responsive table table-striped thead-primary w-100 data-table">
                         <thead>
                             <tr>
                                 <th>#</th>
                                 <th>Date</th>
-                                <th>Clock In</th>
-                                <th>Clock Out</th>
+                                <th style="min-width: 100px">Clock In</th>
+                                <th style="min-width: 100px">Clock Out</th>
                                 <th>Total</th>
                                 <th>Map</th>
                             </tr>
@@ -109,11 +109,11 @@
                 <div class="col-md-12">
                     <hr>
                     <h5>Payment History</h5>
-                    <table class="table table-striped thead-primary w-100 data-table">
+                    <table class="d-block d-md-table table-responsive table table-striped thead-primary w-100 data-table">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Paid for</th>
+                                <th style="min-width: 100px">Paid for</th>
                                 <th>Date</th>
                                 <th>Amount</th>
                                 <th>Bank</th>
@@ -126,12 +126,12 @@
                 <div class="col-md-12">
                     <hr>
                     <h5>Last to do</h5>
-                    <table class="table table-striped thead-primary w-100 data-table">
+                    <table class="d-block d-md-table table-responsive table table-striped thead-primary w-100 data-table">
                         <thead>
                             <tr>
                                 <th>#</th>
                                 <th>Task</th>
-                                <th>Start Date</th>
+                                <th style="min-width: 100px">Start Date</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -142,7 +142,7 @@
                 <div class="col-md-12">
                     <hr>
                     <h5>Last Work Log</h5>
-                    <table class="table table-striped thead-primary w-100 data-table">
+                    <table class="d-block d-md-table table-responsive table table-striped thead-primary w-100 data-table">
                         <thead>
                             <tr>
                                 <th>#</th>

@@ -1,6 +1,20 @@
 @extends('admin.layouts.master')
 @section('title', 'Properties')
 @section('content')
+    <style>
+        table {
+            table-layout: fixed;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 100px;
+        }
+        td.text-flow {
+            white-space: nowrap; 
+            width: 100px; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
 
     <div class="ms-content-wrapper">
         <div class="row">
@@ -20,7 +34,7 @@
                     </div>
                     <div class="ms-panel-body">
                         <div class="row" style="margin-bottom: 30px">
-                            <div class="col-md-3">
+                            <div class="col-md-3" style="margin: 1%">
                                 <form action="" method="get">
                                     <select name="status" class="form-control form-control-sm" onchange="this.form.submit()">
                                         <option value="1" @if(isset($_GET['status']) && !empty($_GET['status'])  && $_GET['status']==1)selected @endif>Current</option>
@@ -29,7 +43,7 @@
                                     </select>
                                 </form>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" style="margin: 1%">
 
                                 <form action="" method="get">
                                     <select name="association" class="form-control form-control-sm" onchange="this.form.submit()">
@@ -44,7 +58,7 @@
                                     @endif
                                 </form>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" style="margin: 1%">
                                 <form action="" method="get">
                                     <select name="building" class="form-control form-control-sm" onchange="this.form.submit()">
                                         <option value="">--choose building--</option>
@@ -57,10 +71,10 @@
                                     @endif
                                 </form>
                             </div>
-
+                            <div class="col-md-3"></div>
                         </div>
                         @include('admin.includes.msg')
-                            <table id="data-table" class="d-block d-md-table table-responsive table table-striped thead-primary w-100">
+                            <table id="data-table" class="table-responsive table table-striped thead-primary w-100">
                                 <thead>
                                 <tr role="row">
                                     <th>S.No.</th>
@@ -84,9 +98,9 @@
                                             @if($setting['is_subassociations']=="1")
                                                 <td onclick="goto('/properties/{{ $val->edit_id }}')">{{$val->Subassociation->name}}</td>
                                             @endif
-                                            <td onclick="goto('/properties/{{ $val->edit_id }}')"> @if($val->buildingId>0){{$val->Building->building}}@endif </td>
-                                            <td onclick="goto('/properties/{{ $val->edit_id }}')">{{$val->aptNumber}}</td>
-                                            <td onclick="goto('/properties/{{ $val->edit_id }}')">
+                                            <td class="text-flow" onclick="goto('/properties/{{ $val->edit_id }}')"> @if($val->buildingId>0){{$val->Building->building}}@endif </td>
+                                            <td class="text-flow" onclick="goto('/properties/{{ $val->edit_id }}')">{{$val->aptNumber}}</td>
+                                            <td class="text-flow" onclick="goto('/properties/{{ $val->edit_id }}')">
                                                 @if(isset($val->Owner) && count($val->Owner) > 0)
                                                     @foreach ($val->Owner as $index=>$item)
                                                         @if($index != 0) 
@@ -100,7 +114,7 @@
                                                     @endforeach
                                                 @else N/A @endif
                                             </td>
-                                            <td onclick="goto('/properties/{{ $val->edit_id }}')">
+                                            <td class="text-flow" onclick="goto('/properties/{{ $val->edit_id }}')">
                                                 @if(isset($val->Resident) && count($val->Resident) > 0)
                                                     @foreach ($val->Resident as $index=>$item)
                                                         @if($index != 0) 

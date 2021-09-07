@@ -1,6 +1,20 @@
 @extends('admin.layouts.master')
 @section('title', 'Incident')
 @section('content')
+<style>
+    table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 100px;
+    }
+    td.text-flow {
+        white-space: nowrap; 
+        width: 10px; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
     <style>
         @if($data ?? '')
             @if($data->individual==1)
@@ -190,11 +204,11 @@
                                     <table class="table d-block d-md-table table-responsive table-striped thead-primary w-100 dataTable no-footer">
                                         <thead>
                                         <tr>
-                                            <th>S. No</th>
+                                            <th style="min-width: 80px">S.No</th>
                                             <th>Document</th>
                                             <th>Type</th>
-                                            <th>Upload Date</th>
-                                            <th>Upload By</th>
+                                            <th style="min-width: 80px">Upload Date</th>
+                                            <th style="min-width: 80px">Upload By</th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>

@@ -1,7 +1,20 @@
 @extends('admin.layouts.master')
 @section('title', 'Pets Type')
 @section('content')
-
+<style>
+    table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 100px;
+    }
+    td.text-flow {
+        white-space: nowrap; 
+        width: 100px; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
     <div class="ms-content-wrapper">
         <div class="row">
             <div class="col-md-12">
@@ -17,7 +30,7 @@
                 <div class="ms-panel">
                     <div class="ms-panel-header ms-panel-custome">
                         <h6>Pets Type</h6>
-                        <form action="" method="get" style="position: absolute;left: 215px;top: 20px">
+                        <form action="" method="get" style="position: absolute;right: 132px;top: 20px">
                             <select name="status" class="form-control form-control-sm" onchange="this.form.submit()">
                                 <option value="1" @if(isset($_GET['status']) && !empty($_GET['status'])  && $_GET['status']==1)selected @endif>Active</option>
                                 <option value="2" @if(isset($_GET['status']) && !empty($_GET['status'])  && $_GET['status']==2)selected @endif>Disabled</option>
@@ -32,7 +45,7 @@
                                 <thead>
                                 <tr role="row">
                                     <th>S.No.</th>
-                                    <th>Pet Type</th>
+                                    <th style="min-width: 100px">Pet Type</th>
                                     <th class="no-sort">Status</th>
                                     <th class="no-sort">Action</th>
                                 </tr>
@@ -42,7 +55,7 @@
                                     @foreach($alldata as $key=>$val)
                                         <tr role="row" class="odd">
                                             <td class="sorting_1">{{$key+1}}</td>
-                                            <td>{{$val->petType}}</td>
+                                            <td class="text-flow">{{$val->petType}}</td>
 
                                             <td>@if($val->status==1)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif </td>
                                             <td class="action">

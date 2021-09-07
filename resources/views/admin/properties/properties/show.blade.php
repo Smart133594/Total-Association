@@ -1,7 +1,20 @@
 @extends('admin.layouts.master')
 @section('title', 'Property Details')
 @section('content')
-
+<style>
+    table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 100px;
+    }
+    td.text-flow {
+        white-space: nowrap; 
+        width: 10px; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
 <div class="ms-content-wrapper">
     <div class="row">
         <div class="col-md-12">
@@ -77,18 +90,18 @@
                         <p>This will show a table of current and past Owners</p>
                     </div>
                 </div>
-                <div class="ms-panel-body">
-                    <table class="table-responsive data-table table table-striped thead-primary w-100 dataTable no-footer">
+                <div class="ms-panel-body table-responsive">
+                    <table class="table-responsive d-block d-md-table data-table table table-striped thead-primary w-100 dataTable no-footer">
                         <thead>
                             <tr>
-                                <th>Owner Name</th>
-                                <th>Phone Number</th>
+                                <th style="min-width: 100px">Owner Name</th>
+                                <th style="min-width: 100px">Phone Number</th>
                                 <th>Email</th>
                                 <th>Address</th>
-                                <th>Company Name</th>
-                                <th>Incorporation</th>
-                                <th>EIN Number</th>
-                                <th>Contact Person</th>
+                                <th style="min-width: 100px">Company Name</th>
+                                <th style="min-width: 100px">Incorporation</th>
+                                <th style="min-width: 100px">EIN Number</th>
+                                <th style="min-width: 100px">Contact Person</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -96,19 +109,19 @@
                         <tbody>
                             @foreach ($property->Owner as $val)
                                 <tr>
-                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">
+                                    <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')"><div>
                                         {{ $val->firstName }}
-                                        {{ $val->middleName }} {{ $val->lastName }}</td>
-                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->phoneNumber }}</td>
-                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->email }}</td>
-                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">
+                                        {{ $val->middleName }} {{ $val->lastName }}</div></td>
+                                    <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->phoneNumber }}</td>
+                                    <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->email }}</td>
+                                    <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">
                                         {!! $val->mailingAddress1 !!}<br>{!! $val->mailingAddress2 !!} </td>
-                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->companyLegalName }}
+                                    <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->companyLegalName }}
                                     </td>
-                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->inCorporation }}
+                                    <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->inCorporation }}
                                     </td>
-                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->einNumber }}</td>
-                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->contactPerson }}
+                                    <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->einNumber }}</td>
+                                    <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->contactPerson }}
                                     </td>
                                     <td onclick="goto('/owner/{{ $val->owner_id }}')">
                                         @if ($val->status == 1)<i
@@ -148,11 +161,11 @@
                     </div>
                 </div>
                 <div class="ms-panel-body">
-                    <table class="table-responsive table table-striped thead-primary w-100 d-block d-md-table dataTable no-footer">
+                    <table class="table-responsive data-table table table-striped thead-primary w-100 d-block d-md-table dataTable no-footer">
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Phone Number</th>
+                                <th style="min-width: 100px">Phone Number</th>
                                 <th>Email</th>
                                 <th>Address</th>
                                 <th class="no-sort">Status</th>
@@ -162,11 +175,11 @@
                         <tbody>
                             @foreach ($property->Resident as $val)
                                 <tr>
-                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->firstName }}
+                                    <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->firstName }}
                                         {{ $val->middleName }} {{ $val->lastName }}</td>
-                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->phoneNumber }}</td>
-                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->email }}</td>
-                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">
+                                    <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->phoneNumber }}</td>
+                                    <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->email }}</td>
+                                    <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">
                                         {!! $val->mailingAddress1 !!}<br>{!! $val->mailingAddress2 !!} </td>
                                     <td onclick="goto('/owner/{{ $val->owner_id }}')">
                                         @if ($val->status == 1)<i
@@ -224,14 +237,14 @@
                         <tbody>
                             @foreach ($property->Guest as $val)
                                 <tr>
-                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->property_id }}</td>
-                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->rfname }}
+                                    <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->property_id }}</td>
+                                    <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->rfname }}
                                         {{ $val->rlname }}</td>
-                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->firstName }}
+                                    <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->firstName }}
                                         {{ $val->middleName }} {{ $val->lastName }}</td>
-                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->phoneNumber }}</td>
-                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->email }}</td>
-                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">
+                                    <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->phoneNumber }}</td>
+                                    <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->email }}</td>
+                                    <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">
                                         {{ date('d M', strtotime($val->startingDate)) }} -
                                         {{ date('d M Y', strtotime($val->endDate)) }} </td>
                                     <td onclick="goto('/owner/{{ $val->owner_id }}')">
@@ -275,8 +288,8 @@
                         <thead>
                             <tr>
                                 <th>Images</th>
-                                <th>Pet Name</th>
-                                <th>Pet Type</th>
+                                <th style="min-width: 100px">Pet Name</th>
+                                <th style="min-width: 100px">Pet Type</th>
                                 <th>Owner</th>
                                 <th class="no-sort">Status</th>
                                 <th class="no-sort">Action</th>
@@ -287,10 +300,10 @@
                                 <tr>
                                     <td><img src="/thumb/{{ $val->image }}"
                                             style="border-radius:0;height:50px;width:auto;max-width:100px"></td>
-                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->petName }}</td>
-                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->PetType->petType }}
+                                    <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->petName }}</td>
+                                    <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">{{ $val->PetType->petType }}
                                     </td>
-                                    <td onclick="goto('/owner/{{ $val->owner_id }}')">
+                                    <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">
                                         @if (isset($val->Owner))
                                             {{ $val->Owner->firstName }} {{ $val->Owner->lastName }}
                                             @endif

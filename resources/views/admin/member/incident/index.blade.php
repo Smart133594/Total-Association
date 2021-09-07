@@ -1,7 +1,20 @@
 @extends('admin.layouts.master')
 @section('title', 'Incident')
 @section('content')
-
+    <style>
+        table {
+            table-layout: fixed;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 100px;
+        }
+        td.text-flow {
+            white-space: nowrap; 
+            width: 10px; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
     <div class="ms-content-wrapper">
         <div class="row">
             <div class="col-md-12">
@@ -46,14 +59,14 @@
                                     @foreach($alldata as $key=>$val)
                                         <tr role="row" class="odd">
                                             <td class="sorting_1">{{$key+1}}</td>
-                                            <td>{{$val->dateTime}}</td>
+                                            <td class="text-flow">{{$val->dateTime}}</td>
 
-                                            <td>
+                                            <td class="text-flow" >
                                                 {{ $property[$val->propertyId]->building}}  {{$allassociation[$property[$val->propertyId]->associationId]}} - @if($property[$val->propertyId]->type=="Multi Dwelling")  {{ $property[$val->propertyId]->aptNumber}} @else {{ $property[$val->propertyId]->address1}}  @endif
                                             </td>
-                                            <td>{{$val->ind}}</td>
-                                            <td>{{$val->incidentTitle}}</td>
-                                            <td>{{$val->outcome}}</td>
+                                            <td class="text-flow">{{$val->ind}}</td>
+                                            <td class="text-flow">{{$val->incidentTitle}}</td>
+                                            <td class="text-flow">{{$val->outcome}}</td>
 
 
                                             <td>@if($val->policeInvolved==1)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif </td>

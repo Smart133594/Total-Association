@@ -1,6 +1,20 @@
 @extends('admin.layouts.master')
 @section('title', 'Work Force')
 @section('content')
+<style>
+    table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 100px;
+    }
+    td.text-flow {
+        white-space: nowrap; 
+        width: 100px; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
     <div class="ms-content-wrapper">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb pl-0">
@@ -20,8 +34,8 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Name</th>
-                                <th>Date of birth</th>
+                                <th style="min-width: 100px;">Name</th>
+                                <th style="min-width: 100px;">Date of birth</th>
                                 <th>Email</th>
                                 <th>Phone</th>
                                 <th>Whatsapp</th>
@@ -33,11 +47,11 @@
                                 <?php $detail_uri = '/work-force/'.$worker->edit_id ?>
                                 <tr>
                                     <td>{{ $index }}</td>
-                                    <td onclick="goto('{{ $detail_uri }}')">{{ $worker->firstname }} {{ $worker->middlename }} {{ $worker->lastname }}</td>
-                                    <td onclick="goto('{{ $detail_uri }}')">{{ $worker->birthday }}</td>
-                                    <td onclick="goto('{{ $detail_uri }}')">{{ $worker->email }}</td>
-                                    <td onclick="goto('{{ $detail_uri }}')">{{ $worker->phone }}</td>
-                                    <td onclick="goto('{{ $detail_uri }}')">{{ $worker->whatsapp }}</td>
+                                    <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $worker->firstname }} {{ $worker->middlename }} {{ $worker->lastname }}</td>
+                                    <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $worker->birthday }}</td>
+                                    <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $worker->email }}</td>
+                                    <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $worker->phone }}</td>
+                                    <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $worker->whatsapp }}</td>
                                     <td class="action">
                                         <div class="dropdown show">
                                             <a class="cust-btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

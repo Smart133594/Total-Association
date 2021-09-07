@@ -1,7 +1,20 @@
 @extends('admin.layouts.master')
 @section('title', 'Resident')
 @section('content')
-
+    <style>
+    table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 100px;
+    }
+    td.text-flow {
+        white-space: nowrap; 
+        width: 100px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+    </style>
     <div class="ms-content-wrapper">
         <div class="row">
             <div class="col-md-12">
@@ -34,7 +47,7 @@
                         @include('admin.includes.msg')
 
                         <div class="row" style="margin-bottom: 30px">
-                            <div class="col-md-3">
+                            <div class="col-md-3" style="margin-bottom: 1%">
                                 <form action="" method="get">
                                     <select name="status" class="form-control form-control-sm" onchange="this.form.submit()">
                                         <option value="1" @if(isset($_GET['status']) && !empty($_GET['status'])  && $_GET['status']==1)selected @endif>Current</option>
@@ -43,7 +56,7 @@
                                     </select>
                                 </form>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" style="margin-bottom: 1%">
                                 <form action="" method="get">
                                     <select name="association" class="form-control form-control-sm" onchange="this.form.submit()">
                                         <option value="">--choose association--</option>
@@ -53,7 +66,7 @@
                                     </select>
                                 </form>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" style="margin-bottom: 1%">
                                 <form action="" method="get">
                                     <select name="building" class="form-control form-control-sm" onchange="this.form.submit()">
                                         <option value="">--choose building--</option>
@@ -66,7 +79,7 @@
                                     @endif
                                 </form>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" style="margin-bottom: 1%">
                                 <form action="" method="get">
                                     <select name="property" class="form-control form-control-sm" onchange="this.form.submit()">
                                         <option value="">--choose property--</option>
@@ -90,10 +103,10 @@
                         <table id="data-table" class="d-block d-md-table table-responsive table table-striped thead-primary w-100">
                             <thead>
                             <tr role="row">
-                                <th>S.No.</th>
+                                <th>S.No</th>
                                 <th>Property</th>
                                 <th>Name</th>
-                                <th>Phone Number</th>
+                                <th style="min-width: 100px">Phone Number</th>
                                 <th>Troubles</th>
 
                                 <th class="no-sort">Status</th>
@@ -105,9 +118,9 @@
                                 @foreach($alldata as $key=>$val)
                                     <tr role="row" class="odd">
                                         <td class="sorting_1">{{$key+1}}</td>
-                                        <td> {{ $property[$val->property_id]->building}} {{$association[$val->associationId]}} - @if($property[$val->property_id]->type=="Multi Dwelling")  {{ $property[$val->property_id]->aptNumber}} @else {{ $property[$val->property_id]->address1}}  @endif</td>
-                                        <td>{{$val->firstName}} {{$val->middleName}} {{$val->lastName}}</td>
-                                        <td>{{$val->phoneNumber}}</td>
+                                        <td class="text-flow"> {{ $property[$val->property_id]->building}} {{$association[$val->associationId]}} - @if($property[$val->property_id]->type=="Multi Dwelling")  {{ $property[$val->property_id]->aptNumber}} @else {{ $property[$val->property_id]->address1}}  @endif</td>
+                                        <td class="text-flow">{{$val->firstName}} {{$val->middleName}} {{$val->lastName}}</td>
+                                        <td class="text-flow">{{$val->phoneNumber}}</td>
 
 
                                         <td>@if($val->troubles==0)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif </td>

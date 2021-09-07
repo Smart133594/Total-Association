@@ -1,6 +1,20 @@
 @extends('admin.layouts.master')
 @section('title', 'Access Device')
 @section('content')
+<style>
+    table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 100px;
+    }
+    td.text-flow {
+        white-space: nowrap; 
+        width: 100px; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
 <div class="ms-content-wrapper">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb pl-0">
@@ -22,8 +36,8 @@
                     <thead>
                     <tr role="row">
                         <th>S.No.</th>
-                        <th>Serial Number</th>
-                        <th>IP Address</th>
+                        <th style="min-width: 100px">Serial Number</th>
+                        <th style="min-width: 100px">IP Address</th>
                         <th class="no-sort">Status</th>
                     </tr>
                     </thead>
@@ -31,8 +45,8 @@
                         @foreach ($items as $key => $item)
                             <tr role="row" class="odd">
                                 <td>{{$key+1}}</td>
-                                <td>{{$item->serial_number}}</td>
-                                <td>{{$item->ip_address}}</td>
+                                <td class="text-flow">{{$item->serial_number}}</td>
+                                <td class="text-flow">{{$item->ip_address}}</td>
                                 <td>
                                     @if ($item->active == 1)
                                         <label class="ms-switch">

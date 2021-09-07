@@ -136,6 +136,7 @@
                       <li> <a href="{{route('punchclock-auth.index')}}" class="punchclock-auth">Punch Clock Auth</a></li>
                     </ul>
                   </li>
+                  <li> <a href="{{route('departmanage.index')}}" class="departmanage">Depart Manage</a></li>
 
                 </ul>
             </li>

@@ -1,7 +1,20 @@
 @extends('admin.layouts.master')
 @section('title', 'Incident')
 @section('content')
-
+<style>
+    table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 100px;
+    }
+    td.text-flow {
+        white-space: nowrap; 
+        width: 100px; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
     <div class="ms-content-wrapper">
         <div class="row">
             <div class="col-md-12">
@@ -76,10 +89,10 @@
                                 <table class="d-block d-md-table table-responsive table table-striped thead-primary w-100 dataTable no-footer">
                                     <thead>
                                     <tr>
-                                        <th>S. No</th>
-                                        <th>Renter</th>
-                                        <th>From</th>
-                                        <th>To</th>
+                                        <th>S.No</th>
+                                        <th style="min-width: 100px">Renter</th>
+                                        <th style="min-width: 100px">From</th>
+                                        <th style="min-width: 100px">To</th>
                                         <th>Amount</th>
                                         <th>Action</th>
                                     </tr>
@@ -89,9 +102,9 @@
                                     @foreach($data->FacilitiesRent as $r)
                                         <tr>
                                             <td>{{$x}}</td>
-                                            <td>{{$r->RentrsName}}</td>
-                                            <td>{{$r->fromDate}}</td>
-                                            <td>{{$r->toDate}}</td>
+                                            <td class="text-flow">{{$r->RentrsName}}</td>
+                                            <td class="text-flow">{{$r->fromDate}}</td>
+                                            <td class="text-flow">{{$r->toDate}}</td>
                                             <td>{{$r->amount}}</td>
                                             <td>
                                                 <div class="dropdown">
@@ -117,10 +130,10 @@
                                 <table class="d-block d-md-table table-responsive table table-striped thead-primary w-100 dataTable no-footer">
                                     <thead>
                                     <tr>
-                                        <th>S. No</th>
-                                        <th>Send to</th>
-                                        <th>Date</th>
-                                        <th>Subject</th>
+                                        <th>S.No</th>
+                                        <th style="min-width: 100px">Send to</th>
+                                        <th style="min-width: 100px">Date</th>
+                                        <th style="min-width: 100px">Subject</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
@@ -136,10 +149,10 @@
                                 <table class="d-block d-md-table table-responsive table table-striped thead-primary w-100 dataTable no-footer">
                                     <thead>
                                     <tr>
-                                        <th>S. No</th>
-                                        <th>Written By</th>
-                                        <th>Date</th>
-                                        <th>Subject</th>
+                                        <th>S.No</th>
+                                        <th style="min-width: 100px">Written By</th>
+                                        <th style="min-width: 100px">Date</th>
+                                        <th style="min-width: 100px">Subject</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
@@ -148,9 +161,9 @@
                                     @foreach($data->FacilitiesRent as $r)
                                         <tr>
                                             <td>{{$x}}</td>
-                                            <td>{{$r->RentrsName}}</td>
-                                            <td>{{$r->updated_at}}</td>
-                                            <td>{{$r->noteSubject}}</td>
+                                            <td class="text-flow">{{$r->RentrsName}}</td>
+                                            <td class="text-flow">{{$r->updated_at}}</td>
+                                            <td class="text-flow">{{$r->noteSubject}}</td>
 
                                             <td>
                                                 <div class="dropdown">
@@ -176,10 +189,10 @@
                                 <table class="d-block d-md-table table-responsive table table-striped thead-primary w-100 dataTable no-footer">
                                     <thead>
                                     <tr>
-                                        <th>S. No</th>
-                                        <th>Incedent / Fine</th>
-                                        <th>Date</th>
-                                        <th>Description</th>
+                                        <th>S.No</th>
+                                        <th style="min-width: 100px">Incedent / Fine</th>
+                                        <th style="min-width: 100px">Date</th>
+                                        <th style="min-width: 100px">Description</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
@@ -197,10 +210,10 @@
                                 <table class="d-block d-md-table table-responsive table table-striped thead-primary w-100 dataTable no-footer">
                                     <thead>
                                     <tr>
-                                        <th>S. No</th>
-                                        <th>Before Rentring To</th>
-                                        <th>Date</th>
-                                        <th>File Name</th>
+                                        <th>S.No</th>
+                                        <th style="min-width: 150px">Before Rentring To</th>
+                                        <th style="min-width: 100px">Date</th>
+                                        <th style="min-width: 100px">File Name</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
@@ -209,9 +222,9 @@
                                     @foreach($data->FacilitiesRent as $r)
                                         <tr>
                                             <td>{{$x}}</td>
-                                            <td>{{$r->RentrsName}}</td>
-                                            <td>{{$r->created_at}}</td>
-                                            <td>{{$r->video}}</td>
+                                            <td class="text-flow">{{$r->RentrsName}}</td>
+                                            <td class="text-flow">{{$r->created_at}}</td>
+                                            <td class="text-flow">{{$r->video}}</td>
                                             <td>
                                                 <div class="dropdown">
                                                     <a class="cust-btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

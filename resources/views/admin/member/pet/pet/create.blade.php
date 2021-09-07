@@ -1,7 +1,20 @@
 @extends('admin.layouts.master')
 @section('title', 'Pet')
 @section('content')
-
+<style>
+    table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 100px;
+    }
+    td.text-flow {
+        white-space: nowrap; 
+        width: 100px; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
     <div class="ms-content-wrapper">
         <div class="row">
             <div class="col-md-12">
@@ -111,14 +124,14 @@
                                     $documents_status=json_decode($setting['documents_status'],true);
                                     @endphp
                                     <div class="table-responsive">
-                                    <table class="table table-striped thead-primary w-100 dataTable no-footer">
+                                    <table class="d-block d-md-table table table-striped thead-primary w-100 dataTable no-footer">
                                         <thead>
                                         <tr>
-                                            <th>S. No</th>
+                                            <th>S.No</th>
                                             <th>Document</th>
-                                            <th>Exp. Date</th>
-                                            <th>Required By Law</th>
-                                            <th>Doc. Info</th>
+                                            <th style="min-width: 100px">Exp. Date</th>
+                                            <th style="min-width: 150px">Required By Law</th>
+                                            <th style="min-width: 100px">Doc. Info</th>
                                             <th>Status</th>
                                             <th>Action</th>
                                         </tr>
@@ -128,14 +141,14 @@
                                         @foreach($docc as $k=>$va)
                                             @php $class=strtolower(str_replace(" ","-",$va));  @endphp
                                             <tr>
-                                                <td>{{$x}}</td>
-                                                <td>{{$va}}</td>
-                                                <td class="exp_{{ $class }}"> @if(isset($pet_document[$class]->exp_date)) {{ $pet_document[$class]->exp_date }} @endif</td>
-                                                <td>@if(isset($documents_required_by_law[$k])) @if($documents_required_by_law[$k]==1) Yes @else No @endif @endif</td>
+                                                <td class="text-flow">{{$x}}</td>
+                                                <td class="text-flow">{{$va}}</td>
+                                                <td class="text-flow" class="exp_{{ $class }}"> @if(isset($pet_document[$class]->exp_date)) {{ $pet_document[$class]->exp_date }} @endif</td>
+                                                <td class="text-flow">@if(isset($documents_required_by_law[$k])) @if($documents_required_by_law[$k]==1) Yes @else No @endif @endif</td>
                                                 {{-- <td><img src="/assets/img/info.png" data-toggle="modal" data-target="#details" onclick="showdetails('{{$documents_description[$k]}}','{{$ref}}')"></td> --}}
                                                 <td><img src="/assets/img/info.png" onclick="sweetBasic('{{$documents_description[$k]}}','Details');"></td>
                                                 
-                                                <td style='@if($documents_status[$k]=="Current") color:#4caf50 @else color:#f44336  @endif'>{{ $documents_status[$k]  }}</td>
+                                                <td class="text-flow" style='@if($documents_status[$k]=="Current") color:#4caf50 @else color:#f44336  @endif'>{{ $documents_status[$k]  }}</td>
 
                                                 <td class="action">
 

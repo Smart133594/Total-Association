@@ -35,7 +35,16 @@
                 @csrf
                 <input type="hidden" name="departmentid" value="{{ _OBJVALUE($department, 'edit_id') }}">
                 <input type="hidden" name="departmentTaskid" value="{{ _OBJVALUE($departmentTask, 'edit_id') }}">
-                <h5>Add/Edut Task</h5>
+
+                <h5>Add/Edit Task</h5>
+                <div class="mb-3">
+                    <label for="task">Department</label>
+                    <select id="depart" name="depart" class="form-control">
+                        @php
+                            echo $str_departs;
+                        @endphp
+                    </select>
+                </div>
                 <div class="mb-3">
                     <label for="task">Task</label>
                     <input type="text" name="task" id="task" placeholder="Task" class="form-control" required value="{{ _OBJVALUE($departmentTask, 'task') }}">
@@ -76,10 +85,26 @@
                         <option value="4"  {{ _OBJVALUE($departmentTask, 'state') == 4 ? 'selected' : '' }}>Done</option>
                     </select>
                 </div>
-                <h5>Notes</h5>
+                <div style="width: 180px" class="mb-3">
+                    <label for="date">Image</label>
+                    <input type="file" class="form-control valid" required name="imageA">
+                </div>
+                @php
+                    if(@$departmentTask->image != '' && @$departmentTask->image != null) {
+                        echo "<img src='/upload/$departmentTask->image' style='width: 200px; height: 100px;' />";
+                    }
+                @endphp
+                <div class="row">
+                    <div class="col-6">
+                        <h5 style="{{$display_property}} margin-top: 5%;">Notes</h5>
+                    </div>
+                    <div class="col-6">
+                        <input data-toggle="modal" data-target="#exampleModal" style="{{$display_property}} float: right" type="button" value="Add New Note" class="btn btn-primary btn-sm" onclick="init_modal()">
+                    </div>
+                </div>
                 @if (_OBJVALUE($departmentTask, 'note'))
                     @foreach (_OBJVALUE($departmentTask, 'note') as $item)
-                        <div>
+                        <div style="{{$display_property}}">
                             <hr>
                             <div class="ms-panel-custome">
                                 <span>{{ date("m/d/Y h:i", strtotime($item->created_at)) }}</span>
@@ -90,25 +115,49 @@
                     @endforeach
                 @endif
                 <br>
-                <div id="note_area">
-                    <h5>Add New Note</h5>
-                    <div class="mb-3">
-                        <textarea name="note[]" rows="4" class="form-control" placeholder="Write New Note"></textarea>
-                    </div>
+                <div id="note_area" style="{{$display_property}}">
                 </div>
-                <input type="button" onclick="addNote()" value="Add New Note" class="btn btn-primary btn-sm">
                 <hr>
                 <input type="submit" value="Save Task" class="btn btn-primary">
             </div>
         </div>
     </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add New Note</h5>
+                </div>
+                <div class="modal-body" id="modal-details">
+                    <textarea id="note_text" rows="4" class="form-control" placeholder="Write New Note" spellcheck="false"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" onclick="addNote()" >Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 <script>
     $(document).ready(function() {
+        $("#depart").val({{ $departid }});
         $('.data-table').DataTable();
     });
+    
+    const init_modal = () => {
+        $("#note_text").val("");
+    }
+
     function addNote(){
-        const element = `<div class="mb-3"><textarea name="note[]" rows="4" class="form-control" placeholder="Write New Note"></textarea> </div>`;
+        const content = $("#note_text").val();
+        if(content == '') {
+            toastr.warning('Input new note.', 'Warning');
+            return;
+        }
+        const element = `<div class="mb-3"><textarea name="note[]" rows="4" class="form-control" placeholder="Write New Note">${content}</textarea> </div>`;
         $("#note_area").append(element);
+        $("#exampleModal").modal('hide');
     }
 </script>
 @endsection

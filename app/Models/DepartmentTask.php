@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class DepartmentTask extends Model
 {
     use HasFactory;
-    protected $fillable = ['departmentid', 'workerid', 'task', 'date', 'priority', 'state', 'description'];
+    protected $fillable = ['departmentid', 'workerid', 'task', 'date', 'priority', 'state', 'description', "image"];
     public function Worker(){
         return $this->hasOne('App\Models\WorkForce', 'id', 'workerid');
     }

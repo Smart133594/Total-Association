@@ -1,7 +1,20 @@
 @extends('admin.layouts.master')
 @section('title', 'Digital Signage Group')
 @section('content')
-
+    <style>
+    table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 100px;
+    }
+    td.text-flow {
+        white-space: nowrap; 
+        width: 100px; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    </style>
     <div class="ms-content-wrapper">
         <div class="row">
             <div class="col-md-12">
@@ -30,7 +43,7 @@
                                 <thead>
                                 <tr role="row">
                                     <th>S.No.</th>
-                                    <th>Group Name</th>
+                                    <th style="min-width: 100px;">Group Name</th>
                                     <th class="no-sort">Status</th>
                                     <th class="no-sort">Action</th>
                                 </tr>
@@ -40,7 +53,7 @@
                                     @foreach($alldata as $key=>$val)
                                         <tr role="row" class="odd">
                                             <td class="sorting_1">{{$key+1}}</td>
-                                            <td>{{$val->groupName}}</td>
+                                            <td class="text-flow">{{$val->groupName}}</td>
 
                                             <td>@if($val->status==1)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif </td>
                                             <td class="action">

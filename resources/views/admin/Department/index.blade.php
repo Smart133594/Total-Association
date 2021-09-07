@@ -6,6 +6,21 @@
         min-width: 0 !important;
     }
 </style>
+
+<style>
+    table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 100px;
+    }
+    td.text-flow {
+        white-space: nowrap; 
+        width: 100px; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
 @php
     use Illuminate\Support\Facades\Crypt;
 @endphp
@@ -17,19 +32,31 @@
                 <li class="breadcrumb-item active" aria-current="page"><a href="#">Work Force</a></li>
             </ol>
         </nav>
-        <div class="ms-panel">
-            <div class="ms-panel-header">
-                <h2>To Do List</h2>
-                <p>All Department</p>
-            </div>
-            <div class="ms-panel-body">
-                @include('admin.includes.msg')
-                @foreach ($departments as $index => $department)
+            @include('admin.includes.msg')
+            @foreach ($departments as $index => $department)
+            <div class="ms-panel">
+                <div class="ms-panel-header">
+                    <h2>{{$department->department}}</h2>
+                </div>
+                <div class="ms-panel-body">
                     <div class="ms-panel-custome mb-2">
-                        <h5>{{ $department->department }}</h5>
-                        <div>
+                        <div class="col-6" style="margin-left: -15px;">
                             <a href="{{route('department.show', $department->edit_id)}}" class="btn btn-sm btn-primary m-0">SOLO</a>
                             <a href="{{route('department.create', 'department='.$department->edit_id)}}" class="btn btn-sm btn-primary m-0">+</a>
+                        </div>
+                        <div class="col-6" style="margin-left: 25%;">
+                            <select id="filter_emp_{{$department->id}}" onchange="submit_func({{$departments}})" class="form-control" style="width: 52%;">
+                                <option value="-1">All Workers</option>
+                                @foreach ($workforce as $value)
+                                @php
+                                    $selected = false;
+                                    if(isset($_GET['emp_'.$department->id])) {
+                                        $selected = $_GET['emp_'.$department->id] == $value->id;
+                                    }
+                                @endphp
+                                    <option value='{{$value->id}}' {{$selected ? "selected" : ""}}>{{$value->firstname.' '.$value->middlename.' '.$value->lastname}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <table class="d-block d-md-table table-responsive table table-striped thead-primary w-100 data-table">
@@ -37,8 +64,8 @@
                             <tr>
                                 <th>#</th>
                                 <th>Task</th>
-                                <th>Worker</th>
-                                <th>Due Date</th>
+                                <th style="min-width: 100px;">Worker</th>
+                                <th style="min-width: 100px;">Due Date</th>
                                 <th>Priority</th>
                                 <th>Status</th>
                                 <th>Desc</th>
@@ -47,22 +74,23 @@
                         </thead>
                         <tbody>
                             @php
-                             $priorities = ['High', 'Medium', 'Low'];
-                             $states = ['Assigned', 'In Progress', 'On Hold', 'Canceled', 'Done'];
+                            $priorities = ['High', 'Medium', 'Low'];
+                            $colors = ['rgba(255, 0, 0, 0.1)', 'rgba(255, 255, 0, 0.2)', 'rgba(0, 0, 255, 0.1)'];
+                            $states = ['Assigned', 'In Progress', 'On Hold', 'Canceled', 'Done'];
                             @endphp
                             @foreach ($department->Tasks as $index => $task)
-                                <tr>
+                                <tr style="background-color: {{$colors[$task->priority]}}">
                                     <td>{{ $index+1 }}</td>
-                                    <td>{{ $task->task }}</td>
-                                    <td>
+                                    <td class="text-flow">{{ $task->task }}</td>
+                                    <td class="text-flow">
                                         @if ($task->Worker)
                                             {{ $task->Worker->firstname }} {{ $task->Worker->middlename }} {{ $task->Worker->lastname }}
                                         @endif
                                     </td>
-                                    <td>{{ date("M d, Y", strtotime($task->date)) }}</td>
-                                    <td>{{ $priorities[$task->priority] }}</td>
-                                    <td>{{ $states[$task->state] }}</td>
-                                    <td>{{ $task->description }}</td>
+                                    <td class="text-flow">{{ date("M d, Y", strtotime($task->date)) }}</td>
+                                    <td class="text-flow">{{ $priorities[$task->priority] }}</td>
+                                    <td class="text-flow">{{ $states[$task->state] }}</td>
+                                    <td class="text-flow">{{ $task->description }}</td>
                                     <td class="action">
                                         <div class="dropdown show">
                                             <a class="cust-btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -82,12 +110,24 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <hr>
-                @endforeach
+                </div>
             </div>
-        </div>
+            @endforeach
     </div>
 <script>
+    const submit_func = (data) => {
+        console.log(data);
+        var selected_emp = {};
+        data.forEach(item => {
+            var selected = $(`#filter_emp_${item.id}`).val();
+            selected_emp = {...selected_emp, [`emp_${item.id}`]:selected};
+            
+        });
+        const param = $.param(selected_emp);
+        var url = location.protocol + "//" + location.host;
+        url += "/department?" + param;
+        location.href = url;
+    }
     $(document).ready(function() {
         $('.data-table').DataTable();
     });
