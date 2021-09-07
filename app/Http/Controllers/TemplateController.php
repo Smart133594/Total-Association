@@ -118,7 +118,7 @@ class TemplateController extends Controller
     public function bulkcommunication()
     {
         $userid = null;
-        if($_GET['user']){
+        if(@$_GET['user']){
             $userid = Crypt::decryptString($_GET['user']);
         }
         $template = Template::get();
@@ -228,7 +228,7 @@ class TemplateController extends Controller
     }
     public function lettergenerator(){
         $userid = null;
-        if($_GET['user']){
+        if(@$_GET['user']){
             $userid = Crypt::decryptString($_GET['user']);
         }
         $template = Template::get();

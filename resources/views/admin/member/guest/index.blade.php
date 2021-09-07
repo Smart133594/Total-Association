@@ -41,7 +41,7 @@
                     </div>
                     <div class="ms-panel-body">
                         <div class="row" style="margin-bottom: 30px">
-                            <div class="col-md-3">
+                            <div class="col-md-3" style="margin-bottom: 1%;">
                                 <form action="" method="get">
                                     <select name="status" class="form-control form-control-sm" onchange="this.form.submit()">
                                         <option value="1" @if(isset($_GET['status']) && !empty($_GET['status'])  && $_GET['status']==1)selected @endif>Current</option>
@@ -50,7 +50,7 @@
                                     </select>
                                 </form>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" style="margin-bottom: 1%;">
                                 <form action="" method="get">
                                     <select name="association" class="form-control form-control-sm" onchange="this.form.submit()">
                                         <option value="">--choose association--</option>
@@ -60,7 +60,7 @@
                                     </select>
                                 </form>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" style="margin-bottom: 1%;">
                                 <form action="" method="get">
                                     <select name="building" class="form-control form-control-sm" onchange="this.form.submit()">
                                         <option value="">--choose building--</option>

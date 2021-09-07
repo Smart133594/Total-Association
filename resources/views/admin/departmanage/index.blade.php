@@ -42,7 +42,7 @@
                             <tbody>
                                 @foreach ($departs as $index => $item)
                                     <tr>
-                                        <td>{{ $index+1 }}</td>
+                                        <td class="text-flow">{{ $index+1 }}</td>
                                         <td class="text-flow">{{ $item->department }}</td>
                                         <td class="action">
                                             <div class="dropdown show">
