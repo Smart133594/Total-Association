@@ -39,6 +39,7 @@
                                 <th>Email</th>
                                 <th>Phone</th>
                                 <th>Whatsapp</th>
+                                <th>Department</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -52,6 +53,7 @@
                                     <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $worker->email }}</td>
                                     <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $worker->phone }}</td>
                                     <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $worker->whatsapp }}</td>
+                                    <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $worker->departname }}</td>
                                     <td class="action">
                                         <div class="dropdown show">
                                             <a class="cust-btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
