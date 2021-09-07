@@ -33,7 +33,7 @@ class WorkForceController extends Controller
             
             $workers[$key]['edit_id'] = Crypt::encryptString($value->id);
         }
-        return view("admin.WorkForce.index", compact('workers'));
+        return view("admin.workForce.index", compact('workers'));
     }
 
     /**
@@ -47,7 +47,7 @@ class WorkForceController extends Controller
         $departments = Department::get()->sortby('order');
         $worker = null;
         $edit_id = null;
-        return view("admin.WorkForce.create", compact('departments', 'worker', 'edit_id'));
+        return view("admin.workForce.create", compact('departments', 'worker', 'edit_id'));
     }
 
     /**
@@ -136,7 +136,7 @@ class WorkForceController extends Controller
         catch (Throwable $e) {
             $worker->format_whatsapp = $worker->whatsapp;
         }
-        return view("admin.WorkForce.detail", compact('worker'));
+        return view("admin.workForce.detail", compact('worker'));
     }
 
     /**
@@ -157,7 +157,7 @@ class WorkForceController extends Controller
         $worker->month = intval(date('m', $birthday));
         $worker->date = intval(date('d', $birthday));
         $worker->Payroll = $worker->Payroll();
-        return view("admin.WorkForce.create", compact('departments', 'worker', 'edit_id'));
+        return view("admin.workForce.create", compact('departments', 'worker', 'edit_id'));
     }
 
     /**
