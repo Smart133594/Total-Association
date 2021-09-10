@@ -828,6 +828,7 @@ pre {
 
 .ms-img-large {
   width: 100px;
+  height: 100px;
 }
 
 /* Body Content */
@@ -9001,4 +9002,16 @@ body:not(.ms-settings-open) .ms-settings-toggle:hover {
     max-width: 1000px;
     margin: auto;
   }
+}
+
+.properties-card div {
+  font-size: 18px;
+  font-weight: bold;
+  height: 50px;
+  vertical-align: middle;
+  color: white;
+}
+
+.properties-card h6 {
+  color: white;
 }

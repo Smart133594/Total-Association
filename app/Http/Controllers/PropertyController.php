@@ -215,6 +215,16 @@ class PropertyController extends Controller
             $property->Pet[$k]['owner_id'] = Crypt::encryptString($p->ownerId);;
         }
 
-        return view('admin.properties.properties.show', ["property" => $property]);
+        $violation_num = 0;
+        $fine_num = 0;
+        $incident = $property->Incident;
+        foreach ($incident as $key => $value) {
+            if($value->comeout == "Fine") $fine_num ++;
+            else $violation_num ++;
+        }
+        $payment_bracket = PaymentBracket::where('status', 1)->get();
+
+
+        return view('admin.properties.properties.show', compact("property", 'violation_num', "fine_num"));
     }
 }

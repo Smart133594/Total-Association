@@ -201,7 +201,15 @@ class OwnerController extends Controller
             $property['building'] = "";
         }
 
-        return view('admin.member.owner.show', ['data' => $owner, 'property' => $property]);
+        $violation_num = 0;
+        $fine_num = 0;
+        $incident = $property->Incident;
+        foreach ($incident as $key => $value) {
+            if($value->comeout == "Fine") $fine_num ++;
+            else $violation_num ++;
+        }
+
+        return view('admin.member.owner.show', ['data' => $owner, 'property' => $property, 'violation_num' => $violation_num, 'fine_num' => $fine_num ]);
     }
 
     public function uploaddoc($ref)

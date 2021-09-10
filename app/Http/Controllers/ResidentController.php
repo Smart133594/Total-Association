@@ -225,7 +225,12 @@ class ResidentController extends Controller
         } else {
             $property['building'] = "";
         }
-        return view('admin.member.resident.show', ['data' => $owner, 'property' => $property]);
+        $violation_num = 0;
+        $fine_num = 0;
+        $property['edit_id'] = Crypt::encryptString($property->id);
+        $owner['edit_id'] = Crypt::encryptString($owner->id);
+
+        return view('admin.member.resident.show', ['data' => $owner, 'property' => $property, 'violation_num' => $violation_num, "fine_num" => $fine_num]);
     }
 
     public function uploaddoc($ref)

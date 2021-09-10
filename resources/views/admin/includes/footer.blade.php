@@ -7,15 +7,13 @@
 <script src="/assets/js/perfect-scrollbar.js"></script>
 <script src="/assets/js/jquery-ui.min.js"></script>
 <!-- Global Required Scripts End -->
-@if(request()->is('/'))
-    <!-- Page Specific Scripts Start -->
-    <script src="/assets/js/slick.min.js"></script>
-    <script src="/assets/js/moment.js"></script>
-    <script src="/assets/js/jquery.webticker.min.js"></script>
-    <script src="/assets/js/Chart.bundle.min.js"></script>
-    <script src="/assets/js/Chart.Financial.js"></script>
-    <!-- Page Specific Scripts Finish -->
-@endif
+<!-- Page Specific Scripts Start -->
+<script src="/assets/js/slick.min.js"></script>
+<script src="/assets/js/moment.js"></script>
+<script src="/assets/js/jquery.webticker.min.js"></script>
+<script src="/assets/js/Chart.bundle.min.js"></script>
+<script src="/assets/js/Chart.Financial.js"></script>
+<!-- Page Specific Scripts Finish -->
 <!-- Page Specific Scripts Start -->
 <script src="/assets/datatables/jquery.dataTables.min.js"></script>
 <script src="/assets/datatables/datatables.min.js"></script>

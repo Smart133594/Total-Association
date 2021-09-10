@@ -20,153 +20,122 @@
                         <li class="breadcrumb-item active" aria-current="page"><a href="#">Resident Details</a></li>
                     </ol>
                 </nav>
-                <div class="ms-panel">
-                    <div class="ms-panel-header ms-panel-custome">
-                        <h6>Resident's Info</h6>
+                <div class="row">
+                    <div class="col-xl-3 col-md-3 col-sm-6">
+                        <div class="ms-card ms-card-body card-primary properties-card">
+                            <h6>Owned/rented For:</h6>
+                            <div style="font-size: 16px"> Owned: 3.5 Years <br /> Rented: 2.1 Years</div>
+                        </div>
                     </div>
-
-                    <div class="ms-panel-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="table table-striped thead-primary w-100 dataTable no-footer">
-                                    <thead>
-                                    <th colspan="2">Property Information</th>
-                                    </thead>
-                                    <tbody>
-                                    @if($setting['is_subassociations']=="1")
-                                        <tr>
-                                            <td>Association</td>
-                                            <td>{{$property->association}}</td>
-                                        </tr>
-                                    @endif
-                                    <tr>
-                                        <td>Dwelling</td>
-                                        <td>{{$property->type}}</td>
-                                    </tr>
-                                    @if($property->type=="Multi Dwelling")
-                                        <tr>
-                                            <td>Building</td>
-                                            <td>{{$property->building}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Apartment Number</td>
-                                            <td>{{$property->aptNumber}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Floor Number</td>
-                                            <td>{{$property->floorNumber}}</td>
-                                        </tr>
-                                    @endif
-                                    <tr>
-                                        <td>Address</td>
-                                        <td>{{$property->address1}}<br> {{$property->address2}}<br> {{$property->city}}, {{$property->state}}, {{$property->pincode}}</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                    <div class="col-xl-3 col-md-3 col-sm-6">
+                        <div class="ms-card ms-card-body card-warning properties-card">
+                            <h6>Violations: </h6>
+                            <div> {{ $violation_num }} Violation{{ $violation_num > 1 ? "s" : '' }}</div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-3 col-sm-6">
+                        <div class="ms-card ms-card-body card-danger properties-card">
+                            <h6>Fines:</h6>
+                            <div> {{ $fine_num }} Fine{{ $fine_num > 1 ? "s" : '' }}</div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-3 col-sm-6">
+                        <div class="ms-card ms-card-body {{ $property->status == 1 ? 'card-success' : 'card-danger' }} properties-card">
+                            <h6>Status: </h6>
+                            @if ($property->status == 1)
+                                <div>Current</div>
+                            @else
+                                <div>Deliquent</div>
+                            @endif
                         </div>
                     </div>
 
-                    <div class="ms-panel-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="table table-striped thead-primary w-100 dataTable no-footer">
-                                    <thead>
-                                    <th colspan="2">Resident Basic Information</th>
-                                    </thead>
-                                    <tbody>
-                                    @if($data->isCompany==1)
-                                        <tr>
-                                            <td>Business Legal Name</td>
-                                            <td>{{$data->companyLegalName}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Business EIN Number</td>
-                                            <td>{{$data->einNumber}}</td>
-                                        </tr>
-                                    @else
-                                        <tr>
-                                            <td>Name</td>
-                                            <td>{{$data->firstName}} {{$data->middleName}} {{$data->lastName}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Sex</td>
-                                            <td>{{$data->sex}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Ethnicity</td>
-                                            <td>{{$data->ethnicity}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Date of Birth</td>
-                                            <td>{{$data->dateOfBirth}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Occupation</td>
-                                            <td>{{$data->occupation}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Picture</td>
-                                            <td><img src="/upload/{{$data->picture}}" style="max-width: 120px;"></td>
-                                        </tr>
-                                        @if($data->if_us_citizen==1)
-                                            <tr>
-                                                <td>Social Security Number</td>
-                                                <td>{{$data->socialSecurityNumber}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Driver License</td>
-                                                <td><img src="/upload/{{$data->driverLicense}}" style="max-width: 120px;"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Green Card/Visa </td>
-                                                <td><img src="/upload/{{$data->greenCard}}" style="max-width: 120px;"></td>
-                                            </tr>
-                                        @else
-                                            <tr>
-                                                <td>Country of Residence</td>
-                                                <td>{{$data->countryofResidence}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>US Visa</td>
-                                                <td><img src="/upload/{{$data->usVisa}}" style="max-width: 120px;"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Passport</td>
-                                                <td><img src="/upload/{{$data->passport}}" style="max-width: 120px;"></td>
-                                            </tr>
-                                        @endif
-                                    @endif
-                                    <tr>
-                                        <td>Legal Address</td>
-                                        <td>{{$data->mailingAddress1}} {{$data->mailingAddress2}},{{$data->city}}, {{$data->state}}, {{$data->country}}, {{$data->zip}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Phone Number</td>
-                                        <td>{{$data->phoneNumber}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Email Address</td>
-                                        <td>{{$data->email}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>WhatsApp Number</td>
-                                        <td>{{$data->whatsapp}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Ownership Start Date</td>
-                                        <td>{{$data->ownershipStartDate}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Status</td>
-                                        <td>@if($data->status==1)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                    <div class="col-xl-5 col-md-5 col-sm-12">
+                        <div class="ms-panel">
+                            <div class="ms-panel-header">
+                                <h6>{{$data->firstName}} {{$data->lastName}} IDs</h6>
+                            </div>
+                            <div class="ms-panel-body">
+                                <p>
+                                    <img src="/upload/{{$data->picture}}" style="width:80%; max-height:200px; object-fit:contain;">
+                                </p>
+                                @if ($data->driverLicense)
+                                    <img src="/upload/{{$data->driverLicense}}" style="width: 80%;">
+                                @elseif($data->greenCard)
+                                    <img src="/upload/{{$data->greenCard}}" style="width: 80%;">
+                                @endif
                             </div>
                         </div>
                     </div>
-
+                    <div class="col-xl-7 col-md-7 col-sm-12">
+                        <div class="ms-panel">
+                            <div class="ms-panel-header">
+                                <h6>{{$data->firstName}} {{$data->lastName}} Info</h6>
+                            </div>
+                            <div class="ms-panel-body">
+                                <p>Name: {{$data->firstName}} {{$data->middleName}} {{$data->lastName}}</p>
+                                <p>Sex: {{ $data->sex }}</p>
+                                <p>Ethnicity: {{ $data->ethnicity }}</p>
+                                <p>Date of birth: {{ date("M d, Y", strtotime($data->dateOfBirth)) }}</p>
+                                <p>Occupation: {{ $data->occupation }}</p>
+                                <p>Citizenship: {{ $data->country }}</p>
+                                <p>USA Resident: {{ $data->if_us_citizen==1 ? "YES" : "No" }}</p>
+                                <p>Social Security Number: {{ $data->socialSecurityNumber }}</p>
+                                <p>Legal Address: {{$data->mailingAddress1}} {{$data->mailingAddress2}},{{$data->city}}, {{$data->state}}, {{$data->country}}, {{$data->zip}}</p>
+                                <p>Phone Number: {{ $data->phoneNumber }}</p>
+                                <p>Email Address: {{ $data->email }}</p>
+                                <p>Whatsapp: {{ $data->whatsapp }}</p>
+                                <p>Ownership Start Date: {{ date('M d Y', strtotime($data->ownershipStartDate)) }}</p>
+                                <p>Access Control: {{ $data->board_of_directors_approval }} | {{ $data->property_ownership_proof }}</p>
+                                <p>Status: &nbsp; &nbsp; @if($data->status==1)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-md-6 col-sm-12">
+                        <div class="ms-panel">
+                            <div class="ms-panel-header d-flex justify-content-between">
+                                <h6>Property Info</h6>
+                                <button class="btn btn-primary btn-sm" onclick="goto('/properties/{{ $property->edit_id }}')">Go To</button>
+                            </div>
+                            <div class="ms-panel-body">
+                                @if($setting['is_subassociations']=="1")
+                                    <p> {{$property->association}}</p>
+                                @endif
+                                <p>Type: {{ @$property->Type->type }}</p>
+                                @if ($property->Type && $property->type == "Multi Dwelling")
+                                    <p>Building: Building {{ @$property->Type->whichBuilding }}</p>
+                                    <p>Apartment: {{ $property->aptNumber }}</p>
+                                    <p>Floor Number: {{ $property->floorNumber }}</p>
+                                @endif
+                                <p>Address: {{$property->address1}} {{$property->address2}}  {{$property->city}}, {{$property->state}}, {{$property->pincode}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-md-6 col-sm-12">
+                        <div class="ms-panel">
+                            <div class="ms-panel-header d-flex justify-content-between">
+                                <h6>Owner Info</h6>
+                                <button class="btn btn-primary btn-sm" onclick="goto('/member-owner/{{ $data->edit_id }}')">Go To</button>
+                            </div>
+                            <div class="ms-panel-body">
+                                <p>Name: {{$data->firstName}} {{$data->middleName}} {{$data->lastName}}</p>
+                                <p>Sex: {{ $data->sex }}</p>
+                                <p>Ethnicity: {{ $data->ethnicity }}</p>
+                                <p>Date of birth: {{ date("M d, Y", strtotime($data->dateOfBirth)) }}</p>
+                                <p>Occupation: {{ $data->occupation }}</p>
+                                <p>Citizenship: {{ $data->country }}</p>
+                                <p>USA Resident: {{ $data->if_us_citizen==1 ? "YES" : "No" }}</p>
+                                <p>Social Security Number: {{ $data->socialSecurityNumber }}</p>
+                                <p>Legal Address: {{$data->mailingAddress1}} {{$data->mailingAddress2}},{{$data->city}}, {{$data->state}}, {{$data->country}}, {{$data->zip}}</p>
+                                <p>Phone Number: {{ $data->phoneNumber }}</p>
+                                <p>Email Address: {{ $data->email }}</p>
+                                <p>Whatsapp: {{ $data->whatsapp }}</p>
+                                <p>Ownership Start Date: {{ date('M d Y', strtotime($data->ownershipStartDate)) }}</p>
+                                <p>Access Control: {{ $data->board_of_directors_approval }} | {{ $data->property_ownership_proof }}</p>
+                                <p>Status: &nbsp; &nbsp; @if($data->status==1)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -179,34 +148,9 @@
                 orderable: false
             });
         });
+        function goto(url) {
+            window.location.href = url;
+        }
     </script>
-    <style>
-
-        .action {
-            display: flex;
-        }
-
-        .dropdown-toggle::after {
-            vertical-align: 0.155em;
-            left: 0px;
-            position: absolute;
-            color: #fff;
-            left: 20px;
-            display: none;
-            margin-right: 0px !important;
-            top: 7px;
-        }
-
-        .cust-btn {
-            padding: 4px 4px 3px 4px;
-            border-radius: 2px;
-            color: #009efb;
-        }
-
-        .cust-btn .fas {
-
-            margin-right: 0px !important;
-        }
-    </style>
 @endsection
 

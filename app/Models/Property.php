@@ -30,4 +30,10 @@ class Property extends Model
     public function Pet(){
         return $this->hasMany('App\Models\Pet', 'propertyId');
     }
+    public function Incident(){
+        return $this->hasMany('App\Models\Incident', 'propertyId');
+    }
+    public function Type(){
+        return $this->hasOne('App\Models\Propertytype', 'id', 'typeId');
+    }
 }
