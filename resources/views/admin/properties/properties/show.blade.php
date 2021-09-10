@@ -187,13 +187,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>asdf</td>
-                                            <td>asdf</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>

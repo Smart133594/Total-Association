@@ -36,11 +36,14 @@ class AccessDeviceController extends Controller
      */
     public function store(Request $request)
     {
-        $val = 0;
-        if($request->status == 'true')
-            $val = 1;
+        if($request->type == "name") {
+            $name = $request->name;
+            AccessDevice::where('id', $request->id)->update(['name' => $name]);
+            return 1;
+        }
+        $val = $request->status == 'true' ? 1 : 0;
         AccessDevice::where('id', $request->id)->update(['active' => $val]);
-        dd($request->status);
+        return 1;
     }
 
     /**
