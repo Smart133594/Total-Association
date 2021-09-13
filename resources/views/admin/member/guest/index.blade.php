@@ -100,16 +100,16 @@
                             <table class="table table-striped thead-primary w-100" id="data-table">
                                 <thead>
                                 <tr role="row">
-                                    <th style="width: 30px !important;">S.No</th>
-                                    <th style="min-width: 220px !important; width: 60px;">Name</th>
-                                    <th style="min-width: 220px !important; width: 60px;">Property</th>
-                                    <th style="min-width: 220px !important; width: 60px;">Resident</th>
-                                    <th style="min-width: 220px !important; width: 60px;">Phone</th>
-                                    <th style="min-width: 220px !important; width: 60px;">Email</th>
-                                    <th style="min-width: 220px !important; width: 60px;">Duration</th>
-                                    <th class="no-sort" style="width: 50px !important;">Status</th>
-                                    <th class="no-sort" style="width: 50px !important;">Blacklist</th>
-                                    <th class="no-sort" style="width: 50px !important;">Action</th>
+                                    <th style="width: 20px !important; max-width: 20px !important;">S.No</th>
+                                    <th style="min-width: 210px !important; width: 80px;">Name</th>
+                                    <th style="min-width: 210px !important; width: 180px;">Property</th>
+                                    <th style="min-width: 210px !important; width: 60px;">Resident</th>
+                                    <th style="min-width: 100px !important; width: 80px;">Phone</th>
+                                    <th style="min-width: 100px !important; width: 80px;">Email</th>
+                                    <th style="min-width: 210px !important; width: 160px;">Duration</th>
+                                    <th class="no-sort" style="max-width: 20px !important; width: 50px !important;">Status</th>
+                                    <th class="no-sort" style="max-width: 20px !important; width: 50px !important;">Blacklist</th>
+                                    <th class="no-sort" style="max-width: 20px !important; width: 50px !important;">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>

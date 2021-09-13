@@ -104,14 +104,14 @@
                             <table class="table table-striped thead-primary w-100" id="data-table">
                                 <thead>
                                     <tr role="row">
-                                        <th style="max-width: 30px !important;">S.No</th>
-                                        <th style="min-width: 220px !important; width: 150px;">Property</th>
-                                        <th style="min-width: 220px !important; width: 150px;">Name</th>
-                                        <th style="min-width: 220px !important; width: 150px;">Phone Number</th>
+                                        <th style="max-width: 20px !important; width: 20px;">S.No</th>
+                                        <th style="min-width: 400px !important; width: 180px;">Property</th>
+                                        <th style="min-width: 400px !important; width: 180px;">Name</th>
+                                        <th style="min-width: 120px !important; width: 120px;">Phone Number</th>
 
-                                        <th style="width: 60px !important;">Troubles</th>
-                                        <th class="no-sort" style="width: 50px !important;">Status</th>
-                                        <th class="no-sort" style="width: 50px !important;">Action</th>
+                                        <th style="max-width: 20px !important; width: 20px !important;">Troubles</th>
+                                        <th class="no-sort" style="max-width: 20px !important; width: 20px !important;">Status</th>
+                                        <th class="no-sort" style="max-width: 20px !important; width: 20px !important;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>

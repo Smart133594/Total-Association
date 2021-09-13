@@ -67,7 +67,7 @@
                             <table class="table table-striped thead-primary w-100" id="data-table">
                                 <thead>
                                     <tr role="row">
-                                        <th style="max-width: 30px !important;">S.No.</th>
+                                        <th style="max-width: 20px !important; width: 20px !important;">S.No.</th>
                                         @if($setting['is_subassociations']=="1")
                                             <th>Association</th>
                                         @endif
@@ -76,9 +76,9 @@
                                         <th>Owner</th>
                                         <th>Resident</th>
                                         
-                                        <th class="no-sort" style="width: 50px !important;">Status</th>
-                                        <th class="no-sort" style="width: 50px !important;">Occupied</th>
-                                        <th class="no-sort" style="width: 50px !important;">Action</th>
+                                        <th class="no-sort" style="max-width: 20px !important; width: 20px !important;">Status</th>
+                                        <th class="no-sort" style="max-width: 30px !important; width: 30px !important;">Occupied</th>
+                                        <th class="no-sort" style="max-width: 20px !important; width: 20px !important;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>

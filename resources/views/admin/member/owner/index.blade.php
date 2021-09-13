@@ -103,14 +103,14 @@
                             <table class="table table-striped thead-primary w-100" id="data-table">
                                 <thead>
                                 <tr role="row">
-                                    <th style="max-width: 50px;">S.No.</th>
-                                    <th style="min-width: 220px !important; width: 100px;">Property</th>
-                                    <th style="min-width: 220px !important; width: 120px;">Owner Name</th>
+                                    <th style="max-width: 20px; widthL 20px;">S.No.</th>
+                                    <th style="min-width: 400px !important; width: 180px;">Property</th>
+                                    <th style="min-width: 400px !important; width: 180px;">Owner Name</th>
                                     <th style="min-width: 220px !important; width: 100px;">Phone Number</th>
                                     <th style="min-width: 220px !important; width: 100px;">Company Name</th>
-                                    <th style="min-width: 220px !important; width: 120px;">Corporation</th>
-                                    <th class="no-sort" style="width: 50px;">Status</th>
-                                    <th class="no-sort" style="width: 50px;">Action</th>
+                                    <th style="min-width: 220px !important; width: 80px;">Corporation</th>
+                                    <th class="no-sort" style="max-width: 30px; width: 25px;">Status</th>
+                                    <th class="no-sort" style="max-width: 30px; width: 25px;">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>

@@ -50,15 +50,15 @@
                             <table class="table table-striped thead-primary w-100" id="data-table">
                                 <thead>
                                     <tr role="row">
-                                        <th style="max-width: 50px;">S.No.</th>
-                                        <th style="min-width: 220px !important; width: 80px;">Images</th>
-                                        <th style="min-width: 220px !important; width: 80px;">Pet Name</th>
-                                        <th style="min-width: 220px !important; width: 80px;">Pet Type</th>
-                                        <th style="min-width: 220px !important; width: 80px;">Pet Breed</th>
-                                        <th style="min-width: 220px !important; width: 80px;">Property</th>
-                                        <th style="min-width: 220px !important; width: 80px;">Owner</th>
-                                        <th class="no-sort" style="width: 50px !important;">Status</th>
-                                        <th class="no-sort" style="width: 50px !important;">Action</th>
+                                        <th style="width: 20px !important; max-width: 20px !important;">S.No.</th>
+                                        <th style="min-width: 220px !important; width: 100px !important;">Images</th>
+                                        <th style="min-width: 220px !important; width: 100px !important;">Pet Name</th>
+                                        <th style="min-width: 220px !important; width: 100px !important;">Pet Type</th>
+                                        <th style="min-width: 220px !important; width: 100px !important;">Pet Breed</th>
+                                        <th style="min-width: 220px !important; width: 100px !important;">Property</th>
+                                        <th style="min-width: 220px !important; width: 100px !important;">Owner</th>
+                                        <th class="no-sort" style="width: 20px !important; max-width: 20px !important;">Status</th>
+                                        <th class="no-sort" style="width: 50px !important; max-width: 50px !important;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
