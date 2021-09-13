@@ -143,8 +143,8 @@
                                                     </a>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                                         <a class="dropdown-item" href="/{{$path}}/{{ $val->edit_id }}/">Resident Info</a>
-                                                        <a class="dropdown-item" href="/incident?filter=resident&id={{ $val->edit_id }}">Incidents</a>
-                                                        <a class="dropdown-item" href="/fine-incident/{{ $val->edit_id }}">Create Incident</a>
+                                                        <a class="dropdown-item" onclick="window.localStorage.urlClass='resident'; window.location.href='/incident?filter=resident&id={{ $val->edit_id }}'" href="#">Incidents</a>
+                                                        <a class="dropdown-item" onclick="window.localStorage.urlClass='resident'; window.location.href='/fine-incident/{{ $val->edit_id }}'">Create Incident</a>
                                                         <a class="dropdown-item" href="/bulk-communication?type=Residents&user={{ $val->edit_id }}">Send Letter</a>
                                                         <a class="dropdown-item" href="/letter-generator?type=Residents&user={{ $val->edit_id }}">Send Email</a>
                                                         {{-- <a class="dropdown-item" href="/fines?filter=resident&id={{ $val->edit_id }}">Issue Fine</a> --}}

@@ -89,9 +89,9 @@
                                             @if($setting['is_subassociations']=="1")
                                                 <td onclick="goto('/showproperties/{{ $val->edit_id }}')">{{$val->Subassociation->name}}</td>
                                             @endif
-                                            <td class="text-flow" onclick="goto('/properties/{{ $val->edit_id }}')"> @if($val->buildingId>0){{$val->Building->building}}@endif </td>
+                                            <td class="text-flow" onclick="window.localStorage.urlClass='properties'; goto('/properties/{{ $val->edit_id }}')"> @if($val->buildingId>0){{$val->Building->building}}@endif </td>
                                             <td class="text-flow" onclick="goto('/showproperties/{{ $val->edit_id }}')">{{$val->aptNumber}}</td>
-                                            <td class="text-flow" onclick="goto('/properties/{{ $val->edit_id }}')">
+                                            <td class="text-flow" onclick="window.localStorage.urlClass='properties'; goto('/properties/{{ $val->edit_id }}')">
                                                 @if(isset($val->Owner) && count($val->Owner) > 0)
                                                     @foreach ($val->Owner as $index=>$item)
                                                         @if($index != 0) 
@@ -105,7 +105,7 @@
                                                     @endforeach
                                                 @else N/A @endif
                                             </td>
-                                            <td class="text-flow" onclick="goto('/properties/{{ $val->edit_id }}')">
+                                            <td class="text-flow" onclick="window.localStorage.urlClass='properties'; goto('/properties/{{ $val->edit_id }}')">
                                                 @if(isset($val->Resident) && count($val->Resident) > 0)
                                                     @foreach ($val->Resident as $index=>$item)
                                                         @if($index != 0) 
@@ -132,7 +132,7 @@
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                                         <a class="dropdown-item" href="/showproperties/{{ $val->edit_id }}">See Info</a>
                                                         <a class="dropdown-item" href="/incident?filter=property&id={{ $val->edit_id }}">Incidents</a>
-                                                        <a class="dropdown-item" href="/fine-incident/{{ $val->edit_id }}">Fine Incident</a>
+                                                        <a class="dropdown-item" href="#" onclick="window.localStorage.urlClass='properties'; window.location.href='/fine-incident/{{ $val->edit_id }}'">Fine Incident</a>
                                                         {{-- <a class="dropdown-item" href="/fines?filter=property&id={{ $val->edit_id }}">Issue Fine</a> --}}
                                                         <a class="dropdown-item" href="#">Record Payment </a>
                                                         <a class="dropdown-item" href="#">Elevator Pass </a>

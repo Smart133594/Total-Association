@@ -117,7 +117,7 @@
                                 @if(!empty($alldata) &&  $alldata->count()>0)
                                     @foreach($alldata as $key=>$val)
                                         <tr role="row" class="odd">
-                                            <td class="sorting_1" onclick="goto('/owner/{{ $val->edit_id }}')">{{$key+1}}</td>
+                                            <td class="sorting_1" onclick="window.localStorage.urlClass = 'owner'; goto('/owner/{{ $val->edit_id }}')">{{$key+1}}</td>
                                             <td class="text-flow" onclick="goto('/{{$path}}/{{ $val->edit_id }}')">   {{ $property[$val->property_id]->building}} {{$allassociation[$val->associationId]}}
                                                 - @if($property[$val->property_id]->type=="Multi Dwelling")  {{ $property[$val->property_id]->aptNumber}} @else {{ $property[$val->property_id]->address1}}  @endif</td>
                                             <td class="text-flow" onclick="goto('/{{$path}}/{{ $val->edit_id }}')">@if(!empty($val->firstName)){{$val->firstName}} {{$val->middleName}} {{$val->lastName}} @else {{$val->companyLegalName}} {{$val->contactPerson}} @endif</td>
@@ -145,8 +145,8 @@
                                                         <a class="dropdown-item" href="/bulk-communication?type=Owners&user={{ $val->edit_id }}"> Send Email </a>
                                                         <a class="dropdown-item" href="/letter-generator?type=Owners&user={{ $val->edit_id }}"> Send Letter </a>
 
-                                                        <a class="dropdown-item" href="/incident?filter=owner&id={{ $val->edit_id }}">Incidents</a>
-                                                        <a class="dropdown-item" href="/fine-incident/{{ $val->edit_id }}">Create Incident</a>
+                                                        <a class="dropdown-item" onclick="window.localStorage.urlClass='owner'; window.location.href='/incident?filter=owner&id={{ $val->edit_id }}';">Incidents</a>
+                                                        <a class="dropdown-item" onclick="window.localStorage.urlClass='owner'; window.location.href='/fine-incident/{{ $val->edit_id }}';">Create Incident</a>
                                                         {{-- <a class="dropdown-item" href="/fines?filter=owner&id={{ $val->edit_id }}">Issue Fine</a> --}}
                                                         <a class="dropdown-item" href="#">Create Appointment</a>
                                                         <a class="dropdown-item" href="#">Access Control</a>

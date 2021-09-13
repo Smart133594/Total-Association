@@ -87,6 +87,18 @@
 <script>
     $(document).ready(function () {
         var href = window.location.pathname;
+        if(window.localStorage.urlClass =='properties') {
+            href = '/showproperties/';
+            window.localStorage.urlClass = '';
+        }
+        else if(window.localStorage.urlClass =='owner') {
+            href = '/member-owner/';
+            window.localStorage.urlClass = '';
+        }
+        else if(window.localStorage.urlClass == 'resident') {
+            href = '/member-resident/';
+            window.localStorage.urlClass = '';
+        }
         $(".menu-item .active").parents('.collapse').removeClass('show');
         $(".menu-item .active").removeClass('active');
 
