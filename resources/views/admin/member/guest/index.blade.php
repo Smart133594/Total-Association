@@ -107,7 +107,7 @@
                                     <th style="min-width: 220px !important; width: 60px;">Phone</th>
                                     <th style="min-width: 220px !important; width: 60px;">Email</th>
                                     <th style="min-width: 220px !important; width: 60px;">Duration</th>
-                                    <th class="no-sort" style="max-width:width: 50px !important;">Status</th>
+                                    <th class="no-sort" style="width: 50px !important;">Status</th>
                                     <th class="no-sort" style="width: 50px !important;">Blacklist</th>
                                     <th class="no-sort" style="width: 50px !important;">Action</th>
                                 </tr>
