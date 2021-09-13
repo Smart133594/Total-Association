@@ -96,19 +96,20 @@
 
 
                         @include('admin.includes.msg')
-                            <table id="data-table" class="d-block d-md-table table-responsive table table-striped thead-primary w-100">
+                        <div class="table-responsive">
+                            <table class="table table-striped thead-primary w-100" id="data-table">
                                 <thead>
                                 <tr role="row">
-                                    <th>S.No</th>
-                                    <th>Name</th>
-                                    <th>Property</th>
-                                    <th>Resident</th>
-                                    <th>Phone</th>
-                                    <th>Email</th>
-                                    <th>Duration</th>
-                                    <th class="no-sort">Status</th>
-                                    <th class="no-sort">Blacklist</th>
-                                    <th class="no-sort">Action</th>
+                                    <th style="max-width: 30px !important;">S.No</th>
+                                    <th style="min-width: 220px !important; width: 60px;">Name</th>
+                                    <th style="min-width: 220px !important; width: 60px;">Property</th>
+                                    <th style="min-width: 220px !important; width: 60px;">Resident</th>
+                                    <th style="min-width: 220px !important; width: 60px;">Phone</th>
+                                    <th style="min-width: 220px !important; width: 60px;">Email</th>
+                                    <th style="min-width: 220px !important; width: 60px;">Duration</th>
+                                    <th class="no-sort" style="width: 50px !important;">Status</th>
+                                    <th class="no-sort" style="width: 50px !important;">Blacklist</th>
+                                    <th class="no-sort" style="width: 50px !important;">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -151,6 +152,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                        </div>
                     </div>
                 </div>
             </div>

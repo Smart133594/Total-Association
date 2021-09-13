@@ -99,17 +99,18 @@
 
 
                         @include('admin.includes.msg')
-                            <table id="data-table" class="d-block d-md-table table-responsive table table-striped thead-primary w-100">
+                        <div class="table-responsive">
+                            <table class="table table-striped thead-primary w-100" id="data-table">
                                 <thead>
                                 <tr role="row">
-                                    <th>S.No.</th>
-                                    <th>Property</th>
-                                    <th style="min-width: 100px; width: 100px;">Owner Name</th>
-                                    <th style="min-width: 100px; width: 100px;">Phone Number</th>
-                                    <th style="min-width: 100px; width: 100px;">Company Name</th>
-                                    <th>Corporation</th>
-                                    <th class="no-sort">Status</th>
-                                    <th class="no-sort">Action</th>
+                                    <th style="max-width: 50px;">S.No.</th>
+                                    <th style="min-width: 220px !important; width: 100px;">Property</th>
+                                    <th style="min-width: 220px !important; width: 120px;">Owner Name</th>
+                                    <th style="min-width: 220px !important; width: 100px;">Phone Number</th>
+                                    <th style="min-width: 220px !important; width: 100px;">Company Name</th>
+                                    <th style="min-width: 220px !important; width: 120px;">Corporation</th>
+                                    <th class="no-sort" style="width: 50px;">Status</th>
+                                    <th class="no-sort" style="width: 50px;">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -158,6 +159,7 @@
                                 @endif
                                 </tbody>
                             </table>
+                        </div>
                     </div>
                 </div>
             </div>

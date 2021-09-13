@@ -1,7 +1,20 @@
 @extends('admin.layouts.master')
 @section('title', 'Fines')
 @section('content')
-
+<style>
+    table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 100px;
+    }
+    td.text-flow {
+        white-space: nowrap; 
+        width: 100px; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
     <div class="ms-content-wrapper">
         <div class="row">
             <div class="col-md-12">
@@ -19,7 +32,7 @@
                     </div>
                     <div class="ms-panel-body">
                         @include('admin.includes.msg')
-                            <table id="data-table" class="table-responsive table table-striped thead-primary w-100">
+                            <table id="data-table" class="d-block d-md-table table-responsive table table-striped thead-primary w-100">
                                 <thead>
                                 <tr role="row">
                                     <th>S.No.</th>
@@ -38,22 +51,18 @@
                                     @foreach($alldata as $key=>$val)
                                         <tr role="row" class="odd">
                                             <td class="sorting_1">{{$key+1}}</td>
-                                            <td>{{$val->dateTime}}</td>
+                                            <td class="text-flow">{{$val->dateTime}}</td>
 
-                                            <td>{{ $property[$val->propertyId]->building}}  {{$allassociation[$property[$val->propertyId]->associationId]}} - @if($property[$val->propertyId]->type=="Multi Dwelling")  {{ $property[$val->propertyId]->aptNumber}} @else {{ $property[$val->propertyId]->address1}}  @endif</td>
-                                            <td>{{$val->ind}}</td>
-                                            <td>{{$val->incidentTitle}}</td>
-                                            <td>
+                                            <td class="text-flow">{{ $property[$val->propertyId]->building}}  {{$allassociation[$property[$val->propertyId]->associationId]}} - @if($property[$val->propertyId]->type=="Multi Dwelling")  {{ $property[$val->propertyId]->aptNumber}} @else {{ $property[$val->propertyId]->address1}}  @endif</td>
+                                            <td class="text-flow">{{$val->ind}}</td>
+                                            <td class="text-flow">{{$val->incidentTitle}}</td>
+                                            <td class="text-flow">
                                                 @if($val->new_fine_amount>0)
                                                     ${{$val->new_fine_amount}}
                                                 @else
                                                     ${{$val->fine_amount}}
                                                 @endif
-
-
-
                                             </td>
-
 
                                             <td>@if($val->policeInvolved==1)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif </td>
                                             <td>@if($val->outcome=='Fine')<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif </td>

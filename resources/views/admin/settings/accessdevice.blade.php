@@ -34,45 +34,47 @@
             </div>
             <div class="ms-panel-body">
                 @include('admin.includes.msg')
-                <table id="data-table" class="d-block d-md-table table-responsive table table-striped thead-primary w-100">
-                    <thead>
-                        <tr role="row">
-                            <th style="width: 40px">No.</th>
-                            <th style="min-width: 100px">Name</th>
-                            <th style="min-width: 100px">&nbsp; &nbsp; Serial Number</th>
-                            <th style="min-width: 100px">IP Address</th>
-                            <th class="no-sort">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($items as $key => $item)
-                            <tr role="row" class="odd">
-                                <td>{{ $key + 1 }}</td>
-                                <td class="row" id="td_name_{{ $item->id }}">
-                                    {{ $item->name }} &nbsp;&nbsp;<span class="material-icons dot-primary" style="font-size: 20px"
-                                        onclick="onEdit('{{ $item->name }}', {{ $item->id }})">edit</span>
-                                </td>
-                                <td class="text-flow">&nbsp; &nbsp; {{ $item->serial_number }}</td>
-                                <td class="text-flow">{{ $item->ip_address }}</td>
-                                <td>
-                                    @if ($item->active == 1)
-                                        <label class="ms-switch">
-                                            <input type="checkbox" id="check_{{ $item->id }}" checked
-                                                onclick="setStatus({{ $item->id }})">
-                                            <span class="ms-switch-slider ms-switch-success round"></span>
-                                        </label>
-                                    @else
-                                        <label class="ms-switch">
-                                            <input type="checkbox" id="check_{{ $item->id }}"
-                                                onclick="setStatus({{ $item->id }})">
-                                            <span class="ms-switch-slider ms-switch-success round"></span>
-                                        </label>
-                                    @endif
-                                </td>
+                <div class="table-responsive">
+                    <table class="table table-striped thead-primary w-100" id="data-table">
+                        <thead>
+                            <tr role="row">
+                                <th style="width: 30px">No.</th>
+                                <th style="min-width: 220px !important; width: 120px;">Name</th>
+                                <th style="min-width: 220px !important; width: 120px;">&nbsp; &nbsp; Serial Number</th>
+                                <th style="min-width: 220px !important; width: 120px;">IP Address</th>
+                                <th style="width: 50px !important;" class="no-sort">Status</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($items as $key => $item)
+                                <tr role="row" class="odd">
+                                    <td>{{ $key + 1 }}</td>
+                                    <td class="row" id="td_name_{{ $item->id }}">
+                                        {{ $item->name }} &nbsp;&nbsp;<span class="material-icons dot-primary" style="font-size: 20px"
+                                            onclick="onEdit('{{ $item->name }}', {{ $item->id }})">edit</span>
+                                    </td>
+                                    <td class="text-flow">&nbsp; &nbsp; {{ $item->serial_number }}</td>
+                                    <td class="text-flow">{{ $item->ip_address }}</td>
+                                    <td>
+                                        @if ($item->active == 1)
+                                            <label class="ms-switch">
+                                                <input type="checkbox" id="check_{{ $item->id }}" checked
+                                                    onclick="setStatus({{ $item->id }})">
+                                                <span class="ms-switch-slider ms-switch-success round"></span>
+                                            </label>
+                                        @else
+                                            <label class="ms-switch">
+                                                <input type="checkbox" id="check_{{ $item->id }}"
+                                                    onclick="setStatus({{ $item->id }})">
+                                                <span class="ms-switch-slider ms-switch-success round"></span>
+                                            </label>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

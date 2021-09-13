@@ -41,13 +41,14 @@
                     </div>
                     <div class="ms-panel-body">
                         @include('admin.includes.msg')
-                            <table id="data-table" class="d-block d-md-table table-responsive table table-striped thead-primary w-100">
+                        <div class="table-responsive">
+                            <table class="table table-striped thead-primary w-100" id="data-table">
                                 <thead>
                                 <tr role="row">
-                                    <th>S.No.</th>
-                                    <th style="min-width: 100px">Pet Type</th>
-                                    <th class="no-sort">Status</th>
-                                    <th class="no-sort">Action</th>
+                                    <th style="max-width: 30px !important;">S.No.</th>
+                                    <th style="width: 50px !important;">Pet Type</th>
+                                    <th class="no-sort" style="width: 50px !important;">Status</th>
+                                    <th class="no-sort" style="width: 50px !important;">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -82,6 +83,7 @@
                                 @endif
                                 </tbody>
                             </table>
+                        </div>
                     </div>
                 </div>
             </div>

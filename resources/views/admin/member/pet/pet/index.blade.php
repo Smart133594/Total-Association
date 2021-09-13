@@ -46,26 +46,27 @@
                     </div>
                     <div class="ms-panel-body">
                         @include('admin.includes.msg')
-                            <table id="data-table" class="table-responsive table table-striped thead-primary w-100">
+                        <div class="table-responsive">
+                            <table class="table table-striped thead-primary w-100" id="data-table">
                                 <thead>
-                                <tr role="row">
-                                    <th>S.No.</th>
-                                    <th>Images</th>
-                                    <th style="min-width: 100px">Pet Name</th>
-                                    <th style="min-width: 100px">Pet Type</th>
-                                    <th style="min-width: 100px">Pet Breed</th>
-                                    <th>Property</th>
-                                    <th>Owner</th>
-                                    <th class="no-sort">Status</th>
-                                    <th class="no-sort">Action</th>
-                                </tr>
+                                    <tr role="row">
+                                        <th style="max-width: 50px;">S.No.</th>
+                                        <th style="min-width: 220px !important; width: 80px;">Images</th>
+                                        <th style="min-width: 220px !important; width: 80px;">Pet Name</th>
+                                        <th style="min-width: 220px !important; width: 80px;">Pet Type</th>
+                                        <th style="min-width: 220px !important; width: 80px;">Pet Breed</th>
+                                        <th style="min-width: 220px !important; width: 80px;">Property</th>
+                                        <th style="min-width: 220px !important; width: 80px;">Owner</th>
+                                        <th class="no-sort" style="width: 50px !important;">Status</th>
+                                        <th class="no-sort" style="width: 50px !important;">Action</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                 @if(!empty($alldata) &&  $alldata->count()>0)
                                     @foreach($alldata as $key=>$val)
                                         <tr role="row" class="odd">
                                             <td class="sorting_1">{{$key+1}}</td>
-                                            <td class="text-flow"><img src="/thumb/{{$val->image}}" style="border-radius:0;height:100px;width:auto;max-width:200px"></td>
+                                            <td class="text-flow"><img src="/thumb/{{$val->image}}" style="border-radius:0; height:100px; width:100px; object-fit: cover; max-width:200px"></td>
                                             <td class="text-flow">{{$val->petName}}</td>
                                             <td class="text-flow">{{$pettype[$val->pettypeId]}}</td>
                                             <td class="text-flow">{{$val->breedAndDesc}}</td>
@@ -101,6 +102,7 @@
                                 @endif
                                 </tbody>
                             </table>
+                        </div>
                     </div>
                 </div>
             </div>

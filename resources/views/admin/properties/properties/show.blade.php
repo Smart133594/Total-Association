@@ -15,9 +15,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-
-        ,
-
     </style>
     <div class="ms-content-wrapper">
         <div class="row">
@@ -33,32 +30,55 @@
                 </nav>
                 <div class="row">
                     <div class="col-xl-3 col-md-3 col-sm-6">
-                        <div class="ms-card ms-card-body card-primary properties-card">
-                            <h6>Owned/rented For:</h6>
-                            <div style="font-size: 16px"> Owned: 3.5 Years <br /> Rented: 2.1 Years</div>
-                        </div>
+                        <div class="ms-card card-gradient-success ms-widget ms-infographics-widget">
+                            <div class="ms-card-body media">
+                               <div class="media-body">
+                                  <h6>Owned/rented For:</h6>
+                                  <p style="font-size: 15px"> Owned: 3.5 Years <br /> Rented: 2.1 Years</p>
+                               </div>
+                            </div>
+                            <i class="flaticon-statistics"></i>
+                         </div>
                     </div>
                     <div class="col-xl-3 col-md-3 col-sm-6">
-                        <div class="ms-card ms-card-body card-warning properties-card">
-                            <h6>Violations: </h6>
-                            <div> {{ $violation_num }} Violation{{ $violation_num > 1 ? "s" : '' }}</div>
-                        </div>
+                        <div class="ms-card card-gradient-warning ms-widget ms-infographics-widget">
+                            <div class="ms-card-body media">
+                               <div class="media-body">
+                                   <h6>Violations: </h6>
+                                   <p> {{ $violation_num }} Violation{{ $violation_num > 1 ? "s" : '' }}</p>
+                                   <p>&nbsp;</p>
+                               </div>
+                            </div>
+                            <i class="flaticon-alert"></i>
+                         </div>
                     </div>
                     <div class="col-xl-3 col-md-3 col-sm-6">
-                        <div class="ms-card ms-card-body card-danger properties-card">
-                            <h6>Fines:</h6>
-                            <div> {{ $fine_num }} Fine{{ $fine_num > 1 ? "s" : '' }}</div>
-                        </div>
+                        <div class="ms-card card-gradient-danger ms-widget ms-infographics-widget">
+                            <div class="ms-card-body media">
+                               <div class="media-body">
+                                    <h6>Fines:</h6>
+                                    <div> {{ $fine_num }} Fine{{ $fine_num > 1 ? "s" : '' }}</div>
+                                    <p>&nbsp;</p>
+                               </div>
+                            </div>
+                            <i class="flaticon-share-1"></i>
+                         </div>
                     </div>
                     <div class="col-xl-3 col-md-3 col-sm-6">
-                        <div class="ms-card ms-card-body {{ $property->status == 1 ? 'card-success' : 'card-danger' }} properties-card">
-                            <h6>Status: </h6>
-                            @if ($property->status == 1)
-                                <div>Current</div>
-                            @else
-                                <div>Deliquent</div>
-                            @endif
-                        </div>
+                        <div class="ms-card {{ $property->status == 1 ? 'card-gradient-success' : 'card-gradient-danger' }} ms-widget ms-infographics-widget">
+                            <div class="ms-card-body media">
+                               <div class="media-body">
+                                    <h6>Status: </h6>
+                                    @if ($property->status == 1)
+                                        <div>Current</div>
+                                    @else
+                                        <div>Deliquent</div>
+                                    @endif
+                                    <p>&nbsp;</p>
+                               </div>
+                            </div>
+                            <i class="flaticon-dashboard"></i>
+                         </div>
                     </div>
                     <div class="col-xl-6 col-md-6 col-sm-12">
                         <div class="ms-panel">
@@ -73,7 +93,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="ms-panel-body ms-owners-slider">
+                            <div class="ms-panel-body ms-owners-slider" style="width: 100%; min-height: 234px;">
                                 @foreach ($property->Owner as $val)
                                     <div class="ms-crypto-overview">
                                         <a href="#" class="ms-profile">
@@ -93,7 +113,7 @@
                     <div class="col-xl-6 col-md-6 col-sm-12">
                         <div class="ms-panel">
                             <div class="ms-panel-header d-flex justify-content-between">
-                                <h6>Current Owner(s)</h6>
+                                <h6>Current Resident(s)</h6>
                                 <div class="ms-slider-arrow">
                                     <a href="#" class="resident-prev-item">
                                         <i class="far fa-caret-square-left"></i>
@@ -103,12 +123,12 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="ms-panel-body ms-residents-slider">
+                            <div class="ms-panel-body ms-residents-slider" style="min-height: 234px;">
                                 @foreach ($property->Resident as $val)
                                     <div class="ms-crypto-overview">
                                         <a href="#" class="ms-profile">
                                             @if ($val->picture)
-                                                <img src="/upload/{{ $val->picture }}" class="ms-img-large ms-img-round ms-user-img mx-auto d-block" alt="people">
+                                                <img src="/upload/{{ $val->picture }}" class="ms-img-large ms-img-round ms-user-img mx-auto d-block" style="object-fit: cover; width: 100px;" alt="people">
                                             @endif
                                             <div class="ms-card-body">
                                                 <h5>{{ $val->firstName }}</h5>
@@ -127,7 +147,7 @@
                             <div class="ms-panel-header">
                                 <h6>Property Info</h6>
                             </div>
-                            <div class="ms-panel-body row">
+                            <div class="ms-panel-body row" style="min-height: 390px;">
                                 @if ($setting['is_subassociations'] == '1')
                                     <p class="col-md-6">Association:</p>
                                     <p class="col-md-6">{{ $property->sub_association }}</p>
@@ -175,7 +195,7 @@
                             <div class="ms-panel-header">
                                 <h6>Last Transactions</h6>
                             </div>
-                            <div class="ms-panel-body p-2">
+                            <div class="ms-panel-body p-2" style="min-height: 390px;">
                                 <table class="table thead-primary dataTable">
                                     <thead>
                                         <tr>
