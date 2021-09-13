@@ -100,14 +100,14 @@
                             <table class="table table-striped thead-primary w-100" id="data-table">
                                 <thead>
                                 <tr role="row">
-                                    <th style="max-width: 30px !important;">S.No</th>
+                                    <th style="width: 30px !important;">S.No</th>
                                     <th style="min-width: 220px !important; width: 60px;">Name</th>
                                     <th style="min-width: 220px !important; width: 60px;">Property</th>
                                     <th style="min-width: 220px !important; width: 60px;">Resident</th>
                                     <th style="min-width: 220px !important; width: 60px;">Phone</th>
                                     <th style="min-width: 220px !important; width: 60px;">Email</th>
                                     <th style="min-width: 220px !important; width: 60px;">Duration</th>
-                                    <th class="no-sort" style="width: 50px !important;">Status</th>
+                                    <th class="no-sort" style="max-width:width: 50px !important;">Status</th>
                                     <th class="no-sort" style="width: 50px !important;">Blacklist</th>
                                     <th class="no-sort" style="width: 50px !important;">Action</th>
                                 </tr>
@@ -117,7 +117,7 @@
                                         <tr role="row" class="odd">
                                             <td class="sorting_1" >{{$key+1}}</td>
                                             <td class="text-flow">{{$val->firstName}} {{$val->middleName}} {{$val->lastName}}</td>
-                                            <td class="text-flow"> {{ $property[$val->property_id]->building}} {{$allassociation[$val->associationId]}} - @if($property[$val->property_id]->type=="Multi Dwelling")  {{ $property[$val->property_id]->aptNumber}} @else {{ $property[$val->property_id]->address1}}  @endif</td>
+                                            <td class="text-flow"> {{ @$property[@$val->property_id]->building}} {{@$allassociation[@$val->associationId]}} - @if(@$property[@$val->property_id]->type=="Multi Dwelling")  {{ @$property[@$val->property_id]->aptNumber}} @else {{ @$property[@$val->property_id]->address1}}  @endif</td>
                                             <td class="text-flow">{{$val->rfname}} {{$val->rlname}}</td>
                                             <td class="text-flow">{{$val->phoneNumber}}</td>
                                             <td class="text-flow">{{$val->email}}</td>

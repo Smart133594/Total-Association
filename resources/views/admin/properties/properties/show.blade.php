@@ -98,7 +98,7 @@
                                     <div class="ms-crypto-overview">
                                         <a href="#" class="ms-profile">
                                             @if ($val->picture)
-                                                <img src="/upload/{{ $val->picture }}" class="ms-img-large ms-img-round ms-user-img mx-auto d-block" alt="people">
+                                                <img src="/upload/{{ $val->picture }}" class="ms-img-large ms-img-round ms-user-img mx-auto d-block" style="object-fit: cover;" alt="people" onclick="window.location.href='/member-owner/{{Crypt::encryptString($val->id)}}'">
                                             @endif
                                             <div class="ms-card-body">
                                                 <h5>{{ $val->firstName }}</h5>
@@ -128,7 +128,7 @@
                                     <div class="ms-crypto-overview">
                                         <a href="#" class="ms-profile">
                                             @if ($val->picture)
-                                                <img src="/upload/{{ $val->picture }}" class="ms-img-large ms-img-round ms-user-img mx-auto d-block" style="object-fit: cover; width: 100px;" alt="people">
+                                                <img src="/upload/{{ $val->picture }}" class="ms-img-large ms-img-round ms-user-img mx-auto d-block" style="object-fit: cover; width: 100px;" alt="people" onclick="window.location.href='/member-resident/{{Crypt::encryptString($val->id)}}'">
                                             @endif
                                             <div class="ms-card-body">
                                                 <h5>{{ $val->firstName }}</h5>
@@ -465,7 +465,7 @@
                                 @foreach ($property->Pet as $val)
                                     <tr>
                                         <td><img src="/thumb/{{ $val->image }}"
-                                                style="border-radius:0;height:50px;width:auto;max-width:100px"></td>
+                                                style="border-radius:0;height:50px;width:auto;max-width:100px;object-fit: cover;"></td>
                                         <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">
                                             {{ $val->petName }}</td>
                                         <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">
