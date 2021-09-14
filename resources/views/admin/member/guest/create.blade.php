@@ -87,7 +87,6 @@
                                         </div>
                                     @endif
 
-
                                         <div class="form-group">
                                             <label>Select Property</label>
                                             <select class="form-control" id="selecttype" name="propertyId"  >
@@ -200,21 +199,10 @@
                                         <img src="/upload/{{$data->picture}}" style="width: 100px">
                                     @endif
                                 </div>
-                                <div class="col-md-8">
-                                    <div class="form-group" style="padding-top: 35px">
-                                        <label>If US Citizen/Resident</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <input type="radio" id="if_us_citizen" name="if_us_citizen" onclick="isus(this.value)" value="1"
-                                               @if($data ?? '') @if($data->if_us_citizen=='1')checked @endif @endif>
-                                        Yes &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <input type="radio" id="if_us_citizen" name="if_us_citizen" onclick="isus(this.value)" value="0" @if(!isset($data)) checked
-                                               @endif  @if($data ?? '') @if($data->if_us_citizen=='0')checked @endif @endif> No
-                                        &nbsp;&nbsp;&nbsp;&nbsp;
 
-                                    </div>
-                                </div>
                                 <div class="col-md-4 us">
                                     <div class="form-group">
-                                        <label for="examplePassword">Driver License</label><br>
+                                        <label for="examplePassword">ID</label><br>
                                         <input type="file" id="driverLicense" name="driverLicense">
                                         <br>
                                         @if($data ?? '')
@@ -222,6 +210,7 @@
                                         @endif
                                     </div>
                                 </div>
+
                                 <div class="col-md-4 notus">
                                     <div class="form-group">
                                         <label for="examplePassword">Passport</label><br>
