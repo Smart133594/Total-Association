@@ -69,13 +69,14 @@
                                     <tr role="row">
                                         <th style="max-width: 20px !important; width: 20px !important;">S.No.</th>
                                         @if($setting['is_subassociations']=="1")
-                                            <th>Association</th>
+                                            <th style="width: 80px !important;">Association</th>
                                         @endif
-                                        <th>Building</th>
-                                        <th>Apartment</th>
-                                        <th>Owner</th>
-                                        <th>Resident</th>
-                                        
+                                        <th style="max-width: 120px !important; width: 60px !important;">Building</th>
+                                        <th style="max-width: 50px !important; width: 50px !important;">Apartment</th>
+                                        <th style="max-width: 120px !important; width: 120px !important;">Owner</th>
+                                        <th style="max-width: 80px !important; width: 80px !important;">Owner Tel</th>
+                                        <th style="max-width: 120px !important; width: 80px !important;">Resident</th>
+                                        <th style="max-width: 80px !important; width: 80px !important;">Resident Tel</th>
                                         <th class="no-sort" style="max-width: 20px !important; width: 20px !important;">Status</th>
                                         <th class="no-sort" style="max-width: 30px !important; width: 30px !important;">Occupied</th>
                                         <th class="no-sort" style="max-width: 20px !important; width: 20px !important;">Action</th>
@@ -106,12 +107,32 @@
                                                 @else N/A @endif
                                             </td>
                                             <td class="text-flow" onclick="window.localStorage.urlClass='properties'; goto('/properties/{{ $val->edit_id }}')">
+                                                @if(isset($val->Owner) && count($val->Owner) > 0)
+                                                    @foreach ($val->Owner as $index=>$item)
+                                                        @if($index != 0) 
+                                                        /
+                                                        @endif
+                                                        {{ $item->phoneNumber}}
+                                                    @endforeach
+                                                @else N/A @endif
+                                            </td>
+                                            <td class="text-flow" onclick="window.localStorage.urlClass='properties'; goto('/properties/{{ $val->edit_id }}')">
                                                 @if(isset($val->Resident) && count($val->Resident) > 0)
                                                     @foreach ($val->Resident as $index=>$item)
                                                         @if($index != 0) 
                                                         /
                                                         @endif
                                                         {{ $item->firstName . ' ' . $item->lastName}}
+                                                    @endforeach
+                                                @else N/A @endif
+                                            </td>
+                                            <td class="text-flow" onclick="window.localStorage.urlClass='properties'; goto('/properties/{{ $val->edit_id }}')">
+                                                @if(isset($val->Resident) && count($val->Resident) > 0)
+                                                    @foreach ($val->Resident as $index=>$item)
+                                                        @if($index != 0) 
+                                                        /
+                                                        @endif
+                                                        {{ $item->phoneNumber}}
                                                     @endforeach
                                                 @else N/A @endif
                                             </td>
@@ -132,7 +153,7 @@
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                                         <a class="dropdown-item" href="/showproperties/{{ $val->edit_id }}">See Info</a>
                                                         <a class="dropdown-item" href="/incident?filter=property&id={{ $val->edit_id }}">Incidents</a>
-                                                        <a class="dropdown-item" href="#" onclick="window.localStorage.urlClass='properties'; window.location.href='/fine-incident/{{ $val->edit_id }}'">Fine Incident</a>
+                                                        <a class="dropdown-item" href="#" onclick="window.localStorage.urlClass='properties'; window.location.href='/fine-incident/{{ $val->edit_id }}'">Fines</a>
                                                         {{-- <a class="dropdown-item" href="/fines?filter=property&id={{ $val->edit_id }}">Issue Fine</a> --}}
                                                         <a class="dropdown-item" href="#">Record Payment </a>
                                                         <a class="dropdown-item" href="#">Elevator Pass </a>

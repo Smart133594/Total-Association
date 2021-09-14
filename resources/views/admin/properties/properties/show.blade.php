@@ -98,7 +98,7 @@
                                     <div class="ms-crypto-overview">
                                         <a href="#" class="ms-profile">
                                             @if ($val->picture)
-                                                <img src="/upload/{{ $val->picture }}" class="ms-img-large ms-img-round ms-user-img mx-auto d-block" style="object-fit: cover;" alt="people" onclick="window.location.href='/member-owner/{{Crypt::encryptString($val->id)}}'">
+                                                <img src="/upload/{{ $val->picture }}" class="ms-img-large ms-img-round ms-user-img mx-auto d-block" style="object-fit: cover; width: 100px; height: 100px;" alt="people" onclick="window.localStorage.urlClass = 'properties'; window.location.href='/member-owner/{{Crypt::encryptString($val->id)}}'">
                                             @endif
                                             <div class="ms-card-body">
                                                 <h5>{{ $val->firstName }}</h5>
@@ -128,7 +128,7 @@
                                     <div class="ms-crypto-overview">
                                         <a href="#" class="ms-profile">
                                             @if ($val->picture)
-                                                <img src="/upload/{{ $val->picture }}" class="ms-img-large ms-img-round ms-user-img mx-auto d-block" style="object-fit: cover; width: 100px;" alt="people" onclick="window.location.href='/member-resident/{{Crypt::encryptString($val->id)}}'">
+                                                <img src="/upload/{{ $val->picture }}" class="ms-img-large ms-img-round ms-user-img mx-auto d-block" style="object-fit: cover; width: 100px; height: 100px;" alt="people" onclick="window.location.href='/member-resident/{{Crypt::encryptString($val->id)}}'">
                                             @endif
                                             <div class="ms-card-body">
                                                 <h5>{{ $val->firstName }}</h5>
@@ -466,17 +466,17 @@
                                     <tr>
                                         <td><img src="/thumb/{{ $val->image }}"
                                                 style="border-radius:0;height:50px;width:auto;max-width:100px;object-fit: cover;"></td>
-                                        <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">
+                                        <td class="text-flow" onclick="window.localStorage.urlClass =='properties'; goto('/pet/{{ $val->pet_id }}/edit')">
                                             {{ $val->petName }}</td>
-                                        <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">
+                                        <td class="text-flow" onclick="window.localStorage.urlClass =='properties'; goto('/pet/{{ $val->pet_id }}/edit')">
                                             {{ $val->PetType->petType }}
                                         </td>
-                                        <td class="text-flow" onclick="goto('/owner/{{ $val->owner_id }}')">
+                                        <td class="text-flow" onclick="window.localStorage.urlClass =='properties'; goto('/pet/{{ $val->pet_id }}/edit')">
                                             @if (isset($val->Owner))
                                                 {{ $val->Owner->firstName }} {{ $val->Owner->lastName }}
                                             @endif
                                         </td>
-                                        <td onclick="goto('/owner/{{ $val->owner_id }}')">
+                                        <td onclick="window.localStorage.urlClass =='properties'; goto('/pet/{{ $val->pet_id }}/edit')">
                                             @if ($val->status == 1)<i
                                                 class="fas fa-dot-circle dot-green"></i>@elseif($val->status==0) <i
                                                 class="fas fa-dot-circle dot-yellow"></i>@else <i

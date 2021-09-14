@@ -55,7 +55,7 @@
                                         <th style="min-width: 220px !important; width: 100px !important;">Pet Name</th>
                                         <th style="min-width: 220px !important; width: 100px !important;">Pet Type</th>
                                         <th style="min-width: 220px !important; width: 100px !important;">Pet Breed</th>
-                                        <th style="min-width: 220px !important; width: 100px !important;">Property</th>
+                                        <th style="min-width: 550px !important; width: 180px !important;">Property</th>
                                         <th style="min-width: 220px !important; width: 100px !important;">Owner</th>
                                         <th class="no-sort" style="width: 20px !important; max-width: 20px !important;">Status</th>
                                         <th class="no-sort" style="width: 50px !important; max-width: 50px !important;">Action</th>
@@ -70,7 +70,7 @@
                                             <td class="text-flow">{{$val->petName}}</td>
                                             <td class="text-flow">{{$pettype[$val->pettypeId]}}</td>
                                             <td class="text-flow">{{$val->breedAndDesc}}</td>
-                                            <td class="text-flow">{{$property[$val->propertyId]}}</td>
+                                            <td class="text-flow">{{$property[$val->propertyId]['building']}} {{$allassociation[$property[$val->propertyId]['associationId']]}} - @if($property[$val->propertyId]['type']=="Multi Dwelling") {{$property[$val->propertyId]['aptNumber']}} @else {{$property[$val->propertyId]['address1']}} @endif</td>
                                             <td class="text-flow">{{$owner[$val->ownerId]}}</td>
                                             <td>@if($val->status==1)<i class="fas fa-dot-circle dot-green"></i>@elseif($val->status==0) <i class="fas fa-dot-circle dot-yellow"></i>@else <i class="fas fa-dot-circle dot-red"></i>@endif </td>
                                             <td class="action">

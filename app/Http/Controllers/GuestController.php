@@ -93,9 +93,17 @@ class GuestController extends Controller
         $resident = Resident::where('status', 1)->get();
         $subasso = Subassociation::where('status', 1)->get();
         $ptype = Propertytype::where('status', 1)->get();
-        $building = Building::where('status', 1)->get();
+        $building = Building::where('status', 1)->orderby('building')->get();
 
-        return view('admin.member.guest.create', ['validate' => $validate, 'property' => $property, 'resident' => $resident, 'subasso' => $subasso, 'ptype' => $ptype, 'building' => $building]);
+        $property_info = Property::get();
+        foreach ($property_info as $key => $value) {
+            $item_type = Propertytype::where('id', $value->typeId)->get()->first();
+            $item_building = Building::where('id', $value->buildingId)->get()->first();
+            $property_info[$key]['buildingName'] = $item_building->building;
+            $property_info[$key]['type'] = $item_type->type;
+        }
+
+        return view('admin.member.guest.create', ['validate' => $validate, 'property' => $property, 'resident' => $resident, 'subasso' => $subasso, 'ptype' => $ptype, 'building' => $building, 'property_info' => $property_info]);
     }
 
     public function store(Request $request)
@@ -156,10 +164,11 @@ class GuestController extends Controller
         $validate = array('firstName', 'lastName', 'propertyId', 'residentId', 'phoneNumber', 'email', 'startingDate', 'endDate');
         $guest = Guest::where('id', $id)->first();
         $property = Property::get();
-        $resident = Resident::where('propertyId', $guest->propertyId)->get();
+        $resident = Resident::where('status', 1)->get();
+        // $resident = Resident::where('propertyId', $guest->propertyId)->get();
         $subasso = Subassociation::where('status', 1)->get();
         $ptype = Propertytype::where('status', 1)->get();
-        $building = Building::where('status', 1)->get();
+        $building = Building::where('status', 1)->orderby('building')->get();
         $current_building = Building::where('id', $guest->buildingId)->first();
         $floor = array();
         if (isset($current_building->noOfFloors)) {
@@ -174,7 +183,14 @@ class GuestController extends Controller
 
             }
         }
-        return view('admin.member.guest.create', ['data' => $guest, 'validate' => $validate, 'property' => $property, 'resident' => $resident, 'subasso' => $subasso, 'ptype' => $ptype, 'building' => $building, 'floor' => $floor]);
+        $property_info = Property::get();
+        foreach ($property_info as $key => $value) {
+            $item_type = Propertytype::where('id', $value->typeId)->get()->first();
+            $item_building = Building::where('id', $value->buildingId)->get()->first();
+            $property_info[$key]['buildingName'] = $item_building->building;
+            $property_info[$key]['type'] = $item_type->type;
+        }
+        return view('admin.member.guest.create', ['data' => $guest, 'validate' => $validate, 'property' => $property, 'resident' => $resident, 'subasso' => $subasso, 'ptype' => $ptype, 'building' => $building, 'floor' => $floor, 'property_info' => $property_info]);
     }
 
     public function destroy($id)

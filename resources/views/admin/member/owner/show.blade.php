@@ -148,7 +148,7 @@
                             <div class="ms-panel-header d-flex justify-content-between">
                                 <h6>Property Info</h6>
                                 <button class="btn btn-primary btn-sm"
-                                    onclick="goto('/properties/{{ $property->edit_id }}')">Go To</button>
+                                    onclick="window.localStorage.urlClass='owner'; window.location.href='/properties/{{ $property->edit_id }}'">Go To</button>
                             </div>
                             <div class="ms-panel-body" style="min-height: 605px;">
                                 @if ($setting['is_subassociations'] == '1')
@@ -170,7 +170,7 @@
                             <div class="ms-panel-header d-flex justify-content-between">
                                 <h6>Owner Info</h6>
                                 <button class="btn btn-primary btn-sm"
-                                    onclick="goto('/member-owner/{{ $data->edit_id }}')">Go To</button>
+                                    onclick="window.localStorage.urlClass='owner'; window.location.href='/member-owner/{{ Crypt::encryptString($data->id) }}'">Go To</button>
                             </div>
                             <div class="ms-panel-body" style="min-height: 605px;">
                                 <p>Name: {{ $data->firstName }} {{ $data->middleName }} {{ $data->lastName }}</p>

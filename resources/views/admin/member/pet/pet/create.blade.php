@@ -1,6 +1,21 @@
 @extends('admin.layouts.master')
 @section('title', 'Pet')
 @section('content')
+<script>
+    function previewA(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $(`#preview_a`)
+                    .attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
 <style>
     table {
         table-layout: fixed;
@@ -57,15 +72,19 @@
                                         <label for="examplePassword">Breed And Description</label>
                                         <input type="text" class="form-control" id="breedAndDesc" name="breedAndDesc" value="@if($data ?? ''){{$data->breedAndDesc}}@endif" required>
                                     </div>
-                                    @if($data ?? '')
-                                        <div class="col-md-4">
-                                            <img src="/upload/{{$data->image}}" style="width: 100%">
-                                        </div>
-                                    @endif
+
                                     <div class="form-group">
-                                        <label for="exampleEmail">Image</label>
-                                        <input type="file" class="form-control" id="image" name="image">
+                                        <label for="image" class="btn btn-primary">Image</label>
+                                        <input type="file" style="display: none;" id="image" name="image" onchange="previewA(this)">
                                     </div>
+                                    <div style="width: 180px; border: 2px dashed #333;">
+                                        @if($data ?? '')
+                                            <img src="/upload/{{$data->image}}" id="preview_a" style="height: 180px; width: 180px; object-fit: cover;">
+                                        @else
+                                            <img src="https://via.placeholder.com/180" id="preview_a" style="height: 180px; width: 180px; object-fit: cover;">
+                                        @endif
+                                    </div>
+
                                 </div>
                             </div>
                             <div class="col" >
@@ -85,10 +104,10 @@
                                 <div class="form-group">
                                     <label for="examplePassword">Property</label>
                                     <select type="text" class="form-control" id="propertyId" name="propertyId" onchange="propertycheck(this.value)" required>
-                                        <option value="">--Choose--</option>
+                                        <option value="">--choose--</option>
 
-                                        @foreach($property as $p)
-                                            <option value="{{$p->id}}" @if($data ?? '') @if($data->propertyId==$p->id) selected @endif @endif>{{$p->id}}</option>
+                                        @foreach($property_info as $p)
+                                        <option value="{{$p->id}}" @if($data ?? '') @if($data->propertyId==$p->id)selected @endif @endif>{{$allassociation[$p->associationId]}} - {{$p->buildingName}} - @if($p->type=="Multi Dwelling") {{$p->aptNumber}} @else {{$p->address1}}@endif - {{$p->resident}}</option>
                                         @endforeach
 
                                     </select>

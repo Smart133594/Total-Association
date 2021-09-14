@@ -6,11 +6,14 @@ use App\Models\Owner;
 use App\Models\Pet;
 use App\Models\Petdocument;
 use App\Models\Property;
+use App\Models\Building;
 use App\Models\Setting;
+use App\Models\Propertytype;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
 use App\Models\Pettype;
+use App\Models\Resident;
 
 class PetController extends Controller
 {
@@ -25,7 +28,15 @@ class PetController extends Controller
         $pettypes = Pettype::get();
         $owners = Owner::get();
         foreach ($properties as $p) {
-            $property[$p->id] = $p->Building ? $p->Building->building : $p->id;
+            $property[$p->id]['building'] = $p->Building ? $p->Building->building : $p->id;
+            
+            $item_type = Propertytype::where('id', $p->typeId)->get()->first();
+            $property[$p->id]['type'] = $item_type->type;
+
+            $property[$p->id]['associationId'] = $p->associationId;
+            $property[$p->id]['aptNumber'] = $p->aptNumber;
+            $property[$p->id]['address1'] = $p->aptNumber;
+            
         }
         foreach ($pettypes as $p) {
             $pettype[$p->id] = $p->petType;
@@ -54,7 +65,7 @@ class PetController extends Controller
         foreach ($pet as $k => $v) {
             $pet[$k]['edit_id'] = Crypt::encryptString($v->id);
         }
-        return view('admin.member.pet.pet.index', ['alldata' => $pet, 'owner' => $owner, 'pettype' => $pettype, 'property' => $property]);
+        return view('admin.member.pet.pet.index', ['alldata' => $pet, 'owner' => $owner, 'pettype' => $pettype, 'property' => $property, 'property_info' => $properties]);
     }
 
     public function create()
@@ -72,8 +83,18 @@ class PetController extends Controller
 //dd($pet_document);
         $property = Property::get();
         $pettype = Pettype::where('status', 1)->get();
+        $property_info = Property::get();
+        foreach ($property_info as $key => $value) {
+            $item_type = Propertytype::where('id', $value->typeId)->get()->first();
+            $item_building = Building::where('id', $value->buildingId)->get()->first();
+            $property_info[$key]['buildingName'] = $item_building->building;
+            $item_resident = Resident::where('propertyId', $value->id)->get()->first();
+            $property_info[$key]['type'] = $item_type->type;
+            $property_info[$key]['resident'] = @$item_resident['firstName'].' '.@$item_resident['middleName'].' '.@$item_resident['lastName'];
+        }
+
         $validate = array('pettypeId', 'propertyId', 'ownerId', 'petName', 'breedAndDesc', 'image', 'shotsValidDate', 'documents', 'supportAnimal');
-        return view('admin.member.pet.pet.create', ['validate' => $validate, 'property' => $property, 'pettype' => $pettype, 'ref' => $ref, 'pet_document' => $pet_document]);
+        return view('admin.member.pet.pet.create', ['validate' => $validate, 'property' => $property, 'pettype' => $pettype, 'ref' => $ref, 'pet_document' => $pet_document, 'property_info' => $property_info]);
     }
 
     public function store(Request $request)
@@ -158,8 +179,8 @@ class PetController extends Controller
 
     public function edit($id)
     {
-
         $id = Crypt::decryptString($id);
+
         $property = Property::get();
         $pettype = Pettype::where('status', 1)->get();
         $validate = array('pettypeId', 'propertyId', 'ownerId', 'petName', 'breedAndDesc', 'image', 'shotsValidDate', 'documents', 'supportAnimal');
@@ -171,7 +192,19 @@ class PetController extends Controller
             $pet_document[$v->tags] = $v;
         }
         $owner = Owner::where('propertyId', $pet->propertyId)->get();
-        return view('admin.member.pet.pet.create', ['data' => $pet, 'validate' => $validate, 'property' => $property, 'pettype' => $pettype, 'owner' => $owner, 'ref' => $ref, 'pet_document' => $pet_document]);
+
+        $property_info = Property::get();
+        foreach ($property_info as $key => $value) {
+            $item_type = Propertytype::where('id', $value->typeId)->get()->first();
+            $item_building = Building::where('id', $value->buildingId)->get()->first();
+            $item_resident = Resident::where('propertyId', $value->id)->get()->first();
+            $property_info[$key]['buildingName'] = $item_building->building;
+            $property_info[$key]['type'] = $item_type->type;
+            
+            $property_info[$key]['resident'] = @$item_resident['firstName'].' '.@$item_resident['middleName'].' '.@$item_resident['lastName'];
+        }
+
+        return view('admin.member.pet.pet.create', ['data' => $pet, 'validate' => $validate, 'property' => $property, 'pettype' => $pettype, 'owner' => $owner, 'ref' => $ref, 'pet_document' => $pet_document, 'property_info' => $property_info]);
     }
 
     public function destroy($id)

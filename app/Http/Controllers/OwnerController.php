@@ -208,7 +208,7 @@ class OwnerController extends Controller
             if($value->comeout == "Fine") $fine_num ++;
             else $violation_num ++;
         }
-
+        $property->edit_id = Crypt::encryptString($property->id);
         return view('admin.member.owner.show', ['data' => $owner, 'property' => $property, 'violation_num' => $violation_num, 'fine_num' => $fine_num ]);
     }
 

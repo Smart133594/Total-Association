@@ -206,13 +206,13 @@ class PropertyController extends Controller
             $property->Owner[$k]['owner_id'] = Crypt::encryptString($p->id);
         }
         foreach ($property->Resident as $k => $p) {
-            $property->Resident[$k]['owner_id'] = Crypt::encryptString($p->ownerId);;
+            $property->Resident[$k]['owner_id'] = Crypt::encryptString($p->ownerId);
         }
         foreach ($property->Guest as $k => $p) {
-            $property->Guest[$k]['owner_id'] = Crypt::encryptString($p->ownerId);;
+            $property->Guest[$k]['owner_id'] = Crypt::encryptString($p->ownerId);
         }
         foreach ($property->Pet as $k => $p) {
-            $property->Pet[$k]['owner_id'] = Crypt::encryptString($p->ownerId);;
+            $property->Pet[$k]['pet_id'] = Crypt::encryptString($p->id);
         }
 
         $violation_num = 0;

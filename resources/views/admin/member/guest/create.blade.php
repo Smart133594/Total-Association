@@ -1,9 +1,49 @@
 @extends('admin.layouts.master')
 @section('title', 'Guest')
 @section('content')
+    <script>
+        function previewA(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $(`#preview_a`)
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function previewB(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $(`#preview_b`)
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function previewC(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $(`#preview_c`)
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
     <style>
         @if($data ?? '')
-    @if($data->if_us_citizen=='1')
+    @if($data->if_us_citizen=='')
           .us {
             display: block;
         }
@@ -86,38 +126,47 @@
                                             </select>
                                         </div>
                                     @endif
+                                        <div class="form-group">
+                                            <label>Select Building</label>
+                                            <select class="form-control" id="buildingId" name="buildingId">
+                                                <option value="">--Choose--</option>
+                                                @foreach ($building as $b)
+                                                    <option value="{{$b->id}}" @if($data ?? '') @if($data->buildingId==$b->id)selected @endif @endif>{{$b->building}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
 
                                         <div class="form-group">
                                             <label>Select Property</label>
                                             <select class="form-control" id="selecttype" name="propertyId"  >
                                                 <option value="">--Choose--</option>
-                                                @foreach($property as $p)
-                                                    <option value="{{$p->id}}" @if($data ?? '') @if($data->propertyId==$p->id)selected @endif @endif>{{$p->id}}</option>
+                                                @foreach($property_info as $p)
+                                                <option value="{{$p->id}}" @if($data ?? '') @if($data->propertyId==$p->id)selected @endif @endif>{{$p->buildingName}} {{$allassociation[$p->associationId]}} - @if($p->type=="Multi Dwelling") {{$p->aptNumber}} @else {{$p->address1}}@endif</option>
                                                 @endforeach
                                             </select>
                                         </div>
 
                                         <div class="form-group">
-                                        <label>Select Type</label>
-                                        <select class="form-control" id="selecttype" name="typeId" onchange="gettype()">
-                                            <option value="">--Choose--</option>
-                                            @foreach($ptype as $p)
-                                                <option value="{{$p->id}}" @if($data ?? '') @if($data->typeId==$p->id)selected @endif @endif>{{$p->type}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                        <div class="form-group apartment_related ">
-                                            <label>Choose Building</label>
-                                            <select class="form-control" id="selecttype" name="buildingId" onchange="getfloor(this.value)">
-                                                <option value="">Choose Building</option>
-
-                                                @foreach($building as $b)
-                                                    <option value="{{$b->id}}" @if($data ?? '') @if($b->id==$data->buildingId) selected @endif @endif>{{$b->building}}</option>
+                                            <label>Select Resident</label>
+                                            <select class="form-control" id="residentId" name="residentId">
+                                                <option value="">--Choose--</option>
+                                                @foreach ($resident as $b)
+                                                    <option value="{{$b->id}}" @if($data ?? '') @if($data->residentId==$b->id)selected @endif @endif>{{$b->firstName}} {{$b->middleName}} {{$b->lastName}}</option>
                                                 @endforeach
-
                                             </select>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label>Select Type</label>
+                                            <select class="form-control" id="selecttype" name="typeId" onchange="gettype()">
+                                                <option value="">--Choose--</option>
+                                                @foreach($ptype as $p)
+                                                    <option value="{{$p->id}}" @if($data ?? '') @if($data->typeId==$p->id)selected @endif @endif>{{$p->type}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
                                         <div class="form-group apartment_related ">
                                             <label>Apartment Number</label>
                                             <input type="text" class="form-control" id="aptNumber" name="aptNumber" value="@if($data ?? ''){{$data->aptNumber}}@endif">
@@ -135,8 +184,8 @@
                                                 @endif
                                             </select>
                                         </div>
-                                </div>
-                            </div>
+                                    </div>
+                             </div>
                         </div>
                     </div>
                     <div class="ms-panel">
@@ -188,40 +237,50 @@
                                         &nbsp;&nbsp;&nbsp;&nbsp;
                                     </div>
                                 </div>
+                                
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="examplePassword">Picture<span>*</span></label><br>
-                                        <input type="file" id="ethnicity" name="picture">
+                                        <label for="ethnicity" class="btn btn-primary">Picture</label><br>
+                                        <input type="file" id="ethnicity" style="display: none;" name="picture" onchange="previewA(this)">
                                     </div>
-                                </div>
-                                <div class="col-md-8">
-                                    @if($data ?? '')
-                                        <img src="/upload/{{$data->picture}}" style="width: 100px">
-                                    @endif
+                                    <div style="width: 180px; border: 2px dashed #333;">
+                                        @if($data ?? '')
+                                            <img src="/upload/{{$data->picture}}" id="preview_a" style="height: 180px; width: 180px; object-fit: cover;">
+                                        @else
+                                            <img src="https://via.placeholder.com/180" id="preview_a" style="height: 180px; width: 180px; object-fit: cover;">
+                                        @endif
+                                    </div>
                                 </div>
 
                                 <div class="col-md-4 us">
                                     <div class="form-group">
-                                        <label for="examplePassword">ID</label><br>
-                                        <input type="file" id="driverLicense" name="driverLicense">
-                                        <br>
+                                        <label for="driverLicense" class="btn btn-primary">ID</label><br>
+                                        <input type="file" style="display: none;" id="driverLicense" name="driverLicense" onchange="previewB(this)">
+                                    </div>
+                                    <div style="width: 180px; border: 2px dashed #333;">
                                         @if($data ?? '')
-                                            <img src="/upload/{{$data->driverLicense}}" style="width: 100px">
+                                            <img src="/upload/{{$data->driverLicense}}" id="preview_b" style="width: 180px; height: 180px; object-fit: cover;">
+                                        @else
+                                            <img src="https://via.placeholder.com/180" id="preview_b" style="width: 180px; height: 180px; object-fit: cover;">
                                         @endif
                                     </div>
                                 </div>
 
                                 <div class="col-md-4 notus">
                                     <div class="form-group">
-                                        <label for="examplePassword">Passport</label><br>
-                                        <input type="file" id="passport" name="passport">
-                                        <br>
+                                        <label for="passport" class="btn btn-primary">Passport</label><br>
+                                        <input type="file" id="passport" name="passport" style="display: none;" onchange="previewC(this)">
+                                    </div>
+                                    <div style="width: 180px; border: 2px dashed #333;">
                                         @if($data ?? '')
-                                            <img src="/upload/{{$data->passport}}" style="width: 100px">
+                                            <img src="/upload/{{$data->passport}}" id="preview_c" style="width: 180px; height: 180px; object-fit: cover;">
+                                        @else
+                                            <img src="https://via.placeholder.com/180" id="preview_c" style="width: 180px; height: 180px; object-fit: cover;">
                                         @endif
                                     </div>
                                 </div>
                             </div>
+                            <br>
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -229,10 +288,7 @@
                                         <input type="text" class="form-control" id="phoneNo" name="phoneNumber" value="@if($data ?? ''){{$data->phoneNumber}}@endif" required>
                                     </div>
                                 </div>
-
-
                             </div>
-
 
                             <div class="row">
                                 <div class="col-md-4">
@@ -247,7 +303,7 @@
                                         <input type="text" class="form-control" id="duration" name="duration" value="@if($data ?? ''){{$data->duration}}@endif" required>
                                     </div>
                                 </div>
-                                <div class="col-md-10">
+                                <div class="col-md-10" style="display: none;">
                                     <div class="form-group">
                                         <input type="checkbox" id="documentList" name="documentList" value="1" @if($data ?? '')@if($data->documentList==1) checked @endif @endif > &nbsp;&nbsp;&nbsp;Show
                                         and allow to read related documents.
@@ -256,14 +312,13 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-10">
-                                    <div class="form-group">
+                                    <div class="form-group" style="display: none;">
                                         <input type="checkbox" id="history" name="history" value="1" @if($data ?? '')@if($data->history==1) checked @endif @endif > &nbsp;&nbsp;&nbsp;Show and allow to
                                         read the history of this owner and any incident
                                         and other actions.
                                     </div>
                                 </div>
                             </div>
-
                             <input type="submit" class="btn btn-primary d-block" value="Save">
                         </div>
                     </div>
