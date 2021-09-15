@@ -30,7 +30,7 @@
                 </nav>
                 <div class="row">
                     <div class="col-xl-3 col-md-3 col-sm-6">
-                        <div class="ms-card card-gradient-success ms-widget ms-infographics-widget">
+                        <div class="ms-card card-gradient-primary ms-widget ms-infographics-widget">
                             <div class="ms-card-body media">
                                <div class="media-body">
                                   <h6>Owned/rented For:</h6>
@@ -491,15 +491,13 @@
                                                     <i class="fas fa-th"></i>
                                                 </a>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                    <a class="dropdown-item" href="/owner/{{ $val->owner_id }}"> Owner
+                                                    <a class="dropdown-item" href="#" onclick="window.localStorage.urlClass ='properties';window.location.href='/pet/{{ $val->pet_id }}/edit'"> Pet
                                                         Info
                                                     </a>
-
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
-
                                 @endforeach
                             </tbody>
                         </table>

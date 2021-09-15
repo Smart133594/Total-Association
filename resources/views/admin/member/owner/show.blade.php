@@ -47,7 +47,7 @@
 
                 <div class="row">
                     <div class="col-xl-3 col-md-3 col-sm-6">
-                        <div class="ms-card card-gradient-success ms-widget ms-infographics-widget">
+                        <div class="ms-card card-gradient-primary ms-widget ms-infographics-widget">
                             <div class="ms-card-body media">
                                <div class="media-body">
                                   <h6>Owned/rented For:</h6>
@@ -137,26 +137,27 @@
                                 <p>Email Address: {{ $data->email }}</p>
                                 <p>Whatsapp: {{ $data->whatsapp }}</p>
                                 <p>Ownership Start Date: {{ date('M d Y', strtotime($data->ownershipStartDate)) }}</p>
-                                <p>Access Control: {{ $data->board_of_directors_approval }} |
-                                    {{ $data->property_ownership_proof }}</p>
+                                {{-- <p>Access Control: {{ $data->board_of_directors_approval }} |
+                                    {{ $data->property_ownership_proof }}</p> --}}
                                 <p>Status: &nbsp; &nbsp; @if ($data->status == 1)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-6 col-md-6 col-sm-12">
+                    <div class="col-xl-12 col-md-12 col-sm-12">
                         <div class="ms-panel">
                             <div class="ms-panel-header d-flex justify-content-between">
                                 <h6>Property Info</h6>
                                 <button class="btn btn-primary btn-sm"
                                     onclick="window.localStorage.urlClass='owner'; window.location.href='/properties/{{ $property->edit_id }}'">Go To</button>
                             </div>
-                            <div class="ms-panel-body" style="min-height: 605px;">
+                            <div class="ms-panel-body">
                                 @if ($setting['is_subassociations'] == '1')
                                     <p> {{ $property->association }}</p>
                                 @endif
                                 <p>Type: {{ @$property->Type->type }}</p>
                                 @if ($property->Type && $property->type == 'Multi Dwelling')
-                                    <p>Building: Building {{ @$property->Type->whichBuilding }}</p>
+                                    <p>Building: {{$property->Building->building}}</p>
+                                    {{-- {{<p>Building: Building {{ @$property->Type->whichBuilding }}</p>}} --}}
                                     <p>Apartment: {{ $property->aptNumber }}</p>
                                     <p>Floor Number: {{ $property->floorNumber }}</p>
                                 @endif
@@ -165,7 +166,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-6 col-md-6 col-sm-12">
+                    <div class="col-xl-6 col-md-6 col-sm-12" style="display: none;">
                         <div class="ms-panel">
                             <div class="ms-panel-header d-flex justify-content-between">
                                 <h6>Owner Info</h6>

@@ -22,7 +22,7 @@
                 </nav>
                 <div class="row">
                     <div class="col-xl-3 col-md-3 col-sm-6">
-                        <div class="ms-card card-gradient-success ms-widget ms-infographics-widget">
+                        <div class="ms-card card-gradient-primary ms-widget ms-infographics-widget">
                             <div class="ms-card-body media">
                                <div class="media-body">
                                   <h6>Owned/rented For:</h6>

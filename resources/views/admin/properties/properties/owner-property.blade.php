@@ -137,7 +137,11 @@
                                                 @else N/A @endif
                                             </td>
                                             <td onclick="goto('/showproperties/{{ $val->edit_id }}')"> @if($val->status=="1")<span style="color: #13ce18">Current</span> @else <span style="color: #ff0000">Deliquent</span></i>@endif</td>
-                                            <td onclick="goto('/showproperties/{{ $val->edit_id }}')">@if(isset($resident[$val->id])) <i class="fas fa-dot-circle dot-green"></i> @else <i class="fas fa-dot-circle dot-red"></i>  @endif</td>
+                                            <td onclick="goto('/showproperties/{{ $val->edit_id }}')">
+                                                @if(isset($val->Resident) && count($val->Resident) > 0)
+                                                    <i class="fas fa-dot-circle dot-green"></i>
+                                                @else <i class="fas fa-dot-circle dot-red"></i> @endif
+                                            </td>
                                             <td class="action">
                                                 {{--<a href="/properties/{{ $val->edit_id }}/edit"><i class="fas fa-pencil-alt ms-text-primary"></i></a>--}}
                                                 {{--<form action="{{ route('properties.destroy',$val->id) }}" method="post">
