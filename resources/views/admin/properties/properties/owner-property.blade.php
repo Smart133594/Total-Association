@@ -157,7 +157,7 @@
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                                         <a class="dropdown-item" href="/showproperties/{{ $val->edit_id }}">See Info</a>
                                                         <a class="dropdown-item" href="/incident?filter=property&id={{ $val->edit_id }}">Incidents</a>
-                                                        <a class="dropdown-item" href="#" onclick="window.localStorage.urlClass='properties'; window.location.href='/fine-incident/{{ $val->edit_id }}'">Fines</a>
+                                                        <a class="dropdown-item" href="#" onclick="window.localStorage.urlClass='properties'; window.location.href='/fines'">File an incident</a>
                                                         {{-- <a class="dropdown-item" href="/fines?filter=property&id={{ $val->edit_id }}">Issue Fine</a> --}}
                                                         <a class="dropdown-item" href="#">Record Payment </a>
                                                         <a class="dropdown-item" href="#">Elevator Pass </a>

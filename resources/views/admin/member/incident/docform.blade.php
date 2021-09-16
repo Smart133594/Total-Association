@@ -1,22 +1,21 @@
 @php $x=1; @endphp
 @foreach($data as $d)
     <tr>
-        <td>
+        <td class="text-align">
             {{$x}}
         </td>
-        <td>
+        <td class="text-align">
             <a href="{{$d->documents}}" target="_blank">{{$d->documents}}</a>
         </td>
-        <td>
+        <td class="text-align">
             {{$d->type}}
         </td>
-        <td>
+        <td class="text-align">
             {{$d->uploadOn}}
         </td>
-        <td>
+        <td class="text-align">
             {{$d->uploadedBy}}
         </td>
-
 
         <td class="action">
 
@@ -30,7 +29,6 @@
                 </div>
             </div>
         </td>
-
     </tr>
     @php $x++; @endphp
 @endforeach

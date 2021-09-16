@@ -1,6 +1,44 @@
 @extends('admin.layouts.master')
 @section('title', 'Incident')
 @section('content')
+    <script>
+        function previewA(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $(`#preview_a`)
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        function previewB(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $(`#preview_b`)
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        function previewC(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $(`#preview_c`)
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
     <style>
         .steps {
             padding: 0;
@@ -62,7 +100,18 @@
         .group_text {
             padding-top: 15px;
         }
-
+        table {
+            table-layout: fixed;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 100px;
+        }
+        td.text-align {
+            white-space: nowrap; 
+            width: 100px; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     </style>
     <div class="ms-content-wrapper">
         <div class="row">
@@ -77,7 +126,7 @@
                 </nav>
                 <div class="ms-panel">
                     <div class="ms-panel-header ms-panel-custome">
-                        <h6>Fine Details</h6>
+                        <h6>Fine</h6>
                     </div>
                     <div class="ms-panel-body">
                         @include('admin.includes.msg')
@@ -126,11 +175,21 @@
                                     @endif
                                     @if($data->fine_status==3)
                                             <p>So the offender did not dispute the fine in a timely manner, or the committee decided to keep the fine. Either way, the fine is now finalized and on the property balance sheet. It must be paid or the property will become delinquent. The property can pay for the fine online on the website or give a check to be entered below. Once the payment is received, this issue will be closed.</p>
-                                        @endif
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ms-panel">
+                    <div class="ms-panel-header ms-panel-custome">
+                        <h6>Incident Details</h6>
+                    </div>
+                    <div class="ms-panel-body">
 
-                                    <div class="group_text">
-                                        <h2>Incident Details</h2>
-                                    </div>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div>
                                     <p><b>Time of Incident:</b> {{ date("M d, Y", strtotime($data->dateTime))}} </p>
                                     <p><b>Property:</b> {{ $property[$data->propertyId]->type}}/{{ $property[$data->propertyId]->building}}/{{ $property[$data->propertyId]->aptNumber}} </p>
                                     <p><b>Offender:</b> {{$data->ind}}</p>
@@ -141,7 +200,6 @@
                                         Police report# {!! $data->policeReport !!}</p>
                                     <p><b>Fine Amount</b> $ @if($data->new_fine_amount==0) {{$data->fine_amount}} @else {{$data->new_fine_amount}} @endif</p>
                                     <p><b>Time of Notification Sent:</b> {{ date("M d, Y", strtotime($data->report_send_time))}}</p>
-
                                 </div>
                             </div>
                             <div class="col-md-10">
@@ -149,57 +207,90 @@
                                     <h2>Incident Files</h2>
                                 </div>
 
-                                <table class="table-responsive table table-striped thead-primary w-100 dataTable no-footer">
-                                    <thead>
-                                    <tr>
-                                        <th>S. No</th>
-                                        <th>Document</th>
-                                        <th>Type</th>
-                                        <th>Upload Date</th>
-                                        <th>Upload By</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="tbody">
+                                <div class="table-responsive">
+                                    <table class="table table-striped thead-primary w-100" id="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="max-width: 20px !important; width: 20px !important;">S.No</th>
+                                                <th style="max-width: 120px !important; width: 60px !important;">File</th>
+                                                <th style="max-width: 120px !important; width: 60px !important;">Type</th>
+                                                <th style="max-width: 120px !important; width: 60px !important;">Upload Date</th>
+                                                <th style="max-width: 120px !important; width: 60px !important;">Upload By</th>
+                                                <th style="max-width: 20px !important; width: 20px !important;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody">
 
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ms-panel">
+                    <div class="ms-panel-header ms-panel-custome">
+                        <h6>Resend Notification</h6>
+                    </div>
+                    <div class="ms-panel-body">
+                        <div class="row">
+                            <div class="col-md-10">
                                 @if($data->fine_status!=1)
-                                    <div class="group_text">
-                                        <h2>Resend Notification</h2>
+                                    <div style="margin-top: -18px;">
                                         <a href="/fine-resendemail/{{$data->id}}"><button type="button" class="btn btn-light">Resend email to the offender and owner</button></a>
                                         <button type="button" class="btn btn-light" onclick="printDiv('printableArea')">Print letter send to the offender and owner</button>
                                     </div>
                                 @endif
-                                @if($data->fine_status==2)
-                                    <form action="{{ route('fine-update') }}" method="post" enctype="multipart/form-data">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @if($data->fine_status==2)
+                <form action="{{ route('fine-update') }}" method="post" enctype="multipart/form-data">
+                <div class="ms-panel">
+                    <div class="ms-panel-header ms-panel-custome">
+                        <h6>Create package for fining committee</h6>
+                    </div>
+                    <div class="ms-panel-body">
+                        <div class="row">
+                            <div class="col-md-10">
                                         @csrf
                                         <input type="hidden" value="{{$data->id}}" name="id">
                                         <input type="hidden" value="3" name="fine_status">
-                                        <div class="group_text">
-                                            <h2>Create package for fining committee</h2>
-                                        </div>
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label>Generate Finning Committee Packege</label>
-                                                    <input type="text" class="form-control" name="committee_packege">
+                                                    <input type="text" placeholder="Generate Finning Committee Packege" class="form-control" name="committee_packege">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="group_text">
-                                            <h2>Enter Committee Decision</h2>
-                                        </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ms-panel">
+                    <div class="ms-panel-header ms-panel-custome">
+                        <h6>Enter Committee Decision</h6>
+                    </div>
+                    <div class="ms-panel-body">
+                        <div class="row">
+                            <div class="col-md-10">
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label>Committee Decision <span>*</span></label>
                                                     <select class="form-control" name="committee_decision" onchange="setfineamount(this.value)" required>
-                                                        <option value="">--choose--</option>
+                                                        <option value="">Committee Decision</option>
                                                         <option value="Appeal Rejected">Appeal Rejected</option>
                                                         <option value="Fine Reduce">Fine Reduce</option>
                                                         <option value="Appeal Accepted">Appeal Accepted</option>
                                                     </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" placeholder="New Fine Amount" name="new_fine_amount">
                                                 </div>
                                             </div>
                                         </div>
@@ -213,99 +304,145 @@
 
                                             }
                                         </script>
-                                        <div class="row fine" style="display:none">
+                                        <div class="row" style="margin-top: -16px;">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label>New Fine Amount</label>
-                                                    <input type="text" class="form-control" name="new_fine_amount">
+                                                    <label for="decision_form" class="btn btn-primary">Upload Signed committee decision form</label><br>   
+                                                    <input type="file" id="decision_form" style="display: none;" name="decision_form" required onchange="previewC(this)">
+                                                </div>
+                                                <input type="submit" class="btn btn-primary" value="Save Decision" style="margin-top: -15px;">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div style="margin-top: 18px;"></div>
+                                                <div style="width: 180px; border: 2px dashed #333;">
+                                                    <img src="https://via.placeholder.com/180" id="preview_c" style="height: 180px; width: 180px; object-fit: cover;">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label>Signed committee decision form <span>*</span></label>
-                                                    <input type="file" class="form-control" name="decision_form" required>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <input type="submit" class="btn btn-primary d-block" value="Save">
                                     </form>
                                 @endif
+                            </div>
+                        </div>
+                @if ($data->fine_status == 2)
+                    </div>
+                </div>
+                @endif
+                <div class="ms-panel">
+                    <div class="ms-panel-header ms-panel-custome">
+                        <h6>Enter Dispute form filled by Offender</h6>
+                    </div>
+                    <div class="ms-panel-body">
+                        <div class="row">
+                            <div class="col-md-10">
                                 @if($data->fine_status==0)
                                     <form action="{{ route('fine-update') }}" method="post" enctype="multipart/form-data">
                                         @csrf
                                         <input type="hidden" value="{{$data->id}}" name="id">
                                         <input type="hidden" value="2" name="fine_status">
-                                        <div class="group_text">
-                                            <h2>Enter Dispute form filled by Offender</h2>
-                                        </div>
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label>Dispute Form <span>*</span></label>
-                                                    <input type="file" class="form-control" name="dispute_form" required>
+                                                    <label for="dispute_form" class="btn btn-primary">Upload dispute form</label><br>   
+                                                    <input type="file" id="dispute_form" style="display: none;" name="dispute_form" required onchange="previewA(this)">
+                                                </div>
+                                                <input type="submit" class="btn btn-primary" value="Save" style="margin-top: -15px;">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div style="margin-top: 18px;"></div>
+                                                <div style="width: 180px; border: 2px dashed #333;">
+                                                    <img src="https://via.placeholder.com/180" id="preview_a" style="height: 180px; width: 180px; object-fit: cover;">
                                                 </div>
                                             </div>
                                         </div>
-                                        <input type="submit" class="btn btn-primary" value="Save">
                                     </form>
                                 @endif
-
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ms-panel">
+                    <div class="ms-panel-header ms-panel-custome">
+                        <h6>Notification And Timing</h6>
+                    </div>
+                    <div class="ms-panel-body">
+                        <div class="row">
+                            <div class="col-md-10">
                                 @if($data->fine_status==3)
                                     <div class="group_text">
-                                        <h2>Notification And Timing</h2>
                                         <p><b>Date of Notification:</b> {{ date("M d, Y", strtotime($data->report_send_time))}}</p>
                                         <p><b>Date waited for Response:</b> {{ $setting['wait-days-for-fine'] }}</p>
                                         <p><b>date fine become effective:</b> {{ date("M d, Y", strtotime($data->report_send_time .'+'.$setting["wait-days-for-fine"].' day'))}}</p>
-                                        <h2>Committee Outcome</h2>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ms-panel">
+                    <div class="ms-panel-header ms-panel-custome">
+                        <h6>Committee Outcome</h6>
+                    </div>
+                    <div class="ms-panel-body">
+                        <div class="row">
+                            <div class="col-md-10">
+                                @if($data->fine_status==3)
+                                    <div class="group_text">
                                         <p><b>Committee Decision:</b> {{$data->committee_decision}}</p>
                                         <p><b>Final Fine Amount:</b> $ @if($data->new_fine_amount==0) {{$data->fine_amount}} @else {{$data->new_fine_amount}} @endif</p>
                                     </div>
-
                                 @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ms-panel">
+                    <div class="ms-panel-header ms-panel-custome">
+                        <h6>Receive Payment For the Fine</h6>
+                    </div>
+                    <div class="ms-panel-body">
+
+                        <div class="row">
+                            <div class="col-md-10">
                                 @if($data->fine_status!=1)
                                     <form action="{{ route('fine-update') }}" method="post" enctype="multipart/form-data">
                                         @csrf
                                         <input type="hidden" value="{{$data->id}}" name="id">
                                         <input type="hidden" value="1" name="fine_status">
-                                        <div class="group_text">
-                                            <h2>Receive Payment For the Fine</h2>
-                                        </div>
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label>Enter Amount <span>*</span></label>
-                                                    <input type="text" class="form-control" name="paid_amount">
+                                                    <input type="text" placeholder="Enter Amount" class="form-control" name="paid_amount">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label>Check <span>*</span></label>
-                                                    <input type="file" class="form-control imgInp" name="check_image" required>
+                                                    <label for="check_image" class="btn btn-primary">Upload Check Image</label><br>   
+                                                    <input type="file" id="check_image" style="display: none;" name="check_image" required onchange="previewB(this)">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-8">
-                                                <img id="check_image" class="preview" src="" style="display: none"/>
+                                                <div style="width: 720px; border: 2px dashed #333;">
+                                                    <img src="https://via.placeholder.com/720x360" id="preview_b" style="height: 320px; width: 720px; object-fit: cover;">
+                                                </div>
                                             </div>
                                         </div>
-                                        <input type="submit" class="btn btn-primary d-block" value="Save">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="submit" class="btn btn-primary d-block" value="Save Payment and close fine">
+                                            </div>
+                                        </div>
                                     </form>
                                 @endif
                                 @if($data->fine_status==1)
                                     <img src="/upload/{{$data->check_image}}">
                                 @endif
-
                             </div>
-
-
                         </div>
-
-
                     </div>
                 </div>
             </div>

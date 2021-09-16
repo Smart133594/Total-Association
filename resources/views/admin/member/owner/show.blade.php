@@ -47,7 +47,7 @@
 
                 <div class="row">
                     <div class="col-xl-3 col-md-3 col-sm-6">
-                        <div class="ms-card card-gradient-primary ms-widget ms-infographics-widget">
+                        <div class="ms-card card-gradient-success ms-widget ms-infographics-widget">
                             <div class="ms-card-body media">
                                <div class="media-body">
                                   <h6>Owned/rented For:</h6>
@@ -70,7 +70,7 @@
                          </div>
                     </div>
                     <div class="col-xl-3 col-md-3 col-sm-6">
-                        <div class="ms-card card-gradient-danger ms-widget ms-infographics-widget">
+                        <div class="ms-card {{ $fine_num < 3 ? 'card-gradient-success' : 'card-gradient-danger' }} ms-widget ms-infographics-widget">
                             <div class="ms-card-body media">
                                <div class="media-body">
                                     <h6>Fines:</h6>
@@ -222,7 +222,7 @@
                                         <tr>
                                             <td>{{ $index }}</td>
                                             <td>{{ $item->dateTime }}</td>
-                                            <td>{{ $property->Type->type }}</td>
+                                            <td>{{ $item->Type->type }}</td>
                                             <td>{{ $item->ind }}</td>
                                             <td>{{ $item->incidentTitle }}</td>
                                             <td>{{ $item->outcome }}</td>
@@ -281,7 +281,7 @@
                                         <tr>
                                             <td>{{ $index }}</td>
                                             <td>{{ $item->dateTime }}</td>
-                                            <td>{{ $property->Type->type }}</td>
+                                            <td>{{ $property->association }}/{{$property->building}}-{{$property->aptNumber}}</td>
                                             <td>{{ $item->ind }}</td>
                                             <td>{{ $item->incidentTitle }}</td>
                                             <td>{{ $item->fine_amount }}</td>
@@ -314,7 +314,18 @@
                                                     committee deside
                                                 @endif
                                             </td>
-                                            <td></td>
+                                            <td class="action">
+                                                <div class="dropdown">
+                                                    <a class="cust-btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fas fa-th"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                        <a class="dropdown-item" href="#">Fine Info</a>
+                                                        <a class="dropdown-item" href="#">Fine Incident Log</a>
+                                                        <a class="dropdown-item" href="#">Pay Fine</a>
+                                                    </div>
+                                                </div>
+                                            </td>
                                         </tr>
                                     @endif
                                 @endforeach
