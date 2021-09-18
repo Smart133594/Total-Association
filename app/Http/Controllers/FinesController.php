@@ -44,10 +44,10 @@ class FinesController extends Controller
             }
 
         }
-
         //filter
 
         $incident = $incident->get();
+
         $properties = Property::leftjoin('property_types', 'property_types.id', '=', 'properties.typeId')
             ->leftjoin('buildings', 'buildings.id', '=', 'properties.buildingId')
             ->get(['properties.*', 'property_types.type', 'buildings.building']);
@@ -74,13 +74,25 @@ class FinesController extends Controller
             }
         }
 
+        foreach ($incident as $key => $value) {
+            if(isset($_GET['filter_date'])) {
+                if($_GET['filter_date'] != '' && !str_contains($value->dateTime, $_GET['filter_date'])) {
+                    unset($incident[$key]);
+                }
+            }
+            if(isset($_GET['police'])) {
+                if($_GET['police'] != '' && $value->policeInvolved != $_GET['police']) {
+                    unset($incident[$key]);
+                }
+            }
+        }
 
         return view('admin.fines.index', ['alldata' => $incident, 'property' => $property]);
-
     }
 
     public function edit($id)
     {
+
         $id = Crypt::decryptString($id);
         $incident = Incident::where('id', $id)->orderby('id', 'desc')->first();
         $ref = $incident->ref;
@@ -107,8 +119,10 @@ class FinesController extends Controller
             $incident['ind'] = $incident->name_of_description;
         }
 
+        $fine_date = Setting::where('slug', 'wait-days-for-fine')->get()->first()->value;
 
-        return view('admin.fines.edit', ['data' => $incident, 'property' => $property, 'ref' => $ref]);
+
+        return view('admin.fines.edit', ['data' => $incident, 'property' => $property, 'ref' => $ref, 'fine_date' => $fine_date]);
     }
 
 

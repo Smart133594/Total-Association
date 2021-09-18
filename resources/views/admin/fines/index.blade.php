@@ -31,19 +31,38 @@
                         <h6>Fines</h6>
                     </div>
                     <div class="ms-panel-body">
+                        <div class="row" style="margin-bottom: 30px">
+                            <div class="col-md-3" style="margin: 1%">
+                                <form action="" method="get">
+                                    <select name="police" class="form-control form-control-sm" onchange="this.form.submit()">
+                                        <option value="">All</option>
+                                        <option value="0" @if(isset($_GET['police']) && $_GET['police'] == '0')selected @endif>Police</option>
+                                        <option value="1" @if(isset($_GET['police']) && $_GET['police'] == '1')selected @endif>No Police</option>
+                                    </select>
+                                    <input type="hidden" name="filter_date" @if (isset($_GET['filter_date'])) value="{{$_GET['filter_date']}}" @endif />
+                                </form>
+                            </div>
+                            <div class="col-md-3" style="margin: 1%">
+                                <form action="" method="get">
+                                    <input type="date" class="form-control" name="filter_date" onchange="this.form.submit()" @if (isset($_GET['filter_date'])) value="{{$_GET['filter_date']}}" @endif/>
+                                    <input type="hidden" name="police" @if (isset($_GET['police'])) value="{{$_GET['police']}}" @endif >
+                                </form>
+                            </div>
+                        </div>
                         @include('admin.includes.msg')
-                            <table id="data-table" class="d-block d-md-table table-responsive table table-striped thead-primary w-100">
+                        <div class="table-responsive">
+                            <table id="data-table" class=" table table-striped thead-primary w-100">
                                 <thead>
                                 <tr role="row">
-                                    <th>S.No.</th>
-                                    <th>Date</th>
-                                    <th>Property</th>
-                                    <th>Individual</th>
-                                    <th>Incident</th>
-                                    <th>Fine Amount</th>
-                                    <th>Police</th>
-                                    <th>Fine</th>
-                                    <th class="no-sort">Action</th>
+                                    <th style="max-width: 30px; width: 30px;">S.No.</th>
+                                    <th style="max-width: 120px; width: 120px;">Date</th>
+                                    <th style="max-width: 200px; width: 200px;">Property</th>
+                                    <th style="max-width: 100px; width: 150px;">Individual</th>
+                                    <th style="max-width: 100px; width: 150px;">Incident</th>
+                                    <th style="max-width: 100px; width: 100px;">Fine Amount</th>
+                                    <th style="max-width: 30px; width: 30px;">Police</th>
+                                    <th style="max-width: 30px; width: 30px;">Fine</th>
+                                    <th style="max-width: 30px; width: 30px;" class="no-sort">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -79,7 +98,8 @@
                                                         <i class="fas fa-th"></i>
                                                     </a>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                        <a class="dropdown-item" href="/fines/{{$val->edit_id}}/edit">Incident Report</a>
+                                                        <a class="dropdown-item" href="/incident/create">Incident Info</a>
+                                                        <a class="dropdown-item" href="/fines/{{$val->edit_id}}/edit">Fine Info</a>
                                                     </div>
                                                 </div>
                                             </td>
@@ -88,6 +108,7 @@
                                 @endif
                                 </tbody>
                             </table>
+                        </div>
                     </div>
                 </div>
             </div>

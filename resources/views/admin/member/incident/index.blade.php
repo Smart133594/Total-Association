@@ -40,18 +40,19 @@
                     </div>
                     <div class="ms-panel-body">
                         @include('admin.includes.msg')
-                            <table id="data-table" class="table-responsive d-block d-md-table table table-striped thead-primary w-100">
+                        <div class="table-responsive">
+                            <table class="table table-striped thead-primary w-100" id="data-table">
                                 <thead>
                                 <tr role="row">
-                                    <th>S.No.</th>
-                                    <th>Date</th>
-                                    <th>Property</th>
-                                    <th>Individual</th>
-                                    <th>Incident </th>
-                                    <th>Outcome</th>
+                                    <th style="min-width: 40px; width: 40px;">S.No.</th>
+                                    <th style="min-width: 80px; width: 80px;">Date</th>
+                                    <th style="min-width: 120px; width: 120px;">Property</th>
+                                    <th style="min-width: 120px; width: 120px;">Individual</th>
+                                    <th style="min-width: 120px; width: 120px;">Incident </th>
+                                    <th style="min-width: 80px; width: 80px;">Outcome</th>
                                     <th>Police</th>
                                     <th>Fine</th>
-                                    <th class="no-sort">Action</th>
+                                    <th class="no-sort" style="min-width: 35px; width: 35px;">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -95,6 +96,7 @@
                                 @endif
                                 </tbody>
                             </table>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,19 +1,19 @@
 @php $x=1; @endphp
 @foreach($data as $d)
     <tr>
-        <td class="text-align">
+        <td class="text-flow">
             {{$x}}
         </td>
-        <td class="text-align">
+        <td class="text-flow">
             <a href="{{$d->documents}}" target="_blank">{{$d->documents}}</a>
         </td>
-        <td class="text-align">
+        <td class="text-flow">
             {{$d->type}}
         </td>
-        <td class="text-align">
+        <td class="text-flow">
             {{$d->uploadOn}}
         </td>
-        <td class="text-align">
+        <td class="text-flow">
             {{$d->uploadedBy}}
         </td>
 

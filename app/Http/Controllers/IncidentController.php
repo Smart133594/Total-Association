@@ -210,6 +210,7 @@ class IncidentController extends Controller
             $user = Guest::get();
         }
         $ref = $incident->ref;
+        if($ref == null) $ref = $incident->id;
 
         $media = Incidentmedia::where('ref', $incident->ref)->get();
         $validate = array('incidentTitle', 'incidentDescription', 'propertyId', 'individual', 'dateTime', 'outcome', 'responsiblePersonId');

@@ -155,7 +155,7 @@
                                 </ul>
                                 <div id="printableArea">
                                     @if($data->fine_status==0)
-                                        <p>An incident report has been created and the management or Board of Directors decided to issue a tine for the violation. Florida law requires to allow X days
+                                        <p>An incident report has been created and the management or Board of Directors decided to issue a tine for the violation. Florida law requires to allow {{$fine_date}} days
                                             for
                                             the offender to dispute the fine. This step can proceed in 3 ways:</p>
                                         <ol>
@@ -184,6 +184,7 @@
                 <div class="ms-panel">
                     <div class="ms-panel-header ms-panel-custome">
                         <h6>Incident Details</h6>
+                        <button class="btn btn-primary btn-sm" onclick="window.location.href='/incident/{{Crypt::encryptString($data->id)}}/edit'">Go To</button>
                     </div>
                     <div class="ms-panel-body">
 
@@ -327,6 +328,8 @@
                     </div>
                 </div>
                 @endif
+                @if ($data->fine_status == 2)
+
                 <div class="ms-panel">
                     <div class="ms-panel-header ms-panel-custome">
                         <h6>Enter Dispute form filled by Offender</h6>
@@ -360,6 +363,9 @@
                         </div>
                     </div>
                 </div>
+                @endif
+
+                @if($data->fine_status==3)
                 <div class="ms-panel">
                     <div class="ms-panel-header ms-panel-custome">
                         <h6>Notification And Timing</h6>
@@ -378,6 +384,9 @@
                         </div>
                     </div>
                 </div>
+                @endif
+                @if($data->fine_status==3)
+
                 <div class="ms-panel">
                     <div class="ms-panel-header ms-panel-custome">
                         <h6>Committee Outcome</h6>
@@ -395,6 +404,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
 
                 <div class="ms-panel">
                     <div class="ms-panel-header ms-panel-custome">

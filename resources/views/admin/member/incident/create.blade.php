@@ -90,7 +90,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <lable>Individual</lable>
+                                        <label>Individual</label>
                                         <br>
                                         <input type="radio" name="individual" value="0" @if($data ?? '') @if($data->individual==0) checked @endif @else checked
                                                @endif onclick="isindividual(this.value)"> &nbsp;No &nbsp;&nbsp;&nbsp; <input type="radio" name="individual" value="1"
@@ -204,12 +204,12 @@
                                     <table class="table d-block d-md-table table-responsive table-striped thead-primary w-100 dataTable no-footer">
                                         <thead>
                                         <tr>
-                                            <th style="min-width: 80px">S.No</th>
+                                            <th style="min-width: 80px; width: 80px;">S.No</th>
                                             <th>Document</th>
                                             <th>Type</th>
-                                            <th style="min-width: 80px">Upload Date</th>
-                                            <th style="min-width: 80px">Upload By</th>
-                                            <th>Action</th>
+                                            <th >Upload Date</th>
+                                            <th >Upload By</th>
+                                            <th style="min-width: 80px; width: 80px;">Action</th>
                                         </tr>
                                         </thead>
                                         <tbody  id="tbody">
@@ -264,9 +264,7 @@
                             <label for="exampleEmail">Uploaded By</label>
                             <input type="Text" class="form-control" id="uploadedBy" name="uploadedBy">
                         </div>
-
                     </form>
-
                 </div>
                 <div class="modal-footer">
                     <input type="button" value="Upload" class="btn btn-success" onclick="submitform()">
