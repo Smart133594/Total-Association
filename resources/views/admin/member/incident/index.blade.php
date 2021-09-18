@@ -40,6 +40,24 @@
                     </div>
                     <div class="ms-panel-body">
                         @include('admin.includes.msg')
+                        <div class="row" style="margin-bottom: 30px">
+                            <div class="col-md-3" style="margin: 1%">
+                                <form action="" method="get">
+                                    <select name="police" class="form-control form-control-sm" onchange="this.form.submit()">
+                                        <option value="">All</option>
+                                        <option value="0" @if(isset($_GET['police']) && $_GET['police'] == '0')selected @endif>Police</option>
+                                        <option value="1" @if(isset($_GET['police']) && $_GET['police'] == '1')selected @endif>No Police</option>
+                                    </select>
+                                    <input type="hidden" name="filter_date" @if (isset($_GET['filter_date'])) value="{{$_GET['filter_date']}}" @endif />
+                                </form>
+                            </div>
+                            <div class="col-md-3" style="margin: 1%">
+                                <form action="" method="get">
+                                    <input type="date" class="form-control" name="filter_date" onchange="this.form.submit()" @if (isset($_GET['filter_date'])) value="{{$_GET['filter_date']}}" @endif/>
+                                    <input type="hidden" name="police" @if (isset($_GET['police'])) value="{{$_GET['police']}}" @endif >
+                                </form>
+                            </div>
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-striped thead-primary w-100" id="data-table">
                                 <thead>

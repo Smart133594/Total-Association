@@ -2,67 +2,73 @@
 @section('title', 'Incident')
 @section('content')
 <style>
-    table {
-        table-layout: fixed;
-        border-collapse: collapse;
-        width: 100%;
-        max-width: 100px;
-    }
-    td.text-flow {
-        white-space: nowrap; 
-        width: 10px; 
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-</style>
-    <style>
-        @if($data ?? '')
-            @if($data->individual==1)
-                .individual_group {
-                    display: block
-                }
-            @endif
-            @if($data->individualType=="Unregistered")
-                .individual_group1 {
-                    display: block
-                }
-                .individual_group2 {
-                    display: none
-                }
-            @else
-                .individual_group2 {
-                    display: none
-                }
-                .individual_group1 {
-                    display: block
-                }
-            @endif
-        @else
-            .individual_group, .police, .individual_group2 {
-                display: none
+    @if($data ?? '')
+        @if($data->individual==1)
+            .individual_group {
+                display: block
             }
         @endif
+        @if($data->individualType=="Unregistered")
+            .individual_group1 {
+                display: block
+            }
+            .individual_group2 {
+                display: none
+            }
+        @else
+            .individual_group2 {
+                display: none
+            }
+            .individual_group1 {
+                display: block
+            }
+        @endif
+    @else
+        .individual_group, .police, .individual_group2 {
+            display: none
+        }
+    @endif
+</style>
+    <style>
+        table {
+            table-layout: fixed;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 100px;
+        }
+
+        td.text-flow {
+            white-space: nowrap;
+            width: 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
     </style>
     <div class="ms-content-wrapper">
         <div class="row">
             <div class="col-md-12">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb pl-0">
-                        <li class="breadcrumb-item"><a href="{{route('dashboard')}}"><i class="material-icons">home</i> Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="material-icons">home</i>
+                                Home</a></li>
                         <li class="breadcrumb-item " aria-current="page"><a href="#">Incidents</a></li>
-                        <li class="breadcrumb-item active" aria-current="page"><a href="{{route('incident.index')}}">Incident</a></li>
-                        <li class="breadcrumb-item active" aria-current="page"><a href="{{route('incident.create')}}">@if($data ?? '') Update @else Add @endif</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><a
+                                href="{{ route('incident.index') }}">Incident</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><a
+                                href="{{ route('incident.create') }}">@if ($data ?? '') Update @else Add @endif</a></li>
                     </ol>
                 </nav>
                 <div class="ms-panel">
                     <div class="ms-panel-header ms-panel-custome">
-                        <h6>@if($data ?? '') Update @else Add @endif Incident</h6>
+                        <h6>@if ($data ?? '') Update @else Add @endif Incident</h6>
                     </div>
                     <div class="ms-panel-body">
                         @include('admin.includes.msg')
-                        <form id="admin-form" method="post" action="{{route('incident.store')}}" enctype="multipart/form-data">
+                        <form id="admin-form" method="post" action="{{ route('incident.store') }}"
+                            enctype="multipart/form-data">
                             @csrf
-                            @if($data ?? '')
+                            @if ($data ?? '')
                                 <input type="hidden" name="id" value="{{ $data->id }}">
                             @endif
                             <div class="row">
@@ -74,37 +80,50 @@
 
                                     <div class="form-group">
                                         <label for="exampleEmail">Date and Time </label>
-                                        <input type="datetime-local" class="form-control" id="dateTime" name="dateTime" value="@if($data ?? ''){{$data->dateTime}}@endif" required>
+                                        <input type="datetime-local" class="form-control" id="dateTime" name="dateTime"
+                                            value="@if ($data ?? ''){{ $data->dateTime }}@endif" required>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="exampleEmail">Sub Association</label>
+                                        <select class="form-control" onchange="change_property(this.value)" id="sub_assoc">
+                                            <option value="">--select sub association--</option>
+                                            @foreach ($allassociation as $p)
+                                                <option value="{{$p}}">{{$p}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
                                     <div class="form-group">
                                         <label for="exampleEmail">Property</label>
                                         <select class="form-control" id="propertyId" name="propertyId" required>
-                                            @foreach($property as $p)
-                                                <option value="{{ $p->id }}" 
-                                                    @if($data ?? '') @if($p->id==$data->propertyId) selected @endif @endif
-                                                    @if($p->id==@$propertyid) selected @endif
-                                                    >
-                                                    {{$p->PropertyType->building}} {{$allassociation[$p->associationId]}} - @if($p->PropertyType->type=="Multi Dwelling") {{$p->aptNumber}} @else {{$p->address1}} @endif
-                                                </option>
+                                            <option>--select property--</option>
+                                            @foreach ($property as $key=>$p)
+                                            <option id="pro_{{$key}}" value="{{ $p->id }}" @if ($data ?? '') @if ($p->id == $data->propertyId) selected @endif @endif
+                                                @if ($p->id == @$propertyid) selected @endif>
+                                                {{ $p->PropertyType->building }}
+                                                {{ $allassociation[$p->associationId] }} - @if ($p->PropertyType->type == 'Multi Dwelling') {{ $p->aptNumber }} @else {{ $p->address1 }} @endif
+                                            </option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label>Individual</label>
                                         <br>
-                                        <input type="radio" name="individual" value="0" @if($data ?? '') @if($data->individual==0) checked @endif @else checked
-                                               @endif onclick="isindividual(this.value)"> &nbsp;No &nbsp;&nbsp;&nbsp; <input type="radio" name="individual" value="1"
-                                                                                                                             @if($data ?? '')  @if($data->individual==1) checked
-                                                                                                                             @endif @endif onclick="isindividual(this.value)"> &nbsp;Yes
+                                    <input type="radio" name="individual" value="0" @if ($data ?? '') @if ($data->individual == 0) checked @endif @else
+                                            checked @endif onclick="isindividual(this.value)"> &nbsp;No &nbsp;&nbsp;&nbsp;
+                                        <input type="radio" name="individual" value="1" @if ($data ?? '')
+                                        @if ($data->individual == 1) checked
+                                            @endif @endif onclick="isindividual(this.value)"> &nbsp;Yes
                                     </div>
                                     <div class="form-group individual_group">
                                         <label for="exampleEmail">Individual Type</label>
-                                        <select class="form-control" id="individualType" name="individualType" onchange="getresponsible(this.value)">
+                                        <select class="form-control" id="individualType" name="individualType"
+                                            onchange="getresponsible(this.value)">
                                             <option value=""> --choose--</option>
-                                            <option value="Owner" @if($data ?? '') @if($data->individualType=="Owner") selected @endif @endif> Owner</option>
-                                            <option value="Residents" @if($data ?? '') @if($data->individualType=="Residents") selected @endif @endif> Residents</option>
-                                            <option value="Guests" @if($data ?? '') @if($data->individualType=="Guests") selected @endif @endif> Guests</option>
-                                            <option value="Unregistered" @if($data ?? '') @if($data->individualType=="Unregistered") selected @endif @endif> Unregistered</option>
+                                            <option value="Owner" @if ($data ?? '') @if ($data->individualType == 'Owner') selected @endif @endif> Owner</option>
+                                            <option value="Residents" @if ($data ?? '') @if ($data->individualType == 'Residents') selected @endif @endif> Residents</option>
+                                            <option value="Guests" @if ($data ?? '') @if ($data->individualType == 'Guests') selected @endif @endif> Guests</option>
+                                            <option value="Unregistered" @if ($data ?? '') @if ($data->individualType == 'Unregistered') selected @endif @endif> Unregistered</option>
                                         </select>
                                     </div>
                                     <script>
@@ -115,7 +134,7 @@
                                             } else {
                                                 $(".individual_group2").hide();
                                                 $(".individual_group1").show();
-                                                $.get("/getresponsible/" + type, function (res) {
+                                                $.get("/getresponsible/" + type, function(res) {
                                                     $("#responsiblePersonId").html(res);
                                                 })
                                             }
@@ -125,29 +144,33 @@
 
                                     <div class="form-group individual_group individual_group1">
                                         <label for="exampleEmail">Responsible Person</label>
-                                        <select class="form-control" id="responsiblePersonId" name="responsiblePersonId" required>
+                                        <select class="form-control" id="responsiblePersonId" name="responsiblePersonId"
+                                            required>
                                             <option value="">--choose--</option>
-                                            @if($data ?? '')
-                                                @foreach($user as $u)
-                                                    <option value="{{$u->id}}" @if($u->id==$data->responsiblePersonId) selected @endif>{{$u->firstName}} {{$u->lastName}}</option>
+                                            @if ($data ?? '')
+                                                @foreach ($user as $u)
+                                                    <option value="{{ $u->id }}" @if ($u->id == $data->responsiblePersonId) selected @endif>
+                                                        {{ $u->firstName }} {{ $u->lastName }}</option>
                                                 @endforeach
                                             @endif
                                         </select>
                                     </div>
                                     <div class="form-group individual_group2">
                                         <label for="exampleEmail">Name of Description</label>
-                                        <input type="text" class="form-control" id="name_of_description" name="name_of_description" value="@if($data ?? ''){{$data->name_of_description}}@endif">
+                                        <input type="text" class="form-control" id="name_of_description"
+                                            name="name_of_description" value="@if ($data ?? ''){{ $data->name_of_description }}@endif">
                                     </div>
 
 
                                     <div class="form-group">
                                         <label for="exampleEmail">Incident Title </label>
-                                        <input type="text" class="form-control" id="incidentTitle" name="incidentTitle" value="@if($data ?? ''){{$data->incidentTitle}}@endif" required>
+                                        <input type="text" class="form-control" id="incidentTitle" name="incidentTitle"
+                                            value="@if ($data ?? ''){{ $data->incidentTitle }}@endif" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleEmail">Incident Description</label>
-                                        <textarea type="text" class="form-control editor" id="incidentDescription" name="incidentDescription"
-                                                  required>@if($data ?? ''){{$data->incidentDescription}}@endif</textarea>
+                                        <textarea type="text" class="form-control editor" id="incidentDescription"
+                                            name="incidentDescription" required>@if ($data ?? ''){{ $data->incidentDescription }}@endif</textarea>
 
                                     </div>
                                     <div class="group_text">
@@ -157,29 +180,35 @@
 
                                     <div class="form-group">
                                         <label for="exampleEmail">Police Involved </label>
-                                        <input type="radio" name="policeInvolved" value="0" onclick="ispolice(this.value)" @if($data ?? '') @if($data->policeInvolved==0) checked
-                                               @endif @else checked @endif > &nbsp;No &nbsp;&nbsp;&nbsp; <input type="radio" name="policeInvolved" value="1"
-                                                                                                                @if($data ?? '')  @if($data->policeInvolved==1) checked
-                                                                                                                @endif @endif  onclick="ispolice(this.value)"> &nbsp;Yes
+                                        <input type="radio" name="policeInvolved" value="0" onclick="ispolice(this.value)"
+                                            @if ($data ?? '')
+                                        @if ($data->policeInvolved == 0) checked
+                                            @endif @else checked @endif > &nbsp;No &nbsp;&nbsp;&nbsp; <input type="radio"
+                                                name="policeInvolved" value="1" @if ($data ?? '')
+                                            @if ($data->policeInvolved == 1) checked
+                                                @endif @endif onclick="ispolice(this.value)"> &nbsp;Yes
                                     </div>
                                     <div class="form-group police">
                                         <label for="exampleEmail">Police Report </label>
-                                        <textarea type="text" class="form-control" id="policeReport" name="policeReport">@if($data ?? ''){{$data->policeReport}}@endif</textarea>
+                                        <textarea type="text" class="form-control" id="policeReport"
+                                            name="policeReport">@if ($data ?? ''){{ $data->policeReport }}@endif</textarea>
 
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleEmail">Outcome</label>
-                                        <select class="form-control" id="outcome" name="outcome" onchange="setfine(this.value)" required>
+                                        <select class="form-control" id="outcome" name="outcome"
+                                            onchange="setfine(this.value)" required>
                                             <option value=""> --choose--</option>
-                                            <option value="Warning" @if($data ?? '') @if($data->outcome=="Warning") selected @endif @endif> Warning</option>
-                                            <option value="Fine" @if($data ?? '') @if($data->outcome=="Fine") selected @endif @endif> Fine</option>
-                                            <option value="Litigation" @if($data ?? '') @if($data->outcome=="Litigation") selected @endif @endif> Litigation</option>
+                                            <option value="Warning" @if ($data ?? '') @if ($data->outcome == 'Warning') selected @endif @endif> Warning</option>
+                                            <option value="Fine" @if ($data ?? '') @if ($data->outcome == 'Fine') selected @endif @endif> Fine</option>
+                                            <option value="Litigation" @if ($data ?? '') @if ($data->outcome == 'Litigation') selected @endif @endif> Litigation</option>
                                         </select>
                                     </div>
 
-                                    <div class="form-group fine_amount" @if($data ?? '') @if($data->outcome!="Fine") style="display: none" @endif  @else style="display: none" @endif>
+                                    <div class="form-group fine_amount" @if ($data ?? '') @if ($data->outcome != 'Fine') style="display: none" @endif  @else style="display: none" @endif>
                                         <label for="exampleEmail">Fine Amount</label>
-                                        <input type="number" class="form-control" id="fine_amount" name="fine_amount" value="@if($data ?? ''){{$data->fine_amount}}@endif">
+                                        <input type="number" class="form-control" id="fine_amount" name="fine_amount"
+                                            value="@if ($data ?? ''){{ $data->fine_amount }}@endif">
                                     </div>
 
                                     <script>
@@ -200,19 +229,22 @@
                                         <p>Please Upload all Incident Documents</p>
                                     </div>
 
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="float: right;margin-bottom: 10px">Upload New Document</button>
-                                    <table class="table d-block d-md-table table-responsive table-striped thead-primary w-100 dataTable no-footer">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#exampleModal" style="float: right;margin-bottom: 10px">Upload New
+                                        Document</button>
+                                    <table
+                                        class="table d-block d-md-table table-responsive table-striped thead-primary w-100 dataTable no-footer">
                                         <thead>
-                                        <tr>
-                                            <th style="min-width: 80px; width: 80px;">S.No</th>
-                                            <th>Document</th>
-                                            <th>Type</th>
-                                            <th >Upload Date</th>
-                                            <th >Upload By</th>
-                                            <th style="min-width: 80px; width: 80px;">Action</th>
-                                        </tr>
+                                            <tr>
+                                                <th style="min-width: 80px; width: 80px;">S.No</th>
+                                                <th>Document</th>
+                                                <th>Type</th>
+                                                <th>Upload Date</th>
+                                                <th>Upload By</th>
+                                                <th style="min-width: 80px; width: 80px;">Action</th>
+                                            </tr>
                                         </thead>
-                                        <tbody  id="tbody">
+                                        <tbody id="tbody">
 
                                         </tbody>
                                     </table>
@@ -235,7 +267,8 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -247,7 +280,7 @@
                 <div class="modal-body" id="modal-details">
                     <form action="/uploaddocument" id="ownerdocuments" method="post" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" value="{{$ref}}" name="ref" id="ref">
+                        <input type="hidden" value="{{ $ref }}" name="ref" id="ref">
                         <div class="form-group">
                             <label for="exampleEmail">Type</label>
                             <select class="form-control" id="type" name="type">
@@ -292,12 +325,13 @@
             }
         }
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#data-table').DataTable();
             uploaddoc();
         });
+
         function uploaddoc() {
-            $.get('/uploadincidentdoc/{{$ref}}', function (res) {
+            $.get('/uploadincidentdoc/{{ $ref }}', function(res) {
                 $("#tbody").html(res);
             })
         }
@@ -313,15 +347,15 @@
             formData.append('ref', ref);
             formData.append('uploadedBy', uploadedBy);
             formData.append('type', type);
-            formData.append('_token', "{{csrf_token()}}");
+            formData.append('_token', "{{ csrf_token() }}");
 
             $.ajax({
                 url: '/uploadincidentdocument',
                 type: 'POST',
                 data: formData,
-                processData: false,  // tell jQuery not to process the data
-                contentType: false,  // tell jQuery not to set contentType
-                success: function (data) {
+                processData: false, // tell jQuery not to process the data
+                contentType: false, // tell jQuery not to set contentType
+                success: function(data) {
                     $('#exampleModal').modal('toggle');
                     uploaddoc();
                 }
@@ -329,7 +363,18 @@
 
 
         }
-
+        let change_property = (value) => {
+            const data = document.getElementById("propertyId").options;
+            const count = data.length;
+            for(var i = 0; i < count; i++) {
+                const str = data[i].innerText;
+                if(str.includes(value)) {
+                    $("#pro_" + i).show();
+                } else {
+                    $("#pro_" + i).hide();
+                }
+            }
+        }
     </script>
     <style>
         .action {
@@ -357,7 +402,7 @@
 
             margin-right: 0px !important;
         }
+
     </style>
     @include('admin.includes.validate')
 @endsection
-

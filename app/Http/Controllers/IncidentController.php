@@ -76,7 +76,21 @@ class IncidentController extends Controller
                 $incident[$k]['ind'] = $v->name_of_description;
             }
         }
-        return view('admin.member.incident.index', ['alldata' => $incident, 'property' => $property]);
+
+        foreach ($incident as $key => $value) {
+            if(isset($_GET['filter_date'])) {
+                if($_GET['filter_date'] != '' && !str_contains($value->dateTime, $_GET['filter_date'])) {
+                    unset($incident[$key]);
+                }
+            }
+            if(isset($_GET['police'])) {
+                if($_GET['police'] != '' && $value->policeInvolved != $_GET['police']) {
+                    unset($incident[$key]);
+                }
+            }
+        }
+
+        return view('admin.member.incident.index', ['alldata' => $incident, 'property' => $property]);  
     }
 
     public function create()
@@ -196,7 +210,7 @@ class IncidentController extends Controller
     public function edit($id)
     {
         $id = Crypt::decryptString($id);
-      
+        
         $property = Property::get();
 
         $incident = Incident::where('id', $id)->first();
