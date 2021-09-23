@@ -165,7 +165,7 @@ class TemplateController extends Controller
                 // $message = str_replace($tv->variable, $u->$col, $message);
             // }
 
-            Mail::to("topfreelancer085@gmail.com")->send(new MailSend("mail content", "subject"));
+            Mail::to("topfreelancer085@gmail.com")->send(new MailSend($request->template, $request->subject));
             return;
         // }
 
