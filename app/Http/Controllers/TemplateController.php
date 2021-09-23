@@ -154,6 +154,22 @@ class TemplateController extends Controller
     {
         $template_variable = TemplateVariable::where('onlyfacility',0)->get();
 
+        // foreach($data as $u) {
+            // $message = $request->template;
+            // foreach ($template_variable as $tv) {
+                // $col = $tv->columnName;
+                // if($u->$col=="" && $tv->columnName=="first_name"){ $col="companyLegalName";}
+                // if($u->$col=="" && $tv->columnName=="address1"){ $col="mailingAddress1";}
+                // if($u->$col=="" && $tv->columnName=="address2"){ $col="mailingAddress2";}
+
+                // $message = str_replace($tv->variable, $u->$col, $message);
+            // }
+
+            Mail::to("topfreelancer085@gmail.com")->send(new MailSend("mail content", "subject"));
+            return;
+        // }
+
+
         if ($request->to_mail == "Group") {
 
             foreach ($request->whome_group as $receiver) {
