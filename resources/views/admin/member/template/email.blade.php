@@ -193,15 +193,74 @@
       <div class="modal-content">
 
         <div class="modal-body text-center">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <i class="flaticon-email d-block"></i>
-          <h1>Subscribe</h1>
-          <p> Subscribe and get our latest updates </p>
-          <div class="ms-form-group has-icon">
-            <input type="text" placeholder="Email Address" class="form-control" name="news-letter" value="">
-            <i class="material-icons">email</i>
-          </div>
-        <button onclick="selectAddr()" class="btn btn-primary shadow-none">Get Started</button>
+            <div class="col-md-12">
+                @if(!isset($_GET['type']) || !isset($userid))
+                @if($setting['is_subassociations']=="1")
+
+                    <div class="form-group Individual">
+                        <label>Select Sub-Association</label>
+                        <select class="form-control" id="associationId" name="associationId" onchange="getbuilding(this.value)">
+                            <option value="">--Choose--</option>
+                            @foreach($subasso as $s)
+                                <option value="{{$s->id}}" @if($data ?? '') @if($data->associationId==$s->id)selected @endif @endif>{{$s->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                @endif
+                <div class="form-group Individual" id="building" >
+                    <label for="examplePassword">Building</label>
+                    <select type="text" class="form-control" id="buildingId" name="buildingId">
+                        <option value="">--Choose--</option>
+                        @if($setting['is_subassociations']=="0" || isset($data))
+                            @foreach($building as $p)
+                                <option value="{{$p->id}}" @if($data ?? '') @if($data->buildingId==$p->id) selected @endif @endif>{{$p->building}}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
+                <div class="form-group Individual">
+                    <label for="examplePassword">Property<span>*</span></label>
+                    <select type="text" class="form-control" id="propertyId" name="propertyId"  onchange="gettype()">
+                        <option value="">--Choose--</option>
+                        @if($setting['is_subassociations']=="0" || isset($data))
+                            @foreach($property as $p)
+                                <option value="{{$p->id}}" type="{{$p->type}}" @if($data ?? '') @if($data->propertyId==$p->id) selected @endif @endif>{{$p->type}}/{{$p->building}}
+                                    /{{$p->aptNumber}}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
+                @endif
+                <div class="form-group Individual">
+                    <label for="exampleEmail">Choose Receiver</label>
+                    <select class="form-control" name="whome_type" onchange="selectperson(this.value)">
+                        <option value="">--choose--</option>
+                        <option value="Owners" @if(isset($_GET['type']) && $_GET['type']=="Owners") selected @endif>Owners</option>
+                        <option value="Residents" @if(isset($_GET['type']) && $_GET['type']=="Residents") selected @endif>Residents</option>
+                        <option value="Guests" @if(isset($_GET['type']) && $_GET['type']=="Guests") selected @endif>Guests</option>
+                    </select>
+                </div>
+                <div class="form-group Individual">
+                    <label for="exampleEmail"> Select the Person</label>
+                    <select class="form-control" id="person" name="whome">
+                        <option value="">--choose--</option>
+                        @if(isset($userid) && !empty($person))
+                            @foreach($person as $p)
+                                <option value="{{$p->id}}" @if(isset($userid) && $userid==$p->id) selected @endif>{{$p->firstName}} {{$p->lastName}}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
+                <div class="form-group Group" style="display: none">
+                    <label for="exampleEmail">Choose Receiver</label><br>
+                    <input type="checkbox" name="whome_group[]" value="Owners"> Owners<br>
+                    <input type="checkbox" name="whome_group[]" value="Residents"> Residents<br>
+                    <input type="checkbox" name="whome_group[]" value="Guests"> Guests<br>
+                    <input type="checkbox" name="whome_group[]" value="Pet Owners"> Pet Owners
+                </div>
+            </div>
+            <button onclick="selectAddr()" class="btn btn-primary shadow-none">Add Contact</button>
         </div>
 
       </div>
