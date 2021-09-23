@@ -521,7 +521,7 @@
     }
 
     const selectAddr = () => {
-        $(`#addr_${selected_addr}`).val("haha");
+        $(`#addr_${selected_addr}`).val("");
         $("#inputModal").modal('hide');
     }
 
