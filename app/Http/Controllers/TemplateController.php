@@ -155,11 +155,23 @@ class TemplateController extends Controller
         $str_addr = $request->addr_1.','.$request->addr_2.','.$request->addr_3;
         $addr_lst = explode (",", $str_addr);
 
+        $emailbox = new EmailManage;
+        $emailbox->from = '';
+        $emailbox->to = $str_addr;
+        $emailbox->title = $request->subject;
+        $emailbox->email = $request->template;
+        $emailbox->location = 4;
+        $emailbox->folder = 0;
+        $emailbox->flag = 0;
+        $emailbox->read = 1;
+        $emailbox->save();
+
         foreach ($addr_lst as $key => $email) {
             if($email != '') {
                 Mail::to($email)->send(new MailSend($request->template, $request->subject));
             }
         }
+
 
         $request->session()->flash("message", "Mail Send Succefully");
         return redirect()->back();

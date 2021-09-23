@@ -160,7 +160,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Subject</label>
-                                        <input type="text" class="form-control" name="subject">
+                                        <input type="text" class="form-control" name="subject" id="subject">
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleEmail">Template Name <span>*</span></label>
@@ -389,11 +389,11 @@
                                     <div class="ms-email-img mr-3 ">
                                         <img src="https://via.placeholder.com/270x270" class="ms-img-round" alt="people">
                                     </div>
-                                    <div class="media-body ms-email-details">
+                                    <div class="media-body ms-email-details" style="height: 70px; max-height: 70px;">
                                         <span class="ms-email-sender">${item['from']}-${item['to']}</span>
                                         <h6 class="ms-email-subject">${item['title']}</h6>
                                         <span class="ms-email-time"> <a href="#">`+getReadClass(item['read'])+' '+getDateString(item['created_at'])+`</span>
-                                        <p class="ms-email-msg">${item['email']}</p>
+                                        <p class="ms-email-msg" style="text-overflow: ellipsis;">${item['email']}</p>
                                     </div>
                                     <div class="dropdown">
                                         <a href="#" class="ms-hoverable-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -471,7 +471,28 @@
     }
 
     const sendMail = () => {
+
         $("#admin_form").submit();
+        return;
+
+        var formData = new FormData();
+        formData.append('addr_1', $("#addr_1").val());
+        formData.append('addr_2', $("#addr_2").val());
+        formData.append('addr_3', $("#addr_3").val());
+        formData.append('subject', $("#subject").val());
+        formData.append('template', $("#mytemplate").val());
+        formData.append('_token', "{{csrf_token()}}");
+
+        $.ajax({
+            url: '/send-bulkmail',
+            type: 'POST',
+            data: formData,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            success: function (data) {
+
+            }
+        });
     }
 
     const gettemplate = (id) => {
