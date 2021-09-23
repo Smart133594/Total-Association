@@ -8,6 +8,8 @@
     }
 </style>
 <div class="ms-content-wrapper">
+<form id="admin_form" method="post" action="{{route('send.bulkmail')}}" enctype="multipart/form-data">
+    @csrf
     <div class="ms-panel ms-email-panel">
        <div class="ms-panel-body p-0">
           <div class="ms-email-aside">
@@ -126,7 +128,7 @@
                             <div class="form-group">
                                 <label for="exampleEmail">Send to (Coma separated)</label>
                                 <div class="row">
-                                    <div class="col-10"><input type="text" id="addr_1" value="" class="form-control" /></div>
+                                    <div class="col-10"><input type="text" id="addr_1" name="addr_1" value="" class="form-control" /></div>
                                     <div class="col-2"><button class="btn btn-primary" onclick="inputAddr(1)" style="width: 45px; min-width: 45px; margin-top: -3px; margin-left: -20px;">+</button></div>
                                 </div>
                             </div>
@@ -135,7 +137,7 @@
                             <div class="form-group">
                                 <label for="exampleEmail">CC (Coma separated)</label>
                                 <div class="row">
-                                    <div class="col-10"><input type="text" id="addr_2" value="" class="form-control" /></div>
+                                    <div class="col-10"><input type="text" id="addr_2" name="addr_2" value="" class="form-control" /></div>
                                     <div class="col-2"><button class="btn btn-primary" onclick="inputAddr(2)" style="width: 45px; min-width: 45px; margin-top: -3px; margin-left: -20px;">+</button></div>
                                 </div>
                             </div>
@@ -145,7 +147,7 @@
                                 <label for="exampleEmail">BCC (Coma separated)</label>
                                 <div class="row">
                                     <div class="col-10"><input type="text" id="addr_3" value="" class="form-control" /></div>
-                                    <div class="col-2"><button class="btn btn-primary" onclick="inputAddr(3)" style="width: 45px; min-width: 45px; margin-top: -3px; margin-left: -20px;">+</button></div>
+                                    <div class="col-2"><button class="btn btn-primary" name="addr_3" onclick="inputAddr(3)" style="width: 45px; min-width: 45px; margin-top: -3px; margin-left: -20px;">+</button></div>
                                 </div>
                             </div>
                         </div>
@@ -159,6 +161,15 @@
                                     <div class="form-group">
                                         <label>Subject</label>
                                         <input type="text" class="form-control" name="subject">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleEmail">Template Name <span>*</span></label>
+                                        <select class="form-control" onchange="gettemplate(this.value)" required>
+                                            <option value="">--choose--</option>
+                                            @foreach($template as $t)
+                                                <option value="{{$t->id}}">{{$t->templateName}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                     <div class="form-group">
                                         <textarea class="form-control editor" id="mytemplate" name="template">@if($data ?? ''){{$data->template}}@endif</textarea>
@@ -175,6 +186,7 @@
         </div>
 
     </div>
+</form>
 </div>
 <div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModal">
     <div class="modal-dialog modal-dialog-centered modal-min" role="document">
@@ -459,20 +471,12 @@
     }
 
     const sendMail = () => {
-        var formData = new FormData();
-        formData.append('itemId', itemId);
-        formData.append('sectionId', sectionId);
-        formData.append('_token', "{{csrf_token()}}");
+        $("#admin_form").submit();
+    }
 
-        $.ajax({
-            url: '/send-bulkmail',
-            type: 'POST',
-            data: formData,
-            processData: false,  // tell jQuery not to process the data
-            contentType: false,  // tell jQuery not to set contentType
-            success: function (data) {
-
-            }
+    const gettemplate = (id) => {
+        $.get("/gettemplate/" + id, function (res) {
+            tinyMCE.activeEditor.setContent(res);
         });
     }
  </script>

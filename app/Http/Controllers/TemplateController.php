@@ -145,30 +145,26 @@ class TemplateController extends Controller
                 $person = Guest::where('id', $userid)->get();
             }
         }
-        // return view('admin.member.template.email', ['alldata' => EmailManage::get(), 'template' => $template, 'template_variable' => $template_variable]);
+        return view('admin.member.template.email', ['alldata' => EmailManage::get(), 'template' => $template, 'template_variable' => $template_variable]);
 
         return view('admin.member.template.bulkmail', ['template' => $template,"person"=>$person ,'validate' => $validate, 'template_variable' => $template_variable,'subasso'=>$subasso,'property'=>$property, 'userid' => $userid]);
     }
 
     public function sendbulkmail(Request $request)
     {
+        $str_addr = $request->addr_1.','.$request->addr_2.','.$request->addr_3;
+        $addr_lst = explode (",", $str_addr);
+
+        foreach ($addr_lst as $key => $email) {
+            if($email != '') {
+                Mail::to($email)->send(new MailSend($request->template, $request->subject));
+            }
+        }
+
+        $request->session()->flash("message", "Mail Send Succefully");
+        return redirect()->back();
+
         $template_variable = TemplateVariable::where('onlyfacility',0)->get();
-
-        // foreach($data as $u) {
-            // $message = $request->template;
-            // foreach ($template_variable as $tv) {
-                // $col = $tv->columnName;
-                // if($u->$col=="" && $tv->columnName=="first_name"){ $col="companyLegalName";}
-                // if($u->$col=="" && $tv->columnName=="address1"){ $col="mailingAddress1";}
-                // if($u->$col=="" && $tv->columnName=="address2"){ $col="mailingAddress2";}
-
-                // $message = str_replace($tv->variable, $u->$col, $message);
-            // }
-
-            Mail::to("topfreelancer085@gmail.com")->send(new MailSend($request->template, $request->subject));
-            return;
-        // }
-
 
         if ($request->to_mail == "Group") {
 
