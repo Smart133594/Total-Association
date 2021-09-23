@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\MailSend;
 use App\Models\Building;
 use App\Models\Guest;
+use App\Models\EmailManage;
 use App\Models\Owner;
 use App\Models\Pet;
 use App\Models\Property;
@@ -144,8 +145,9 @@ class TemplateController extends Controller
                 $person = Guest::where('id', $userid)->get();
             }
         }
+        // return view('admin.member.template.email', ['alldata' => EmailManage::get(), 'template' => $template, 'template_variable' => $template_variable]);
 
-         return view('admin.member.template.bulkmail', ['template' => $template,"person"=>$person ,'validate' => $validate, 'template_variable' => $template_variable,'subasso'=>$subasso,'property'=>$property, 'userid' => $userid]);
+        return view('admin.member.template.bulkmail', ['template' => $template,"person"=>$person ,'validate' => $validate, 'template_variable' => $template_variable,'subasso'=>$subasso,'property'=>$property, 'userid' => $userid]);
     }
 
     public function sendbulkmail(Request $request)

@@ -32,6 +32,8 @@ use App\Http\Controllers\PunchClockAuthController;
 use App\Http\Controllers\WorkLogController;
 use App\Http\Controllers\PunchClockController;
 use App\Http\Controllers\DepartManageController;
+use App\Http\Controllers\EmailController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -152,6 +154,13 @@ Route::middleware([CheckAdminLogin::class])->group(function () {
     Route::get('/pet-showdetails/{tags}/{ref}', [PetController::class, 'showdetails'])->name('pet.showdetails');
     Route::get('/showproperties/{id}', [PropertyController::class, 'show'])->name('propertyController.show');
 
+    Route::get('/email-page', [EmailController::class, 'showemailpage'])->name('email.showemailpage');
+    Route::post('/email-getitems', [EmailController::class, 'getemailitems'])->name('email.getitems');
+    Route::get('/email-flagged/{id}', [EmailController::class, 'setflaggeditem'])->name('email.setflaggeditem');
+    Route::post('/email-read', [EmailController::class, 'setreaditems'])->name('email.setreaditems');
+    Route::post('/email-movetofolder', [EmailController::class, 'movetofolder'])->name('email.movetofolder');
+    Route::get('/email-boxcount', [EmailController::class, 'boxcount'])->name('email.boxcount');
+    Route::post('/email-delete', [EmailController::class, 'deletemail'])->name('email.deletemail');
 
 
 

@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class EmailManage extends Model
 {
     use HasFactory;
+    protected $table="emailmanage";
 }

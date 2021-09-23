@@ -87,6 +87,7 @@
 <script>
     $(document).ready(function () {
         var href = window.location.pathname;
+    
         if(window.localStorage.urlClass =='properties') {
             href = '/showproperties/';
         }
