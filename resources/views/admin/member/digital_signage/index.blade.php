@@ -70,7 +70,7 @@
                                                         <i class="fas fa-th"></i>
                                                     </a>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                        <a class="dropdown-item" href="{{ env('WEBSITE_URL') }}total_tv/{{$val->id}}" target="_blank">View Tv Link</a>
+                                                        <a class="dropdown-item" href="/total_tv/{{$val->id}}" target="_blank">View Tv Link</a>
                                                     </div>
                                                 </div>
                                             </td>

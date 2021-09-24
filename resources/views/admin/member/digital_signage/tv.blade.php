@@ -23,12 +23,12 @@
 
 <div class="body_section">
     <div class="body_section_left">
-        <div class="left_side_img">
+        <div class="left_side_img" style="height: 80%;">
             <a class="weatherwidget-io" href="https://forecast7.com/en/26d12n80d14/fort-lauderdale/" data-label_1="FORT LAUDERDALE" data-label_2="WEATHER" data-days="5" data-theme="original" >FORT LAUDERDALE WEATHER</a>
             <script>
                 !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
             </script>
-            <img src="/assets/img/side_img.jpg" alt="image">
+            <img src="/assets/img/side_img.jpg" alt="image" style="height: 52%; background-size: cover;">
         </div>
     </div>
 
