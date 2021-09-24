@@ -23,24 +23,24 @@
 
 <div class="body_section">
     <div class="body_section_left">
-        <div class="left_side_img" style="height: 80%;">
+        <div class="left_side_img" style="height: 100%;">
             <a class="weatherwidget-io" href="https://forecast7.com/en/26d12n80d14/fort-lauderdale/" data-label_1="FORT LAUDERDALE" data-label_2="WEATHER" data-days="5" data-theme="original" >FORT LAUDERDALE WEATHER</a>
             <script>
                 !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
             </script>
-            <img src="/assets/img/side_img.jpg" alt="image" style="height: 52%; background-size: cover;">
+            <img src="/assets/img/side_img.jpg" alt="image" style="height: 50%; background-size: cover;">
         </div>
     </div>
 
     <div class="body_section_right">
         <div class="big_img">
-            <img src="{{'/upload/'.$data->image1}}" alt="image">
+            <img src="{{'/upload/'.$data->image1}}" alt="image" style="height: 100%; background-size: cover;">
         </div>
         <div class="big_img">
-            <img src="{{'/upload/'.$data->image2}}" alt="image">
+            <img src="{{'/upload/'.$data->image2}}" alt="image" style="height: 100%; background-size: cover;">
         </div>
         <div class="big_img">
-            <img src="{{'/upload/'.$data->image3}}" alt="image">
+            <img src="{{'/upload/'.$data->image3}}" alt="image" style="height: 100%; background-size: cover;">
         </div>
     </div>
 </div>
