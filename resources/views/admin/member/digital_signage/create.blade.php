@@ -182,13 +182,13 @@
                 </div>
                 <div class="ms-panel">
                     <div class="ms-panel-header ms-panel-custome">
-                        <h6>Scrolling Text</h6>
+                        <h6>Change to Image</h6>
                     </div>
                     <div class="ms-panel-body">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="exampleEmail">Set the scrolling text items</label>
+                                    <label for="exampleEmail">Choose an image to display in the center of the screen</label>
                                 </div>
                             </div>
                         </div>

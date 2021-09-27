@@ -33,14 +33,14 @@
                     <table class="d-block d-md-table table-responsive table table-striped thead-primary w-100 data-table">
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th style="min-width: 100px;">Name</th>
-                                <th style="min-width: 100px;">Date of birth</th>
-                                <th>Email</th>
+                                <th style="width: 10px;">#</th>
+                                <th style="min-width: 120px;">Name</th>
+                                <th style="width: 80px;">Date of birth</th>
+                                <th style="min-width: 120px;">Email</th>
                                 <th>Phone</th>
                                 <th>Whatsapp</th>
                                 <th>Department</th>
-                                <th>Action</th>
+                                <th style="width: 30px;">Action</th>
                             </tr>
                         </thead>
                         <tbody>

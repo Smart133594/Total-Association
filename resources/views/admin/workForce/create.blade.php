@@ -78,23 +78,38 @@
             </div>
 
             <label for="birthday">Date Of Birth</label>
-            <div class="form-row" id="birthday">
-                <div class="col-md-3 mb-3">
-                    <select name="year" id="year" class="form-control" onchange="changeDate()">
-                        @for ($i = 1900; $i < date('Y'); $i++)
-                            <option value="{{ $i }}" {{ _OBJVALUE($worker, 'year') == $i ? "selected" : "" }}>{{ $i }}</option>
-                        @endfor
-                    </select>
+            <div class="" id="birthday">
+                <div class="row">
+                    <div class="col-md-6 mb-6">
+                        <select name="year" id="year" class="form-control" onchange="changeDate()" required>
+                            <option value="">Select Year</option>
+                            @for ($i = 1900; $i < date('Y'); $i++)
+                                <option value="{{ $i }}" {{ _OBJVALUE($worker, 'year') == $i ? "selected" : "" }}>{{ $i }}</option>
+                            @endfor
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-6"></div>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <select name="month" id="month" class="form-control" onchange="changeDate()">
-                        @for ($i = 1; $i < 13; $i++)
-                            <option value="{{ $i }}" {{ _OBJVALUE($worker, 'month') == $i ? "selected" : "" }}>{{ $i }}</option>
-                        @endfor
-                    </select>
+                <div class="row" style="margin-top: 25px;">
+                    <div class="col-md-4 mb-4">
+                        <select name="month" id="month" class="form-control" onchange="changeDate()" required>
+                            <option value="">Select Month</option>
+                            @for ($i = 1; $i < 13; $i++)
+                                <option value="{{ $i }}" {{ _OBJVALUE($worker, 'month') == $i ? "selected" : "" }}>{{ $i }}</option>
+                            @endfor
+                        </select>
+                    </div>
+                    <div class="col-md-8 mb-8">
+                    </div>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <select name="date" id="date" class="form-control"></select>
+                <div class="row">
+                    <div class="col-md-4 mb-4" style="">
+                        <select name="date" id="date" class="form-control" required>
+                            <option value="">Select Date</option>
+                        </select>
+                    </div>
+                    <div class="col-md-8 mb-8" style="">
+                    </div>
                 </div>
             </div>
             <label for="address">Address</label>
@@ -226,7 +241,7 @@
         </div>
         <div class="ms-panel-body">
             <h5>Print Contract and have its Signed</h5>
-            <input type="button" value="Print Contract for this Employee" class="btn btn-primary" id="print-contract">
+            <input type="button" value="Print Contract for this Employee" class="btn btn-primary" id="print-contract" style="display: none;">
             <div>
                 <label for="choose-contracts" class="btn btn-primary mb-4">Upload Signed Contract</label>
                 <div id="contracts-preview">
@@ -263,7 +278,7 @@
             </div>
             <hr />
         </div>
-        <div class="ms-panel-body">
+        <div class="ms-panel-body" style="display: none;">
             <h5>Payroll</h5>
             <div class="form-row mb-3">
                 <div class="col-md-3">
@@ -312,7 +327,7 @@
         const cur_date = init_val > 0 ? init_val : $("#date").val();
         if (!year || !month) return;
         const date = (new Date(year, month, 0)).getDate();
-        let ele = ``;
+        let ele = `<option value="">Select Date</option>`;
         for (let i = 1; i < date + 1; i++) {
             ele += `<option value="${i}" ${cur_date == i && "selected"}>${i}</option>`;
         }
