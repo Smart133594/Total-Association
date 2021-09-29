@@ -163,8 +163,8 @@ then just press go.
                                                 <i class="fas fa-th"></i>
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                <button class="dropdown-item" onclick="window.location.href='{{ $detail_uri }}'" >Detail</button>
-                                                {{-- <a class="dropdown-item" href="#" onclick="openModal({{ $item }})" >Edit</a> --}}
+                                                <button class="dropdown-item" onclick="window.location.href='{{ $detail_uri }}'" >View</button>
+                                                <a class="dropdown-item" href="#" onclick="openModal({{ $item }})" >Edit</a>
                                                 <form action="{{ route('punch-clock.destroy', $item->id) }}" method="post">
                                                     @method("delete")
                                                     @csrf
@@ -176,65 +176,53 @@ then just press go.
                                 </tr>
                             @endforeach
                         </tbody>
+                    </table>
                 </div>
                 <p>Total Time = {{ $times }}</p>
             </div>
-            <div>
+            <div class="ms-panel" style="margin-left:20px">
                 <hr>
-                <h5>Report</h5>
+                <h5>Single Employee Report</h5>
                 <div class="ms-panel-custome mb-3 row">
-                        <div class="modal-body mt-3 ">
-                            <ul class="ms-list d-flex horizontal_ads">
-                                <li class="ms-list-item pl-0">
-                                    <label class="ms-checkbox-wrap">
-                                        <input type="radio" name="worker_type" value="employee" >
-                                        <i class="ms-checkbox-check"></i>
-                                    </label>
-                                    <span> Employee </span>
-                                </li>
-                                <li class="ms-list-item">
-                                    <label class="ms-checkbox-wrap">
-                                        <input type="radio" name="worker_type" value="all" checked="">
-                                        <i class="ms-checkbox-check"></i>
-                                    </label>
-                                    <span> All </span>
-                                </li>
-                            </ul>
-                            <label for="">Select an Employee</label>
-                            <div class="form-row mb-3">
-                                <div class="col-md-6">
-                                    <select name="export_user" id="export_user" onchange="change_export_user()" class="form-control">
-                                    </select>
+                    <div class="modal-body mt-3 ">
+                        <ul class="ms-list d-flex horizontal_ads">
+                            <li class="ms-list-item pl-0">
+                                <label class="ms-checkbox-wrap">
+                                    <input type="radio" name="worker_type" value="employee" >
+                                    <i class="ms-checkbox-check"></i>
+                                </label>
+                                <span> Employee </span>
+                            </li>
+                            <li class="ms-list-item">
+                                <label class="ms-checkbox-wrap">
+                                    <input type="radio" name="worker_type" value="all" checked="">
+                                    <i class="ms-checkbox-check"></i>
+                                </label>
+                                <span> All </span>
+                            </li>
+                        </ul>
+                        
+                        <div class="mb-3">
+                            <h6 style="font-size 18px !important;">
+                                In order to print a report of the above Employee and time interval. Please select bottom settings and click on "Create PDF"
+                            </h6>
+                        </div>
+                        <div class="row" style="margin-bottom:20px !important">
+                            <div class="col-md-4">
+                                <label for="">Start Date</label>
+                                <div class="form-row">
+                                        <input type="date" name="pay_period_from" id="pay_period_from" class="form-control" hidden>
                                 </div>
                             </div>
-                            <label for="">Start Date</label>
-                            <div class="form-row mb-3">
-                                <div class="col-md-6">
-                                    <input type="date" name="pay_period_from" id="pay_period_from" class="form-control">
+                            <div class="col-md-4">
+                                <label for="">End Date</label>
+                                <div class="form-row">
+                                        <input type="date" name="pay_period_to" id="pay_period_to" class="form-control" hidden>
                                 </div>
                             </div>
-                            <label for="">End Date</label>
-                            <div class="form-row mb-3">
-                                <div class="col-md-6">
-                                    <input type="date" name="pay_period_to" id="pay_period_to" class="form-control">
-                                </div>
-                            </div>
-<style>
-    @media screen and (max-width: 966px) {
-        #divb { min-width: 22% !important; margin-left: -2% !important; }
-        #divc { margin-left: -3%; }
-        #divd { min-width: 52% !important; }
-        #dive { margin-left: 6% !important; }
-        #divf { min-width: 40% !important; margin-top: 1%; margin-left: -1%; }
-    }
-    #divb { margin-left: -5%; }
-    #divc { margin-left: -3%; }
-    #divd { margin-left: -1%; }
-    #dive { margin-left: -2%; }
-    #divf { margin-left: -1%; }
-
-</style>
-                            <div class="mb-3">
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-9">
                                 <div class="row">
                                     <div class="col-1" id="diva">
                                         <label class="ms-checkbox-wrap">
@@ -256,47 +244,171 @@ then just press go.
 
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="ms-checkbox-wrap">
-                                    <input type="checkbox" name="decimal_total" id="decimal_total" checked>
-                                    <i class="ms-checkbox-check"></i>
-                                </label>
-                                <span> Total In Decimal format </span>
-                            </div>
-                            <div class="mb-3">
-                                <label class="ms-checkbox-wrap">
-                                    <input type="checkbox" name="time_24_format" id="time_24_format" checked>
-                                    <i class="ms-checkbox-check"></i>
-                                </label>
-                                <span> Time in 24 hour format. </span>
-                            </div>
-                            <br>
-                            <div id="all_radio">
-                            <div class="mb-3">
-                                <label class="ms-checkbox-wrap">
-                                    <input type="radio" name="report_radio" value="groupEmployee" checked="">
-                                    <i class="ms-checkbox-check"></i>
-                                </label>
-                                <span> Group Time Entires by Employee </span>
-                            </div>
-                            <div class="mb-3">
-                                    <label class="ms-checkbox-wrap">
-                                        <input type="radio" name="report_radio" value="groupDay">
-                                        <i class="ms-checkbox-check"></i>
-                                    </label>
-                                    <span> Group Time Entires by Day </span>
-                            </div>
-                            </div>
-                            <input type="button" value="Create PDF" class="btn btn-primary col-md-2" onclick="exprtSheet()">
                         </div>
-                        <div id="export_table" style="display: none"></div>
+                        <div class="mb-3">
+                            <label class="ms-checkbox-wrap">
+                                <input type="checkbox" name="decimal_total" id="decimal_total" checked>
+                                <i class="ms-checkbox-check"></i>
+                            </label>
+                            <span> Display Totals In Decimal format </span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="ms-checkbox-wrap">
+                                <input type="checkbox" name="time_24_format" id="time_24_format" checked>
+                                <i class="ms-checkbox-check"></i>
+                            </label>
+                            <span> Display Time in 24 hour format. </span>
+                        </div>
+                        <br>
+                        <div id="all_radio">
+                        <div class="mb-3">
+                            <label class="ms-checkbox-wrap">
+                                <input type="radio" name="report_radio" value="groupEmployee" checked="">
+                                <i class="ms-checkbox-check"></i>
+                            </label>
+                            <span> Group Time Entires by Employee </span>
+                        </div>
+                        <div class="mb-3">
+                                <label class="ms-checkbox-wrap">
+                                    <input type="radio" name="report_radio" value="groupDay">
+                                    <i class="ms-checkbox-check"></i>
+                                </label>
+                                <span> Group Time Entires by Day </span>
+                        </div>
+                        </div>
+                        <input type="button" value="Create PDF" class="btn btn-primary col-md-2" onclick="exprtSheet()">
+                    </div>
+                    <div id="export_table" style="display: none"></div>
                 </div>
             </div>
+            <div class="ms-panel" style="margin-left:20px">
+                <hr>
+                <h5>Single Employee Report</h5>
+                <div class="ms-panel-custome mb-3 row">
+                    <div class="modal-body mt-3 ">
+                        <ul class="ms-list d-flex horizontal_ads">
+                            <li class="ms-list-item pl-0">
+                                <label class="ms-checkbox-wrap">
+                                    <input type="radio" name="worker_type" value="employee" >
+                                    <i class="ms-checkbox-check"></i>
+                                </label>
+                                <span> Employee </span>
+                            </li>
+                            <li class="ms-list-item">
+                                <label class="ms-checkbox-wrap">
+                                    <input type="radio" name="worker_type" value="all" checked="">
+                                    <i class="ms-checkbox-check"></i>
+                                </label>
+                                <span> All </span>
+                            </li>
+                        </ul>
+                        <label for="" hidden>Select an Employee</label>
+                        <div class="form-row mb-3">
+                            <div class="col-md-6">
+                                <select name="export_user" id="export_user" onchange="change_export_user()" class="form-control" hidden>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <h6 style="font-size 18px !important;">
+                                This section will print a report of all Employees that works at a time interval. Please select the
+                                time interval and setting below and click on "Create PDF"
+                            </h6>
+                        </div>
+                        <div class="row" style="margin-bottom:20px !important">
+                            <div class="col-md-4">
+                                <label for="">Start Date</label>
+                                <div class="form-row">
+                                        <input type="date" name="pay_period_from" id="pay_period_from1" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="">End Date</label>
+                                <div class="form-row">
+                                        <input type="date" name="pay_period_to" id="pay_period_to1" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-9">
+                                <div class="row">
+                                    <div class="col-1" id="diva">
+                                        <label class="ms-checkbox-wrap">
+                                            <input type="checkbox" name="hours_shift" id="hours_shift" checked>
+                                            <i class="ms-checkbox-check"></i>
+                                        </label>
+                                    </div>
+                                    <div class="col-1" id="divb">If over</div>
+                                    <div class="col-2" id="divc"><input type="number" id="in_a" value="0" class="col-12"/></div>
+                                    <div class="col-2" id="divd">Hours shift, Deduct</div>
+                                    <div class="col-2" id="dive"><input type="number" id="in_b" value="0" class="col-12"/></div>
+                                    <div class="col-2" id="divf">Min for Break</div>
+
+                                    {{-- <div class="col-md-3" style="margin-left: -5%; margin-top: 3px;">If over</div>
+                                    <div class="col-md-2" style="margin-left: -20%; margin-top: -5px;"><input type="number" id="in_a" value="0" class="form-control col-md-6"/></div>
+                                    <div class="col-md-3" style="margin-left: -9%; margin-top: 3px;">Hours shift, Deduct</div>
+                                    <div class="col-md-2" style="margin-left: -12%; margin-top: -5px;"><input type="number" id="in_b" value="0" class="form-control col-md-6"/></div>
+                                    <div class="col-md-3" style="margin-left: -9%; margin-top: 3px;">Min for Break</div> --}}
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="ms-checkbox-wrap">
+                                <input type="checkbox" name="decimal_total" id="decimal_total" checked>
+                                <i class="ms-checkbox-check"></i>
+                            </label>
+                            <span> Display Totals In Decimal format </span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="ms-checkbox-wrap">
+                                <input type="checkbox" name="time_24_format" id="time_24_format" checked>
+                                <i class="ms-checkbox-check"></i>
+                            </label>
+                            <span> Display Time in 24 hour format. </span>
+                        </div>
+                        <br>
+                        <div id="all_radio">
+                        <div class="mb-3">
+                            <label class="ms-checkbox-wrap">
+                                <input type="radio" name="report_radio" value="groupEmployee" checked="">
+                                <i class="ms-checkbox-check"></i>
+                            </label>
+                            <span> Group Time Entires by Employee </span>
+                        </div>
+                        <div class="mb-3">
+                                <label class="ms-checkbox-wrap">
+                                    <input type="radio" name="report_radio" value="groupDay">
+                                    <i class="ms-checkbox-check"></i>
+                                </label>
+                                <span> Group Time Entires by Day </span>
+                        </div>
+                        </div>
+                        <input type="button" value="Create PDF" class="btn btn-primary col-md-2" onclick="exprtSheet1()">
+                    </div>
+                    <div id="export_table" style="display: none"></div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
 
+<style>
+    @media screen and (max-width: 966px) {
+        #divb { min-width: 22% !important; margin-left: -2% !important; }
+        #divc { margin-left: -3%; }
+        #divd { min-width: 52% !important; }
+        #dive { margin-left: 6% !important; }
+        #divf { min-width: 40% !important; margin-top: 1%; margin-left: -1%; }
+    }
+    #divb { margin-left: -5%; }
+    #divc { margin-left: -3%; }
+    #divd { margin-left: -1%; }
+    #dive { margin-left: -2%; }
+    #divf { margin-left: -1%; }
 
+</style>
 
 <!-- Modal -->
 <div class="modal fade" id="log_modal" tabindex="-1" role="dialog" aria-labelledby="log_modal_label" aria-hidden="true">
@@ -326,14 +438,12 @@ then just press go.
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="submit" value="Save Log" class="btn btn-success">
+                    <input type="submit" value="Add time entry" id="btnAdd" class="btn btn-success">
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-
 <script>
     const workers = JSON.parse(`<?php echo json_encode($workers)?>`);
     const departs = JSON.parse(`<?php echo json_encode($departs)?>`);
@@ -392,14 +502,76 @@ then just press go.
         $("#export_user").html(html);
     }
     function exprtSheet () {
+        var userid = $("#employees").val();
+        console.log(userid);
+        if(userid == '') {
+            userid = $("#employees").prop('selectedIndex', 1);
+            userid = $("#employees").val();
+            console.log(userid);
+        }
+        var pay_period_from = $("#pay_period_from").val();
+        var pay_period_to = $("#pay_period_to").val();
+        var unit_hours = $("#in_a").val();
+        var per_minutes = $("#in_b").val();
+        var decimal_total = $('#decimal_total').is(":checked");
+        var time_format = $('#time_format').is(":checked");
+        var hours_shift = $('#hours_shift').is(":checked");
+
+
+
+        const from_date = new Date(pay_period_from);
+        const to_date = new Date(pay_period_to);
+
+        console.log("from :" + from_date);
+        console.log("to :" + to_date);
+
+        if(!userid){
+            toastr.warning('Please choose employeer.', 'Warning');
+        }
+        if(pay_period_from && pay_period_to && to_date.getTime() < from_date.getTime()){
+            toastr.warning('Input the valid from time and to time.', 'Warning');
+            return;
+        }
+        $("#time_sheet").modal('hide');
+        $('#preloader-wrap').removeClass('loaded');
+
+        var formData = new FormData();
+        formData.append('userid', userid);
+        formData.append('pay_period_from', pay_period_from);
+        formData.append('pay_period_to', pay_period_to);
+        formData.append('decimal_total', decimal_total);
+        formData.append('time_format', time_format);
+        formData.append('hours_shift', hours_shift);
+        formData.append('unit_hours', time_format);
+        formData.append('per_minutes', per_minutes);
+        formData.append('_token', "{{csrf_token()}}");
+        $.ajax({
+                url: '/exportPunchClock',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    table2pdf(data);
+                    $('#preloader-wrap').addClass('loaded');
+                },
+                error: function(err) {
+                    console.log({err});
+                    $('#preloader-wrap').addClass('loaded');
+                }
+            });
+    }
+
+    function exprtSheet1 () {
         var userid = $("#export_user").val();
+        console.log(userid);
         if(userid == '') {
             userid = $("#export_user").prop('selectedIndex', 1);
             userid = $("#export_user").val();
             console.log(userid);
         }
-        var pay_period_from = $("#pay_period_from").val();
-        var pay_period_to = $("#pay_period_to").val();
+        var pay_period_from = $("#pay_period_from1").val();
+        var pay_period_to = $("#pay_period_to1").val();
         var unit_hours = $("#in_a").val();
         var per_minutes = $("#in_b").val();
         var decimal_total = $('#decimal_total').is(":checked");
@@ -450,7 +622,7 @@ then just press go.
         var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
         XLSX.writeFile(wb, ('Punch Clock.xlsx'));
         $("#export_table").empty();
-    }
+    }   
     // ---------------
     function userinfo() {
         $("#filter_form").submit();
@@ -474,6 +646,9 @@ then just press go.
         }
     }
     function openModal(data) {
+        if(data != null){
+            $("#btnAdd").val("Save time entry");
+        }
         var add_time_from = new Date();
         var add_time_to = new Date();
         var add_time_note = null;
@@ -483,7 +658,7 @@ then just press go.
             editid = data.id;
             add_time_from = new Date(data.in_date);
             add_time_to = new Date(data.out_date);
-            add_time_note = data.total;
+            add_time_note = data.note;
         }
         add_time_from = new Date(add_time_from.getTime()-add_time_from.getTimezoneOffset()*60000).toISOString().substring(0,16);
         add_time_to = new Date(add_time_to.getTime()-add_time_to.getTimezoneOffset()*60000).toISOString().substring(0,16);

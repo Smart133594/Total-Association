@@ -152,7 +152,7 @@ class PunchClockController extends Controller
         </tr>";
 
             foreach ($meta as $key => $value) {
-                if($value->AccessDevice->type == 0) $in_meta = $value;
+                if(@$value->AccessDevice->type == 0) $in_meta = $value;
                 else $out_meta = $value;
             }
 
@@ -298,6 +298,7 @@ class PunchClockController extends Controller
         }else{
             PunchClock::create([
                 'workerid' => $request->employee,
+                'association' => 1,
                 'in_date' => $request->add_time_from,
                 'out_date' => $request->add_time_to,
                 'note' => $request->add_time_note,

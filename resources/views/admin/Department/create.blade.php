@@ -141,7 +141,7 @@
     
 <script>
     $(document).ready(function() {
-        $("#depart").val({{ $departid }});
+        $("#depart").val({{ @$departid }});
         $('.data-table').DataTable();
     });
     
