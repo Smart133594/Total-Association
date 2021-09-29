@@ -28,7 +28,7 @@
         </nav>
         <form class="ms-panel main-form" method="post" action="{{route('department.store')}}" enctype="multipart/form-data">
             <div class="ms-panel-header">
-                <h2>Task List</h2>
+                <h2>To Do List</h2>
             </div>
             <div class="ms-panel-body">
                 @include('admin.includes.msg')
@@ -46,11 +46,9 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="task">Task</label>
                     <input type="text" name="task" id="task" placeholder="Task" class="form-control" required value="{{ _OBJVALUE($departmentTask, 'task') }}">
                 </div>
                 <div class="mb-3">
-                    <label for="description">Description</label>
                     <textarea name="description" class="form-control" rows="4" placeholder="Description">{{ _OBJVALUE($departmentTask, 'description') }}</textarea>
                 </div>
                 <div style="width: 180px" class="mb-3">

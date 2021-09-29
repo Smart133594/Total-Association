@@ -16,7 +16,7 @@
         </nav>
         <div class="ms-panel">
             <div class="ms-panel-header">
-                <h2>Task List</h2>
+                <h2>To Do List</h2>
             </div>
             <div class="ms-panel-body">
                 @include('admin.includes.msg')

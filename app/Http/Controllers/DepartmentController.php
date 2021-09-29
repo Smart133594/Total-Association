@@ -9,6 +9,7 @@ use App\Models\WorkForce;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Auth;
+use DB;
 
 class DepartmentController extends Controller
 {
@@ -22,6 +23,7 @@ class DepartmentController extends Controller
         //
         $workforce = WorkForce::get();
         
+        $departmentFirstName = DB::table('departments')->first();
         $departments = Department::select("*")->orderby('order')->get();
         foreach ($departments as $key => $value) {
             $departments[$key]['edit_id'] = Crypt::encryptString($value->id);
@@ -34,7 +36,7 @@ class DepartmentController extends Controller
             }
 
         }
-        return view("admin.Department.index" , compact('departments', 'workforce'));
+        return view("admin.Department.index" , compact('departmentFirstName', 'departments', 'workforce'));
     }
 
     /**

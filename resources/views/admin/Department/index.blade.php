@@ -30,6 +30,7 @@
                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="material-icons">home</i> Home</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page"><a href="#">Work Force</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="#">To Do List</a></li>
             </ol>
         </nav>
             @include('admin.includes.msg')
