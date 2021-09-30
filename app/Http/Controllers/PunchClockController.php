@@ -267,6 +267,195 @@ class PunchClockController extends Controller
         return $result;
     }
 
+    public function exportTimeSheet1(Request $request)
+    {
+        $userid = $request->userid;
+        $pay_period_to = $request->pay_period_to;
+        $decimal_total = $request->decimal_total;
+        $time_24_format = $request->time_24_format;
+
+        $punchClock = PunchClock::select();
+        
+        if(isset($request->pay_period_from)){
+            $punchClock = $punchClock->where('in_date', '>=', $request->pay_period_from);
+        }
+        if(isset($request->pay_period_to)){
+            $punchClock = $punchClock->where('out_date', '<=', $request->pay_period_to);
+        }
+        $punchClock = $punchClock->get();
+        $result = ''; $res2 = ''; $result_duration = 0;
+        $association = null;
+        foreach ($punchClock as $key => $value) {
+            if($key==0) {
+                $association = Subassociation::where('id', $value->association)->first();
+            }
+            $index = $key+1;
+           
+            $string_format = "h:i";
+            if($time_24_format) {
+                $string_format = "h:i a";
+            }
+            $clocked_in_dt = date('d/m/Y', strtotime($value->in_date));
+            $clocked_in_time = date($string_format, strtotime($value->in_date));
+            $clocked_out_dt = $value->out_date ? date('d/m/Y', strtotime($value->out_date)) : '-';
+            $clocked_out_time = $value->out_date ? date($string_format, strtotime($value->out_date)) : '-';
+            if($value->out_date){
+                $duration = strtotime($value->out_date) - strtotime($value->in_date);
+
+                if($request->hours_shift) {
+                    if($duration > $request->hours_shift)
+                        $duration -= $request->per_minutes * 60;
+                }
+
+                $result_duration += $duration;
+
+                $hours = intval($duration/3600);
+                $duration=$duration%3600;
+                $mins = intval($duration/60);
+
+                if($decimal_total){
+                    $times = ($hours < 10 ? 0 : '').$hours.':'.($mins < 10 ? 0 : '').$mins;
+                }else{
+                    $times = "$hours hour".($hours>1 ? "s" :"")." $mins minute".($mins > 1) ? "s" : "";
+                }
+            }else{
+                $times = "Clocked In";
+            }
+            
+            $meta = $value->PunchClockMeta;
+            $worker = $value->Worker;
+            if($worker == null ) {
+                $worker = ['firstname' => '', 'lastname' => '', 'middlename' => '', 'birthday' => ''];
+            }
+
+            $in_meta = null;
+            $out_meta = null;
+
+            $lunch = explode(" ", $value->in_date)[1];
+            $lunch = substr($lunch, 0, 5);
+            $res2.="<tr><td>$index</td>
+            <td>$value->in_date</td>
+            <td>$value->out_date</td>
+            <td>$lunch</td>
+            <td>$times</td>
+        </tr>";
+
+            foreach ($meta as $key => $value) {
+                if(@$value->AccessDevice->type == 0) $in_meta = $value;
+                else $out_meta = $value;
+            }
+
+            $result .= "<tr>
+                            <td>$index</td>
+                            <td>$worker->firstname $worker->middlename $worker->lastname</td>
+                            <td>$worker->birthday</td>
+                            <td>$clocked_in_dt</td>
+                            <td>$clocked_in_time</td>
+                        ". ($in_meta == null ? "<td/><td/><td/>" : 
+                        "
+                            <td>($in_meta->latitude, $in_meta->longitude)</td>
+                            <td>$in_meta->country $in_meta->area $in_meta->city</td>
+                            <td>$in_meta->postal_code</td>
+                        ")."
+                            <td>$clocked_out_dt</td>
+                            <td>$clocked_out_time</td>
+                            <td>$times</td>
+                        ". ($out_meta == null ? "<td/><td/><td/>" : 
+                        "
+                            <td>($out_meta->latitude, $out_meta->longitude)</td>
+                            <td>$out_meta->country $out_meta->area $out_meta->city</td>
+                            <td>$out_meta->postal_code</td>
+                        ")."
+                        </tr>";
+        }
+        $result = " <table>
+                        <thead>
+                            <tr>
+                                <td rowspan='2'>No</td>
+                                <td rowspan='2'>Worker Name</td>
+                                <td rowspan='2'>Worker birthday</td>
+                                <td colspan='5'>Clocked In</td>
+                                <td colspan='5'>Clocked Out</td>
+                                <td rowspan='2'>Total</td>
+                            </tr>
+                            <tr>
+                                <td>Date</td>
+                                <td>Time</td>
+                                <td>latitude, longitude</td>
+                                <td>country area city </td>
+                                <td>postal code</td>
+                                <td>Date</td>
+                                <td>Time</td>
+                                <td>latitude, longitude</td>
+                                <td>country area city </td>
+                                <td>postal code</td>
+                            </tr>
+                        </thead>
+                        <tbody>$result</tbody>
+                    </table>";
+                    $res1 = '
+<table>
+    <tr>
+        <th colspan="5" style="text-align: center;">Employee Time Sheet</th>
+    </tr>
+
+    <tr><td colspan="5"></td></tr>
+
+    <tr>
+        <td colspan="5">'."$association->legalName".'</td>
+    </tr>
+    <tr>
+        <td colspan="2">'."$association->address1".'</td>
+        <td>Employee Name:</td>
+        <td colspan="2">'."$worker->firstname $worker->middlename $worker->lastname".'</td>
+    </tr>
+    <tr>
+        <td colspan="2">'."$association->address2".'</td>
+        <td>From Date</td>
+        <td colspan="2">'."$request->pay_period_from".'</td>
+    </tr>
+    <tr>
+        <td colspan="2">'."$association->city, $association->state, $association->pincode".'</td>
+        <td>To Date:</td>
+        <td colspan="2">'."$request->pay_period_to".'</td>
+    </tr>
+    <tr>
+        <td colspan="2">'."$association->phoneNo".'</td>
+        <td></td>
+        <td colspan="2"></td>
+    </tr>
+    <tr>
+        <td colspan="2">'.$association->email.'</td>
+        <td></td>
+        <td colspan="2"></td>
+    </tr>
+
+    <tr><td colspan="5"></td></tr>
+
+    <tr>
+        <td>#</td>
+        <td>Login</td>
+        <td>Logout</td>
+        <td>Lunch</td>
+        <td>Total Time</td>
+    </tr>';
+
+    $hours = intval($result_duration/3600);
+    $result_duration=$result_duration%3600;
+    $mins = intval($result_duration/60);
+    $times = ($hours < 10 ? 0 : '').$hours.':'.($mins < 10 ? 0 : '').$mins;
+
+    $res3='
+    <tr>
+        <td style="text-align: right;" colspan="4">Total:</td>
+        <td>'.$times.'</td>
+    </tr>
+</table>';
+                 
+        return "$res1"."$res2"."$res3";
+        return $result;
+    }
+
     /**
      * Show the form for creating a new resource.
      *

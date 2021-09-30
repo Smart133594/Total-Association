@@ -36,7 +36,7 @@ class DepartmentController extends Controller
             }
 
         }
-        return view("admin.Department.index" , compact('departmentFirstName', 'departments', 'workforce'));
+        return view("admin.Department.index" , compact('departments', 'workforce'));
     }
 
     /**
@@ -53,6 +53,7 @@ class DepartmentController extends Controller
             $str_departs.="<option value='$value->id'>$value->department</option>";
         }
         $id = Crypt::decryptString($request->department);
+
         $department = Department::where('id', $id)->first();
         $department['edit_id'] = Crypt::encryptString($department->id);
         $departmentTask = null;

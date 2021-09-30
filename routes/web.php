@@ -87,6 +87,7 @@ Route::middleware([CheckAdminLogin::class])->group(function () {
     Route::resource('punch-clock', PunchClockController::class);
     Route::resource('departmanage', DepartManageController::class);
     Route::post('/exportPunchClock', [PunchClockController::class, 'exportTimeSheet']);
+    Route::post('/exportPunchClock1', [PunchClockController::class, 'exportTimeSheet1']);
     /*facilities*/
     Route::get('/facilities-rental/{id}', [facilitiesController::class, 'show']);
     Route::get('/facilities-rental/', [FacilitiesController::class, 'index'])->name('facilities-rental');
