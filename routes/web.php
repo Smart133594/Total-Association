@@ -89,6 +89,7 @@ Route::middleware([CheckAdminLogin::class])->group(function () {
     Route::post('/exportPunchClock', [PunchClockController::class, 'exportTimeSheet']);
     Route::post('/exportPunchClock1', [PunchClockController::class, 'exportTimeSheet1']);
     /*facilities*/
+    
     Route::get('/facilities-rental/{id}', [facilitiesController::class, 'show']);
     Route::get('/facilities-rental/', [FacilitiesController::class, 'index'])->name('facilities-rental');
     Route::get('/facilities-status/{id}', [FacilitiesController::class, 'status'])->name('status');
@@ -224,6 +225,9 @@ Route::get('/application-submitted/{id}', [ApplicationController::class, 'applic
 Route::get('/application-resent/{id}', [ApplicationController::class, 'resent'])->name('resent');
 Route::get('/application-assignpayment/{id}', [ApplicationController::class, 'assignpayment'])->name('assignpayment');
 /* fromnt application*/
+Route::get('/department/add_note/{note}', [DepartmentController::class, 'add_note'])->name('add_note');
+Route::get('/department/delete_note/{id}', [DepartmentController::class, 'delete_note'])->name('delete_note');
+Route::get('/department/delete_file/{id}', [DepartmentController::class, 'delete_file'])->name('delete_file');
 
 
 Route::get('/total_tv/{id}', [DigitalsignageController::class, 'tv'])->name('total_tv');

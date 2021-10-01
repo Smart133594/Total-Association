@@ -47,9 +47,9 @@
                     <label for="date">Due Date</label>
                     <input type="date" name="date" id="date" class="form-control" required value="{{ _OBJVALUE($departmentTask, 'date') }}">
                 </div>
-                <div style="width: 180px" class="mb-3">
-                    <label for="status">Worker</label>
-                    <select name="workerid" id="workerid" class="form-control" required>
+                <div style="width: 180px" class="mb-3" style="display: none;">
+                    <label for="status" style="display: none;">Worker</label>
+                    <select name="workerid" id="workerid" class="form-control" required style="display: none;">
                         @if (_OBJVALUE($department, "Workers"))
                             @foreach (_OBJVALUE($department, "Workers") as $worker)
                             <option value="{{ $worker->id }}"  {{ _OBJVALUE($departmentTask, 'workerid') == $worker->id ? 'selected' : '' }}>{{     $worker->firstname }} {{ $worker->middlename }} {{ $worker->lastname }}</option>
@@ -74,10 +74,6 @@
                         <option value="3"  {{ _OBJVALUE($departmentTask, 'state') == 3 ? 'selected' : '' }}>Canceled</option>
                         <option value="4"  {{ _OBJVALUE($departmentTask, 'state') == 4 ? 'selected' : '' }}>Done</option>
                     </select>
-                </div>
-                <div style="width: 180px" class="mb-3">
-                    <label for="date">Image</label>
-                    <input type="file" class="form-control valid" required name="imageA">
                 </div>
                 @php
                     if(@$departmentTask->image != '' && @$departmentTask->image != null) {
@@ -108,10 +104,119 @@
                 <div id="note_area" style="{{$display_property}}">
                 </div>
                 <hr>
-                <input type="submit" value="Save Task" class="btn btn-primary">
+                <div class="row">
+                    <div class="col-6"><h5>File</h5></div>
+                    <div class="col-6">
+                        <button type="button" class="btn btn-primary" style="min-width: 5px !important; margin-top: -3px; margin-left: 90%;" data-toggle="modal" data-target="#fileModal">+</button>
+                    </div>
+                </div>
+                <br>
+                <table id="data-table2" class="d-block d-md-table table-responsive table table-striped thead-primary w-100">
+                    <thead>
+                    <tr role="row">
+                        <th>#</th>
+                        <th>Time</th>
+                        <th>By</th>
+                        <th>File Type</th>
+                        <th>Note</th>
+                        <th class="no-sort">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @if (!empty($tasks) &&  $tasks->count()>0)
+                        @foreach ($tasks as $key => $val)
+                        <tr role="row" class="odd">
+                            <td class="sorting_1">{{$key+1}}</td>
+                            <td class="sorting_1">{{$val->updated_at}}</td>
+                            <td class="sorting_1">{{$val->workerid}}</td>
+                            <td class="sorting_1">{{substr($val->image, -3)}} File</td>
+                            <td class="sorting_1" id="td_file_{{$val->id}}">{{$val->description}}</td>
+                            <td class="action">
+                                <div class="dropdown show">
+                                    <a class="cust-btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-th ms-text-primary"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item" href="#" onclick="editFile({{$val->id}})">Edit</a>
+                                        <a class="dropdown-item" href="#" onclick="deleteFile({{$val->id}})">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    @endif
+                    </tbody>
+                </table>
+
+                <hr>
+                <div class="row">
+                    <div class="col-6"><h5>Note</h5></div>
+                    <div class="col-6">
+                        <button type="button" class="btn btn-primary" style="min-width: 5px !important; margin-top: -3px; margin-left: 90%;" data-toggle="modal" data-target="#exampleModal" onclick="init_modal()">+</button>
+                    </div>
+                </div>
+                <br>
+                <table id="data-table1" class="d-block d-md-table table-responsive table table-striped thead-primary w-100">
+                    <thead>
+                    <tr role="row">
+                        <th>#</th>
+                        <th>Time</th>
+                        <th>By</th>
+                        <th>Note</th>
+                        <th class="no-sort">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @if (!empty($notes) &&  $notes->count()>0)
+                        @foreach ($notes as $key => $val)
+                        <tr role="row" class="odd">
+                            <td class="sorting_1">{{$key+1}}</td>
+                            <td class="sorting_1">{{$val->updated_at}}</td>
+                            <td class="sorting_1">{{$val->userid}}</td>
+                            <td class="sorting_1" id="td_note_{{$val->id}}">{{$val->note}}</td>
+                            <td class="action">
+                                <div class="dropdown show">
+                                    <a class="cust-btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-th ms-text-primary"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item" href="#" onclick="editNote({{$val->id}})">Edit</a>
+                                        <a class="dropdown-item" href="#" onclick="deleteNote({{$val->id}})">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    @endif
+                    </tbody>
+                </table>
+                <hr>
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add New File</h5>
+                </div>
+                <div class="modal-body" id="modal-details">
+                    <div style="width: 180px" class="mb-3">
+                        <label for="date">Image</label>
+                        <input type="file" class="form-control valid" required name="imageA">
+                    </div>
+                    <textarea id="file_text" rows="4" class="form-control" placeholder="Write Details Note" spellcheck="false"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="submit" value="Save Task" class="btn btn-primary">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -129,10 +234,31 @@
         </div>
     </div>
     
+    <div class="modal fade" id="edit_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Note</h5>
+                </div>
+                <div class="modal-body" id="modal-details">
+                    <textarea id="note_text1" rows="4" class="form-control" placeholder="Write New Note" spellcheck="false"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" onclick="update_note()">Change</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <script>
+    
+    var edit_id = -1;
+
     $(document).ready(function() {
         $("#depart").val({{ @$departid }});
-        $('.data-table').DataTable();
+        $('#data-table1').DataTable();
+        $('#data-table2').DataTable();
     });
     
     const init_modal = () => {
@@ -147,7 +273,54 @@
         }
         const element = `<div class="mb-3"><textarea name="note[]" rows="4" class="form-control" placeholder="Write New Note">${content}</textarea> </div>`;
         $("#note_area").append(element);
+
+        $.get('add_note/' + content, function(data, status) {
+            window.location.reload();
+        });
         $("#exampleModal").modal('hide');
     }
+
+    function deleteNote(id) {
+        $.get('delete_note/' + id, function(data, status) {
+            window.location.reload();
+        });
+    }
+
+    function deleteFile(id) {
+        $.get('delete_file/' + id, function(data, status) {
+            window.location.reload();
+        });
+    }
+
+    function editFile(id) {
+        $("#file_text").val($("#td_file_"+id).html());
+        edit_id = id;
+        $("#fileModal").modal('show');
+    }
+
+    function editNote(id) {
+        $("#note_text1").val($("#td_note_"+id).html());
+        edit_id = id;
+        $("#edit_modal").modal('show');
+    }
+
+    function update_note() {
+        const content = $("#note_text1").val();
+        if(content == '') {
+            toastr.warning('Input new note.', 'Warning');
+            return;
+        }
+        // var data = {
+        //     id: edit_id,
+        //     note: content,
+        // }
+        // $.get('update_note', data, function(data, status) {
+        //     window.location.reload();
+        // });
+
+        $("#edit_modal").modal('hide');
+    }
+
 </script>
+
 @endsection

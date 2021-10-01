@@ -59,7 +59,10 @@ class DepartmentController extends Controller
         $departmentTask = null;
         $display_property = "display: none;";
 
-        return view("admin.Department.create" , compact('department', 'departmentTask', 'display_property', 'str_departs'));
+        $notes = DepartmentNote::get();
+        $tasks = DepartmentTask::get();
+
+        return view("admin.Department.create" , compact('department', 'departmentTask', 'display_property', 'str_departs', 'notes', 'tasks'));
     }
 
     /**
@@ -72,6 +75,7 @@ class DepartmentController extends Controller
     {
         //
         $departmentid = $request->depart; //$request->departmentid;
+        $departmentid == null ? $departmentid = 0:$departmentid = 0;
         $departmentTaskid = $request->departmentTaskid;
         // $departmentid = Crypt::decryptString($departmentid);
         $workerid = $request->workerid;
@@ -200,5 +204,25 @@ class DepartmentController extends Controller
             session()->flash('error', "Something went wrong.");
         }
         return redirect()->back();
+    }
+
+    public function add_note($note)
+    {
+        $table = new DepartmentNote;
+        $table->note = $note;
+        $table->departmenttaskid = 1;
+        $table->userid = 1;
+        $table->note = $note;
+        $table->save();
+    }
+
+    public function delete_note($id)
+    {
+        DepartmentNote::where('id', $id)->delete();   
+    }
+
+    public function delete_file($id)
+    {
+        DepartmentTask::where('id', $id)->delete();
     }
 }
