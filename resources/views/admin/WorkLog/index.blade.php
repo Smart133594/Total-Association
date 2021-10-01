@@ -169,7 +169,7 @@
                             </select> --}}
                         </div>
                         <div class="col-md-12">
-                            <textarea name="comment" id="comment" cols="30" class="form-control" placeholder="Work Performed" required></textarea>
+                            <textarea name="comment" id="comment" cols="30" class="form-control" placeholder="Work Performed" style="height:100px" required></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -183,9 +183,9 @@
     const workers = JSON.parse(`<?php echo json_encode($workers)?>`);
     const employees = `{{ $employees }}`;
     $(document).ready(function() {
-        $('.data-table').DataTable();
-        // Swal.fire('The Internet?', 'That thing is still around?', 'question');
         changeOption();
+        $('.data-table').DataTable();
+
     });
     $("#log_form").submit(e => {
         var from_time = $("#from_time").val();
