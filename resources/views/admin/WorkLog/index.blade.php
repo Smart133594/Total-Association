@@ -31,8 +31,8 @@
             </div>
             <div class="ms-panel-body">
                 @include('admin.includes.msg')
-                <h5>Administration</h5>
-                <form class="form-row" method="GET" accept="/">
+                <h4 style="margin-left:15px">Administration</h4><br>
+                <form class="form   " method="GET" accept="/">
                     @php
                         $status = 0;
                         $employees = 0;
@@ -65,42 +65,70 @@
                         <input type="date" name="end_date" id="end_date" class="form-control"value="{{ $end_date }}">
                     </div>
                     <div class="form-group col-md-12"></div>
-                    <div class="col-md-3 mb-3">
+                    <!-- <div class="col-md-3 mb-3">
                         <input type="submit" value="Get Work Log" class="btn btn-primary">
                     </div>
                     <div class="form-group col-md-3 mb-3">
                         <input type="button" value="Add Log" class="btn btn-primary" onclick="openModal()">
-                    </div>
+                    </div> -->
                 </form>
-                <h5>Notes</h5>
-                @foreach ($worklogs as $log)
-                    <div class="note-container">
-                        <hr>
-                        <div class="ms-panel-custome">
-                            <span>{{ date("m/d/Y h:i", strtotime($log->date)) }}</span>
-                            <span>{{ $log->Worker->name }}</span>
-                        </div>
-                        <p>{{ $log->comment }}</p>
-                        <div class="dropdown show">
-                            <a class="cust-btn dropdown-toggle note-action" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-th"></i>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <div class="dropdown-item" href="#"  onclick="openModal({{ $log }})">Edit</div>
-                                <form action="{{ route('work-log.destroy', $log->id) }}" method="post">
-                                    @method("delete")
-                                    @csrf
-                                    <button type="submit" class="dropdown-item" onclick=" return confirm('Are you sure to delete this log? ')">Delete</button>
-                                </form>
+                <div class="col-xl-12 col-md-12">
+                    <div class="ms-panel ms-widget ms-panel-fh">
+                        <div class="ms-panel-header">
+                            <div class="ms-panel-custome mb-3" style="margin-bottom:0px !important">
+                                <h5>Logs</h5>
+                                <div class="m-0 p-0">
+                                    <button class="btn btn-primary btn-sm m-0" onclick="openModal()"  >+</button>
+                                    {{-- <button class="btn btn-primary btn-sm m-0" data-toggle="modal" data-target="#time_sheet">Export Time Sheet</button> --}}
+                                </div>
                             </div>
                         </div>
+                        <div class="ms-panel-body">
+                            <table class="table table-striped thead-primary w-100 data-table">
+                                <thead>
+                                    <tr>
+                                    <th>#</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>By</th>
+                                    <th style="min-width: 100px">Log</th>
+                                    <th style="max-width: 100px">Action</th>
+                                    </tr>   
+                                </thead>
+                                <tbody>
+                                    @foreach ($worklogs as $index => $item)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ date('d/m/Y', strtotime($item->date)) }} {{ date('h:i', strtotime($item->from_time)) }}</td>
+                                            <td>{{ date('d/m/Y', strtotime($item->date)) }} {{ date('h:i', strtotime($item->to_time)) }}</td>
+                                            <td>{{$item->Worker->name}}</td>
+                                            <td>{{$item->comment}}</td>
+                                            <td class="action">
+                                                <div class="dropdown show">
+                                                    <a class="cust-btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fas fa-th"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                        <button class="dropdown-item" onclick="openModal({{ $item }})">Edit</button>
+                                                        <form action="{{ route('work-log.destroy', $item->id) }}" method="post">
+                                                            @method("delete")
+                                                            @csrf
+                                                            <button type="submit" class="dropdown-item" onclick=" return confirm('Are you sure to delete this log? ')">Delete</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        <tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                @endforeach
+                </div>
             </div>
         </div>
     </div>
 
-    
     <!-- Modal -->
     <div class="modal fade" id="log_modal" tabindex="-1" role="dialog" aria-labelledby="log_modal_label" aria-hidden="true">
         <div class="modal-dialog" role="document">
