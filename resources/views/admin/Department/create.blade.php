@@ -163,7 +163,7 @@
                         <th>Time</th>
                         <th>By</th>
                         <th>Note</th>
-                        <th class="no-sort">Action</th>
+                        <th class="no-sort" style="max-width:100px;align:center">Action</th>
                     </tr>
                     </thead>
                     <tbody>

@@ -423,65 +423,33 @@
         </div>
     </div>
     <div id="content">
-        <table>
-            <tr>
-                <th colspan="5" style="text-align: center;">Employee Time Sheet</th>
-            </tr>
-
-             <tr><td colspan="5"></td></tr>
-
-            <tr>
-                <td colspan="5">Manors of Inverrary Building XII Association, Inc.</td>
-            </tr>
-            <tr>
-                <td colspan="2">4164 Inverrary Dr.</td>
-                <!-- <td colspan="2">Carlo Reynaga dev</td> -->
-            </tr>
-            <!-- <tr>
-                <td colspan="2">Suite 110</td>
-                <td>From Date</td>
-                <td colspan="2">2021-09-01</td>
-            </tr>
-            <tr>
-                <td colspan="2">Lauderhill, FL, 33319</td>
-                <td>To Date:</td>
-                <td colspan="2">2021-09-30</td>
-            </tr>
-            <tr>
-                <td colspan="2">9545554433</td>
-                <td></td>
-                <td colspan="2"></td>
-            </tr>
-            <tr>
-                <td colspan="2">info@building12.com</td>
-                <td></td>
-                <td colspan="2"></td>
-            </tr>
-
-            <tr><td colspan="5"></td></tr>
-
-            <tr>
-                <td>#</td>
-                <td>Login</td>
-                <td>Logout</td>
-                <td>Lunch</td>
-                <td>Total Time</td>
-            </tr><tr><td>1</td>
-                    <td>2021-09-22 15:16:00</td>
-                    <td>2021-09-29 15:16:00</td>
-                    <td>15:16</td>
-                    <td>168:00</td>
-                </tr><tr><td>2</td>
-                    <td>2021-09-29 16:14:00</td>
-                    <td>2021-09-29 16:14:00</td>
-                    <td>16:14</td>
-                    <td>00:00</td>
-                </tr>
-            <tr>
-                <td style="text-align: right;" colspan="4">Total:</td>
-                <td>168:00</td>
-            </tr> -->
-        </table>
+    <table id="tblCustomers" cellspacing="0" cellpadding="0">
+        <tr>
+            <th>Customer Id</th>
+            <th>Name</th>
+            <th>Country</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>John Hammond</td>
+            <td>United States</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Mudassar Khan</td>
+            <td>India</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Suzanne Mathews</td>
+            <td>France</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Robert Schidner</td>
+            <td>Russia</td>
+        </tr>
+    </table>
     </div>
     <div id="editor"></div>
 </div>
@@ -631,6 +599,19 @@
     }
 
     function exprtSheet1 () {
+        html2canvas(document.getElementById('tblCustomers'), {
+                onrendered: function (canvas) {
+                    var data = canvas.toDataURL();
+                    var docDefinition = {
+                        content: [{
+                            image: data,
+                            width: 500
+                        }]
+                    };
+                    pdfMake.createPdf(docDefinition).download("Table.pdf");
+                }
+            });
+            return;
         // var userid = $("#export_user").val();
         // console.log(userid);
         // if(userid == '') {
