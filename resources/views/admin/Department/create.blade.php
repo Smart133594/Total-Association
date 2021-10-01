@@ -108,43 +108,6 @@
                 <div id="note_area" style="{{$display_property}}">
                 </div>
                 <hr>
-                <table class="d-block d-md-table table-responsive table table-striped thead-primary w-100 data-table"> 
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th style="min-width: 100px">Time</th>
-                                <th style="min-width: 100px">by</th>
-                                <th style="min-width: 100px">Note</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($deparemntNote as $index => $item)
-                                <?php $detail_uri = '/punch-clock/'.$item->edit_id ?>
-                                <tr>
-                                    <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $item->time }}</td>
-                                    <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $item->user }}</td>
-                                    <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $item->Note }}</td>
-                                    <td>
-                                        <div class="dropdown show">
-                                            <a class="cust-btn dropdown-toggle note-action" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fas fa-th"></i>
-                                            </a>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                <button class="dropdown-item" onclick="window.location.href='{{ $detail_uri }}'" >View</button>
-                                                <a class="dropdown-item" href="#" onclick="openModal({{ $item }})" >Edit</a>
-                                                <form action="{{ route('punch-clock.destroy', $item->id) }}" method="post">
-                                                    @method("delete")
-                                                    @csrf
-                                                    <button type="submit" class="dropdown-item" onclick=" return confirm('Are you sure to delete this? ')">Delete</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
                 <input type="submit" value="Save Task" class="btn btn-primary">
             </div>
         </div>

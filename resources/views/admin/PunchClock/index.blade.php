@@ -202,7 +202,7 @@
         <div class="col-xl-12 col-md-12">
             <div class="ms-panel ms-widget ms-panel-fh">
                 <div class="ms-panel-header">
-                <h2 style="font-size:35px !important">Single Employee Report</h2>
+                <h2 style="font-size:35px !important">Single Employee</h2>
                 </div>
                 <div class="ms-panel-body p-0">
                 <div class="table-responsive">
@@ -294,7 +294,7 @@
         <div class="col-xl-12 col-md-12">
             <div class="ms-panel ms-widget ms-panel-fh">
                 <div class="ms-panel-header">
-                <h4 style="font-size:35px !important">Single Employee Report</h4>
+                <h4 style="font-size:35px !important">Single Employee</h4>
                 </div>
                 <div class="ms-panel-body p-0">
                 <div class="table-responsive">
@@ -422,42 +422,68 @@
             </form>
         </div>
     </div>
-    <table id="exportToTable" class="table table-hover">
-        <thead>
+    <div id="content">
+        <table>
             <tr>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Email</th>
+                <th colspan="5" style="text-align: center;">Employee Time Sheet</th>
             </tr>
-        </thead>
-        <tbody>
+
+             <tr><td colspan="5"></td></tr>
+
             <tr>
-                <td>Jonson</td>
-                <td>31</td>
-                <td>jonson@gmail.com</td>
+                <td colspan="5">Manors of Inverrary Building XII Association, Inc.</td>
             </tr>
             <tr>
-                <td>Nailsan</td>
-                <td>32</td>
-                <td>nailsan@gmail.com</td>
+                <td colspan="2">4164 Inverrary Dr.</td>
+                <!-- <td colspan="2">Carlo Reynaga dev</td> -->
+            </tr>
+            <!-- <tr>
+                <td colspan="2">Suite 110</td>
+                <td>From Date</td>
+                <td colspan="2">2021-09-01</td>
             </tr>
             <tr>
-                <td>Carlo joi</td>
-                <td>30</td>
-                <td>carlojoi@gmail.com</td>
+                <td colspan="2">Lauderhill, FL, 33319</td>
+                <td>To Date:</td>
+                <td colspan="2">2021-09-30</td>
             </tr>
             <tr>
-                <td>Charlie Chat</td>
-                <td>32</td>
-                <td>charliechat@gmail.com</td>
+                <td colspan="2">9545554433</td>
+                <td></td>
+                <td colspan="2"></td>
             </tr>
             <tr>
-                <td>Loe Andan</td>
-                <td>34</td>
-                <td>loeandan@gmail.com</td>
+                <td colspan="2">info@building12.com</td>
+                <td></td>
+                <td colspan="2"></td>
             </tr>
-        </tbody>
-    </table>
+
+            <tr><td colspan="5"></td></tr>
+
+            <tr>
+                <td>#</td>
+                <td>Login</td>
+                <td>Logout</td>
+                <td>Lunch</td>
+                <td>Total Time</td>
+            </tr><tr><td>1</td>
+                    <td>2021-09-22 15:16:00</td>
+                    <td>2021-09-29 15:16:00</td>
+                    <td>15:16</td>
+                    <td>168:00</td>
+                </tr><tr><td>2</td>
+                    <td>2021-09-29 16:14:00</td>
+                    <td>2021-09-29 16:14:00</td>
+                    <td>16:14</td>
+                    <td>00:00</td>
+                </tr>
+            <tr>
+                <td style="text-align: right;" colspan="4">Total:</td>
+                <td>168:00</td>
+            </tr> -->
+        </table>
+    </div>
+    <div id="editor"></div>
 </div>
 
 <style>
@@ -549,13 +575,7 @@
         });
         $("#export_user").html(html);
     }
-    function exprtSheet () {tableId 
-        var array = $('#tableId tbody tr td').toArray();
-
-        // var address = array.pop();
-        // var fullname = array.pop().innerText;
-        // var id = array.pop();
-        alert(array.count());return;
+    function exprtSheet () { 
         var userid = $("#employees").val();
         if(userid == '') {
             userid = $("#employees").prop('selectedIndex', 1);
@@ -672,11 +692,9 @@
         var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
         XLSX.writeFile(wb, ('Punch Clock.xlsx'));
         $("#export_table1").empty();
-
     }
 
     function table2pdf(data) {
-        alert(data);
         $("#export_table").append(data);
         var elt = document.getElementById('export_table');
         var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });

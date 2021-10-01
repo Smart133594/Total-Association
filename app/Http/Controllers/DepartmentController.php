@@ -58,6 +58,7 @@ class DepartmentController extends Controller
         $department['edit_id'] = Crypt::encryptString($department->id);
         $departmentTask = null;
         $display_property = "display: none;";
+
         return view("admin.Department.create" , compact('department', 'departmentTask', 'display_property', 'str_departs'));
     }
 
