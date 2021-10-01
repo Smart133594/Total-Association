@@ -65,10 +65,10 @@
                         <input type="date" name="end_date" id="end_date" class="form-control"value="{{ $end_date }}">
                     </div>
                     <div class="form-group col-md-12"></div>
-                    <!-- <div class="col-md-3 mb-3">
+                    <div class="col-md-3 mb-3">
                         <input type="submit" value="Get Work Log" class="btn btn-primary">
                     </div>
-                    <div class="form-group col-md-3 mb-3">
+                    <!-- <div class="form-group col-md-3 mb-3">
                         <input type="button" value="Add Log" class="btn btn-primary" onclick="openModal()">
                     </div> -->
                 </form>

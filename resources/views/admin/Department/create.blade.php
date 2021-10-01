@@ -202,11 +202,10 @@
                     <h5 class="modal-title" id="exampleModalLabel">Add New File</h5>
                 </div>
                 <div class="modal-body" id="modal-details">
+                    <textarea id="file_text" rows="4" class="form-control" placeholder="Write Details Note" spellcheck="false"></textarea><br>
                     <div style="width: 180px" class="mb-3">
-                        <label for="date">Image</label>
-                        <input type="file" class="form-control valid" required name="imageA">
+                        <input type="file" class="form-control valid" required name="imageA" text="Upload file">
                     </div>
-                    <textarea id="file_text" rows="4" class="form-control" placeholder="Write Details Note" spellcheck="false"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
