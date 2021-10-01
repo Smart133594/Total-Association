@@ -59,10 +59,9 @@ class DepartmentController extends Controller
         $departmentTask = null;
         $display_property = "display: none;";
 
-        // $notes = DepartmentNote::get();
         $tasks = DepartmentTask::get();
 
-        return view("admin.Department.create" , compact('department', 'departmentTask', 'display_property', 'str_departs', 'notes', 'tasks'));
+        return view("admin.Department.create" , compact('department', 'departmentTask', 'display_property', 'str_departs', 'tasks'));
     }
 
     /**
