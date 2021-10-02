@@ -13,7 +13,7 @@ class CreateDepartmentNotesTable extends Migration
      */
     public function up()
     {
-        Schema::create('task_notes', function (Blueprint $table) {
+        Schema::create('department_notes', function (Blueprint $table) {
             $table->id();
             $table->integer('departmenttaskid');
             $table->integer('userid');
