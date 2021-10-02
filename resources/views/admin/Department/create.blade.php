@@ -33,15 +33,15 @@
             <div class="ms-panel-body">
                 @include('admin.includes.msg')
                 @csrf
-                <input type="hidden" name="departmentid" value="{{ _OBJVALUE($department, 'edit_id') }}">
-                <input type="hidden" name="departmentTaskid" value="{{ _OBJVALUE($departmentTask, 'edit_id') }}">
+                <input type="hidden" name="departmentid" id="departmentid" value="{{ _OBJVALUE($department, 'edit_id') }}">
+                <input type="hidden" name="departmentTaskid" id="departmentTaskid" value="{{ _OBJVALUE($departmentTask, 'edit_id') }}">
 
                 <h5>Add/Edit Task</h5>
                 <div class="mb-3">
                     <input type="text" name="task" id="task" placeholder="Task" class="form-control" required value="{{ _OBJVALUE($departmentTask, 'task') }}">
                 </div>
                 <div class="mb-3">
-                    <textarea name="description" class="form-control" rows="4" placeholder="Description">{{ _OBJVALUE($departmentTask, 'description') }}</textarea>
+                    <textarea name="description" id="description" class="form-control" rows="4" placeholder="Description">{{ _OBJVALUE($departmentTask, 'description') }}</textarea>
                 </div>
                 <div style="width: 180px" class="mb-3">
                     <label for="date">Due Date</label>
@@ -80,30 +80,52 @@
                         echo "<img src='/upload/$departmentTask->image' style='width: 200px; height: 100px;' />";
                     }
                 @endphp
-                <div class="row">
-                    <div class="col-6">
-                        <h5 style="{{$display_property}} margin-top: 5%;">Notes</h5>
-                    </div>
-                    <div class="col-6">
-                        <input data-toggle="modal" data-target="#exampleModal" style="{{$display_property}} float: right" type="button" value="Add New Note" class="btn btn-primary btn-sm" onclick="init_modal()">
-                    </div>
-                </div>
-                @if (_OBJVALUE($departmentTask, 'note'))
-                    @foreach (_OBJVALUE($departmentTask, 'note') as $item)
-                        <div style="{{$display_property}}">
-                            <hr>
-                            <div class="ms-panel-custome">
-                                <span>{{ date("m/d/Y h:i", strtotime($item->created_at)) }}</span>
-                                <span>{{ _OBJVALUE($item->Writter, 'name') }}</span>
-                            </div>
-                            <p>{{ $item->note }}</p>
-                        </div>
-                    @endforeach
-                @endif
-                <br>
-                <div id="note_area" style="{{$display_property}}">
+                <div class="col-md-8" style="margin-top: 2%;">
+                    <input type="button" value="Save Task" onclick="saveTask()" class="btn btn-primary m-0 p-1">
                 </div>
                 <hr>
+                <div class="row">
+                    <div class="col-6"><h5>Note</h5></div>
+                    <div class="col-6">
+                        <button type="button" class="btn btn-primary" style="min-width: 5px !important; margin-top: -3px; margin-left: 90%;" onclick="init_modal()">+</button>
+                    </div>
+                </div>
+                <br>
+                <table id="data-table1" class="d-block d-md-table table-responsive table table-striped thead-primary w-100">
+                    <thead>
+                    <tr role="row">
+                        <th>#</th>
+                        <th>Time</th>
+                        <th>By</th>
+                        <th>Note</th>
+                        <th class="no-sort" style="max-width:100px;align:center">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="noteBody">
+                    @if (!empty($notes) &&  $notes->count()>0)
+                        @foreach ($notes as $key => $val)
+                        <tr role="row" class="odd">
+                            <td class="sorting_1">{{$key+1}}</td>
+                            <td class="sorting_1">{{$val->updated_at}}</td>
+                            <td class="sorting_1">{{$val->userid}}</td>
+                            <td class="sorting_1" id="td_note_{{$val->id}}">{{$val->note}}</td>
+                            <td class="action">
+                                <div class="dropdown show">
+                                    <a class="cust-btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-th ms-text-primary"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item" href="#" onclick="editNote({{$val->id}})">Edit</a>
+                                        <a class="dropdown-item" href="#" onclick="deleteNote({{$val->id}})">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    @endif
+                    </tbody>
+                </table>
+                <hr>    
                 <div class="row">
                     <div class="col-6"><h5>File</h5></div>
                     <div class="col-6">
@@ -137,7 +159,7 @@
                                         <i class="fas fa-th ms-text-primary"></i>
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="#" onclick="editFile({{$val->id}})">Edit</a>
+                                        <a class="dropdown-item" href="#" onclick="editFile({{$val->id}}, {{$val->note}})">Edit</a>
                                         <a class="dropdown-item" href="#" onclick="deleteFile({{$val->id}})">Delete</a>
                                     </div>
                                 </div>
@@ -147,50 +169,6 @@
                     @endif
                     </tbody>
                 </table>
-
-                <hr>
-                <div class="row">
-                    <div class="col-6"><h5>Note</h5></div>
-                    <div class="col-6">
-                        <button type="button" class="btn btn-primary" style="min-width: 5px !important; margin-top: -3px; margin-left: 90%;" data-toggle="modal" data-target="#exampleModal" onclick="init_modal()">+</button>
-                    </div>
-                </div>
-                <br>
-                <table id="data-table1" class="d-block d-md-table table-responsive table table-striped thead-primary w-100">
-                    <thead>
-                    <tr role="row">
-                        <th>#</th>
-                        <th>Time</th>
-                        <th>By</th>
-                        <th>Note</th>
-                        <th class="no-sort" style="max-width:100px;align:center">Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @if (!empty($notes) &&  $notes->count()>0)
-                        @foreach ($notes as $key => $val)
-                        <tr role="row" class="odd">
-                            <td class="sorting_1">{{$key+1}}</td>
-                            <td class="sorting_1">{{$val->updated_at}}</td>
-                            <td class="sorting_1">{{$val->userid}}</td>
-                            <td class="sorting_1" id="td_note_{{$val->id}}">{{$val->note}}</td>
-                            <td class="action">
-                                <div class="dropdown show">
-                                    <a class="cust-btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-th ms-text-primary"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="#" onclick="editNote({{$val->id}})">Edit</a>
-                                        <a class="dropdown-item" href="#" onclick="deleteNote({{$val->id}})">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                    @endif
-                    </tbody>
-                </table>
-                <hr>
             </div>
         </div>
     </div>
@@ -209,7 +187,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <input type="submit" value="Save Task" class="btn btn-primary">
+                    <input type="submit" value="Save File" class="btn btn-primary">
                 </div>
             </div>
         </div>
@@ -261,20 +239,110 @@
     });
     
     const init_modal = () => {
+        $("#departmentTaskid").val("36");
+        if($("#departmentTaskid").val() == "")
+        {
+            toastr.warning('First, register task.', 'Warning');
+            return;
+        }
+        $("#exampleModal").modal('show');
+
         $("#note_text").val("");
     }
 
+    function saveTask()
+    {
+        var departmentid = $("#departmentid").val();
+        var workderId = $("#workerid").val();
+        var task = $('#task').val();
+        var description = $('#description').val();
+        var date = $("#date").val();
+        var priority = $("#priority").val();
+        var state = $("#status").val();
+        if(task == '' || description == '' || date == ''){
+            toastr.warning('Input above values.(task, description or date)', 'Warning');
+            return;
+        }
+        var formData = new FormData();
+        formData.append('departmentid', departmentid);
+        formData.append('workerid', workderId);
+        formData.append('task', task);
+        formData.append('description', description);
+        formData.append('date', date);
+        formData.append('priority', priority);
+        formData.append('state', state);
+        formData.append('_token', "{{csrf_token()}}");
+        console.log(formData);
+        $.ajax({
+            url: '/department/add_task_note',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                $("#departmentTaskid").val(data);
+                toastr.success('Task register success', 'Success');
+                return;
+            },
+            error: function(err) {
+                console.log({err});
+            }
+        });
+    }
+
     function addNote(){
+        $("#departmentTaskid").val('36');
         const content = $("#note_text").val();
         if(content == '') {
             toastr.warning('Input new note.', 'Warning');
             return;
         }
-        const element = `<div class="mb-3"><textarea name="note[]" rows="4" class="form-control" placeholder="Write New Note">${content}</textarea> </div>`;
-        $("#note_area").append(element);
+        
+        var formData = new FormData();
+        formData.append('departmenttaskid', $("#departmentTaskid").val());
+        formData.append('note', content);
+        formData.append('_token', "{{csrf_token()}}");
+        console.log(formData);
+        $.ajax({
+            url: '/department/add_note',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data.length);
+                $('#noteBody').empty();
+                var html = ' ';
+                var k = 1;
+                for(i = 0; i < data.length; i ++)
+                {
+                    html +=     '<tr role="row" class="odd">';
+                    html +=        '<td class="sorting_1">' + k + '</td>';
+                    html +=        '<td class="sorting_1">' + data[i]['created_at'] + '</td>';
+                    html +=        '<td class="sorting_1">' + data[i]['name'] + '</td>';
+                    html +=        '<td class="sorting_1">' + data[i]['note'] + '</td>';
+                    html +=        '<td class="action">';
+                    html +=            '<div class="dropdown show">';
+                    html +=                '<a class="cust-btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                    html +=                    '<i class="fas fa-th ms-text-primary"></i>';
+                    html +=                '</a>';
+                    html +=                '<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">';
+                    html +=                    '<a class="dropdown-item" onclick="editNote(' + data[i]['id'] + ')">Edit</a>';
+                    html +=                    '<a class="dropdown-item" onclick="deleteNote(' + data[i]['id'] + ')">Delete</a>';
+                    html +=                '</div>';
+                    html +=            '</div>';
+                    html +=        '</td>';
+                    html +=    '</tr>';
+                    k ++;
+                }
+                $('#noteBody').append(html);
 
-        $.get('add_note/' + content, function(data, status) {
-            window.location.reload();
+                toastr.success('Note added', 'Success');
+                return;
+            },
+            error: function(err) {
+                console.log({err});
+            }
         });
         $("#exampleModal").modal('hide');
     }
@@ -298,9 +366,27 @@
     }
 
     function editNote(id) {
-        $("#note_text1").val($("#td_note_"+id).html());
-        edit_id = id;
         $("#edit_modal").modal('show');
+        var formData = new FormData();
+        formData.append('id', id);
+        formData.append('_token', "{{csrf_token()}}");
+        console.log(formData);
+        $.ajax({
+            url: '/department/get_note',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                alert("adsfasdfasd")
+                console.log(data['note']);
+                $("#note_text1").val(data['note']);
+                return;
+            },
+            error: function(err) {
+                console.log({err});
+            }
+        });
     }
 
     function update_note() {

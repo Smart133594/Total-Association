@@ -188,6 +188,42 @@ class DepartmentController extends Controller
         //
     }
 
+    public function add_task_note(Request $request)
+    {
+        $departmentid = Crypt::decryptString($request->departmentid);
+
+        $departmentTaskid = DepartmentTask::create($request->merge([
+            'workerid' => $request->workerid,
+            'departmentid' => $departmentid,
+            'task' => $request->task,
+            'priority' => $request->priority,
+            'state' => $request->state,
+            'description' => $request->description,
+        ])->all())->id;
+
+        return $departmentTaskid;
+    }
+
+    public function add_note(Request $request)
+    {
+        $table = new DepartmentNote;
+        $table->departmenttaskid = $request->departmenttaskid;
+        $table->userid = Auth::user()->id;
+        $table->note = $request->note;
+        $table->save();
+
+        $user = DB::table('users')->where('name', 'John')->first();
+        $notes = DepartmentNote::where('departmenttaskid', $request->departmenttaskid)->get();
+        $data = DB::table('department_notes as A')->leftjoin('users as B', 'A.userid', '=', 'B.id')->select('A.id', 'B.name', 'A.note', 'A.created_at')->get()->toArray();
+        return $data;
+    }
+
+    public function get_note(Request $request)
+    {
+        $data = DB::table('department_notes')->where('id', $request->id)->select('note')->get();
+        return $data;
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -204,16 +240,6 @@ class DepartmentController extends Controller
             session()->flash('error', "Something went wrong.");
         }
         return redirect()->back();
-    }
-
-    public function add_note($note)
-    {
-        $table = new DepartmentNote;
-        $table->note = $note;
-        $table->departmenttaskid = 1;
-        $table->userid = 1;
-        $table->note = $note;
-        $table->save();
     }
 
     public function delete_note($id)

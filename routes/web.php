@@ -228,7 +228,9 @@ Route::get('/application-assignpayment/{id}', [ApplicationController::class, 'as
 Route::get('/department/add_note/{note}', [DepartmentController::class, 'add_note'])->name('add_note');
 Route::get('/department/delete_note/{id}', [DepartmentController::class, 'delete_note'])->name('delete_note');
 Route::get('/department/delete_file/{id}', [DepartmentController::class, 'delete_file'])->name('delete_file');
-
+Route::post('/department/add_task_note', [DepartmentController::class, 'add_task_note']);
+Route::post('/department/add_note', [DepartmentController::class, 'add_note']);
+Route::post('/department/get_note', [DepartmentController::class, 'get_note']);
 
 Route::get('/total_tv/{id}', [DigitalsignageController::class, 'tv'])->name('total_tv');
 Route::get('/checked_tv/{id}', [DigitalsignageController::class, 'tvchange'])->name('checked_tv');
