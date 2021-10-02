@@ -663,7 +663,7 @@
             });
         });
 
-        pdf.save('sample-file.pdf');
+        pdf.save('PunchClock.pdf');
         $("#export_table1").empty();
 
     } 

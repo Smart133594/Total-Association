@@ -194,7 +194,7 @@
     </div>
 </form>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="note_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -211,14 +211,14 @@
         </div>
     </div>
     
-    <div class="modal fade" id="edit_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="note_edit_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Edit Note</h5>
                 </div>
                 <div class="modal-body" id="modal-details">
-                    <textarea id="note_text1" rows="4" class="form-control" placeholder="Write New Note" spellcheck="false"></textarea>
+                    <textarea id="note_edit_text" rows="4" class="form-control" placeholder="Write New Note" spellcheck="false"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -245,8 +245,7 @@
             toastr.warning('First, register task.', 'Warning');
             return;
         }
-        $("#exampleModal").modal('show');
-
+        $("#note_modal").modal('show');
         $("#note_text").val("");
     }
 
@@ -311,32 +310,7 @@
             contentType: false,
             success: function (data) {
                 console.log(data.length);
-                $('#noteBody').empty();
-                var html = ' ';
-                var k = 1;
-                for(i = 0; i < data.length; i ++)
-                {
-                    html +=     '<tr role="row" class="odd">';
-                    html +=        '<td class="sorting_1">' + k + '</td>';
-                    html +=        '<td class="sorting_1">' + data[i]['created_at'] + '</td>';
-                    html +=        '<td class="sorting_1">' + data[i]['name'] + '</td>';
-                    html +=        '<td class="sorting_1">' + data[i]['note'] + '</td>';
-                    html +=        '<td class="action">';
-                    html +=            '<div class="dropdown show">';
-                    html +=                '<a class="cust-btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                    html +=                    '<i class="fas fa-th ms-text-primary"></i>';
-                    html +=                '</a>';
-                    html +=                '<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">';
-                    html +=                    '<a class="dropdown-item" onclick="editNote(' + data[i]['id'] + ')">Edit</a>';
-                    html +=                    '<a class="dropdown-item" onclick="deleteNote(' + data[i]['id'] + ')">Delete</a>';
-                    html +=                '</div>';
-                    html +=            '</div>';
-                    html +=        '</td>';
-                    html +=    '</tr>';
-                    k ++;
-                }
-                $('#noteBody').append(html);
-
+                drawTable(data);
                 toastr.success('Note added', 'Success');
                 return;
             },
@@ -345,6 +319,47 @@
             }
         });
         $("#exampleModal").modal('hide');
+    }
+
+    function editNote(id) {
+        var formData = new FormData();
+        formData.append('id', id);
+        formData.append('_token', "{{csrf_token()}}");
+        console.log(formData);
+        $.ajax({
+            url: '/department/get_note',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data['note']);
+                $("#note_edit_text").val(data['note']);
+                return;
+            },
+            error: function(err) {
+                console.log({err});
+            }
+        });
+        $("#note_edit_modal").modal('show');
+
+    }
+
+    function update_note() {
+        const content = $("#note_text1").val();
+        if(content == '') {
+            toastr.warning('Input new note.', 'Warning');
+            return;
+        }
+        // var data = {
+        //     id: edit_id,
+        //     note: content,
+        // }
+        // $.get('update_note', data, function(data, status) {
+        //     window.location.reload();
+        // });
+
+        $("#edit_modal").modal('hide');
     }
 
     function deleteNote(id) {
@@ -365,45 +380,33 @@
         $("#fileModal").modal('show');
     }
 
-    function editNote(id) {
-        $("#edit_modal").modal('show');
-        var formData = new FormData();
-        formData.append('id', id);
-        formData.append('_token', "{{csrf_token()}}");
-        console.log(formData);
-        $.ajax({
-            url: '/department/get_note',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                alert("adsfasdfasd")
-                console.log(data['note']);
-                $("#note_text1").val(data['note']);
-                return;
-            },
-            error: function(err) {
-                console.log({err});
-            }
-        });
-    }
-
-    function update_note() {
-        const content = $("#note_text1").val();
-        if(content == '') {
-            toastr.warning('Input new note.', 'Warning');
-            return;
+    function drawTable(data)
+    {
+        $('#noteBody').empty();
+        var html = ' ';
+        var k = 1;
+        for(i = 0; i < data.length; i ++)
+        {
+            html +=     '<tr role="row" class="odd">';
+            html +=        '<td class="sorting_1">' + k + '</td>';
+            html +=        '<td class="sorting_1">' + data[i]['created_at'] + '</td>';
+            html +=        '<td class="sorting_1">' + data[i]['name'] + '</td>';
+            html +=        '<td class="sorting_1">' + data[i]['note'] + '</td>';
+            html +=        '<td class="action">';
+            html +=            '<div class="dropdown show">';
+            html +=                '<a class="cust-btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+            html +=                    '<i class="fas fa-th ms-text-primary"></i>';
+            html +=                '</a>';
+            html +=                '<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">';
+            html +=                    '<a class="dropdown-item" onclick="editNote(' + data[i]['id'] + ')">Edit</a>';
+            html +=                    '<a class="dropdown-item" onclick="deleteNote(' + data[i]['id'] + ')">Delete</a>';
+            html +=                '</div>';
+            html +=            '</div>';
+            html +=        '</td>';
+            html +=    '</tr>';
+            k ++;
         }
-        // var data = {
-        //     id: edit_id,
-        //     note: content,
-        // }
-        // $.get('update_note', data, function(data, status) {
-        //     window.location.reload();
-        // });
-
-        $("#edit_modal").modal('hide');
+        $('#noteBody').append(html);
     }
 
 </script>
