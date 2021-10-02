@@ -653,7 +653,12 @@
         $.each( $('#customers tr'), function (i, row){
             $.each( $(row).find("td, th"), function(j, cell){
                 var txt = $(cell).text().trim() || " ";
-                var width = (j==4) ? 100 : 110; //make 4th column smaller
+                var width;
+                if(txt.length > 30)
+                    width = (j==4) ? 210 : 220; //make 4th column smaller
+                else
+                    width = (j==4) ? 100 : 110; //make 4th column smaller
+
                 pdf.cell(10, 50, width, 30, txt, i);
             });
         });
