@@ -179,7 +179,7 @@ class PunchClockController extends Controller
                         ")."
                         </tr>";
         }
-        $result = " <table>
+        $result = " <table id='customers'>
                         <thead>
                             <tr>
                                 <td rowspan='2'>No</td>
@@ -205,9 +205,9 @@ class PunchClockController extends Controller
                         <tbody>$result</tbody>
                     </table>";
                     $res1 = '
-<table>
+<table id="customers">
     <tr>
-        <th colspan="5" style="text-align: center;">Employee Time Sheet</th>
+        <th colspan="5" style="text-align: center; width:300px">Employee Time Sheet</th>
     </tr>
 
     <tr><td colspan="5"></td></tr>
@@ -394,7 +394,7 @@ class PunchClockController extends Controller
                         <tbody>$result</tbody>
                     </table>";
                     $res1 = '
-<table>
+<table id="customers">
     <tr>
         <th colspan="5" style="text-align: center;">Employee Time Sheet</th>
     </tr>

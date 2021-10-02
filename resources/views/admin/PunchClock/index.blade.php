@@ -422,36 +422,6 @@
             </form>
         </div>
     </div>
-    <div id="content">
-    <table id="tblCustomers" cellspacing="0" cellpadding="0">
-        <tr>
-            <th>Customer Id</th>
-            <th>Name</th>
-            <th>Country</th>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>John Hammond</td>
-            <td>United States</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Mudassar Khan</td>
-            <td>India</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>Suzanne Mathews</td>
-            <td>France</td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>Robert Schidner</td>
-            <td>Russia</td>
-        </tr>
-    </table>
-    </div>
-    <div id="editor"></div>
 </div>
 
 <style>
@@ -599,19 +569,6 @@
     }
 
     function exprtSheet1 () {
-        html2canvas(document.getElementById('tblCustomers'), {
-                onrendered: function (canvas) {
-                    var data = canvas.toDataURL();
-                    var docDefinition = {
-                        content: [{
-                            image: data,
-                            width: 500
-                        }]
-                    };
-                    pdfMake.createPdf(docDefinition).download("Table.pdf");
-                }
-            });
-            return;
         // var userid = $("#export_user").val();
         // console.log(userid);
         // if(userid == '') {
@@ -668,11 +625,30 @@
             });
     }
     function table2pdf1(data) {
+        console.log(data);
         $("#export_table1").append(data);
-        var elt = document.getElementById('export_table1');
-        var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
-        XLSX.writeFile(wb, ('Punch Clock.xlsx'));
+        // var elt = document.getElementById('export_table1');
+        // var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+        // XLSX.writeFile(wb, ('Punch Clock.xlsx'));
+        // $("#export_table1").empty();
+
+        alert($("#export_table1").val());
+
+        var pdf = new jsPDF('p', 'pt', 'letter');
+
+        pdf.cellInitialize();
+        pdf.setFontSize(10);
+        $.each( $('#customers tr'), function (i, row){
+            $.each( $(row).find("td, th"), function(j, cell){
+                var txt = $(cell).text().trim() || " ";
+                var width = (j==4) ? 40 : 70; //make 4th column smaller
+                pdf.cell(10, 50, width, 30, txt, i);
+            });
+        });
+
+        pdf.save('sample-file.pdf');
         $("#export_table1").empty();
+
     }
 
     function table2pdf(data) {
