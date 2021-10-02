@@ -25,7 +25,6 @@ class DepartmentController extends Controller
         
         $departmentFirstName = DB::table('departments')->first();
         $departments = Department::select("*")->orderby('order')->get();
-        $notes = DepartmentNote::get();
         foreach ($departments as $key => $value) {
             $departments[$key]['edit_id'] = Crypt::encryptString($value->id);
             
@@ -37,7 +36,7 @@ class DepartmentController extends Controller
             }
 
         }
-        return view("admin.Department.index" , compact('departments', 'workforce', 'notes'));
+        return view("admin.Department.index" , compact('departments', 'workforce'));
     }
 
     /**
@@ -49,6 +48,7 @@ class DepartmentController extends Controller
     {
         //
         $departs = Department::get();
+        $notes = DepartmentNote::get();
         $str_departs = '';
         foreach ($departs as $key => $value) {
             $str_departs.="<option value='$value->id'>$value->department</option>";
@@ -62,7 +62,7 @@ class DepartmentController extends Controller
 
         $tasks = DepartmentTask::get();
 
-        return view("admin.Department.create" , compact('department', 'departmentTask', 'display_property', 'str_departs', 'tasks'));
+        return view("admin.Department.create" , compact('department', 'notes', 'departmentTask', 'display_property', 'str_departs', 'tasks'));
     }
 
     /**
