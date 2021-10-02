@@ -521,7 +521,7 @@
             console.log(userid);
         }
         var pay_period_from = $("#pay_from").val();
-        var pay_period_to = $("#pay_from").val();
+        var pay_period_to = $("#pay_to").val();
         var unit_hours = $("#in_a").val();
         var per_minutes = $("#in_b").val();
         var decimal_total = $('#decimal_total').is(":checked");
@@ -558,8 +558,15 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    table2pdf1(data);
-                    $('#preloader-wrap').addClass('loaded');
+                    if(data == "noData")
+                    {
+                        toastr.warning('No Data', 'Warning');
+                        $('#preloader-wrap').addClass('loaded');
+                        return;
+                    }else{
+                        table2pdf(data);
+                        $('#preloader-wrap').addClass('loaded');
+                    }
                 },
                 error: function(err) {
                     console.log({err});
@@ -615,8 +622,15 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    table2pdf1(data);
-                    $('#preloader-wrap').addClass('loaded');
+                    if(data == "noData")
+                    {
+                        toastr.warning('No Data', 'Warning');
+                        $('#preloader-wrap').addClass('loaded');
+                        return;
+                    }else{
+                        table2pdf(data);
+                        $('#preloader-wrap').addClass('loaded');
+                    }
                 },
                 error: function(err) {
                     console.log({err});
@@ -624,15 +638,13 @@
                 }
             });
     }
-    function table2pdf1(data) {
+    function table2pdf(data) {
         console.log(data);
         $("#export_table1").append(data);
         // var elt = document.getElementById('export_table1');
         // var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
         // XLSX.writeFile(wb, ('Punch Clock.xlsx'));
         // $("#export_table1").empty();
-
-        alert($("#export_table1").val());
 
         var pdf = new jsPDF('p', 'pt', 'letter');
 
@@ -641,7 +653,7 @@
         $.each( $('#customers tr'), function (i, row){
             $.each( $(row).find("td, th"), function(j, cell){
                 var txt = $(cell).text().trim() || " ";
-                var width = (j==4) ? 40 : 70; //make 4th column smaller
+                var width = (j==4) ? 100 : 110; //make 4th column smaller
                 pdf.cell(10, 50, width, 30, txt, i);
             });
         });
@@ -649,15 +661,7 @@
         pdf.save('sample-file.pdf');
         $("#export_table1").empty();
 
-    }
-
-    function table2pdf(data) {
-        $("#export_table").append(data);
-        var elt = document.getElementById('export_table');
-        var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
-        XLSX.writeFile(wb, ('Punch Clock.xlsx'));
-        $("#export_table").empty();
-    }  
+    } 
 
     // ---------------
     function userinfo() {

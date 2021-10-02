@@ -83,6 +83,7 @@ class PunchClockController extends Controller
     {
         $userid = $request->userid;
         $pay_period_to = $request->pay_period_to;
+        $pay_period_from = $request->pay_period_from;
         $decimal_total = $request->decimal_total;
         $time_24_format = $request->time_24_format;
 
@@ -96,6 +97,8 @@ class PunchClockController extends Controller
         $punchClock = $punchClock->get();
         $result = ''; $res2 = ''; $result_duration = 0;
         $association = null;
+        if(count($punchClock) == 0)
+            return "noData";
         foreach ($punchClock as $key => $value) {
             if($key==0) {
                 $association = Subassociation::where('id', $value->association)->first();
@@ -210,8 +213,6 @@ class PunchClockController extends Controller
         <th colspan="5" style="text-align: center; width:300px">Employee Time Sheet</th>
     </tr>
 
-    <tr><td colspan="5"></td></tr>
-
     <tr>
         <td colspan="5">'."$association->legalName".'</td>
     </tr>
@@ -285,6 +286,8 @@ class PunchClockController extends Controller
         $punchClock = $punchClock->get();
         $result = ''; $res2 = ''; $result_duration = 0;
         $association = null;
+        if(count($punchClock) == 0)
+            return "noData";
         foreach ($punchClock as $key => $value) {
             if($key==0) {
                 $association = Subassociation::where('id', $value->association)->first();
