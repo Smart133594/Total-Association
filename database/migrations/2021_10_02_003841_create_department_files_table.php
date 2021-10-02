@@ -17,8 +17,9 @@ class CreateDepartmentFilesTable extends Migration
             $table->id();
             $table->integer('departmenttaskid');
             $table->integer('userid');
-            $table->text('filetype')->nullable();
-            $table->text('note')->nullable();
+            $table->string('type')->nullable();
+            $table->string('name')->nullable();
+            $table->string('note')->nullable();
             $table->timestamps();
         });
     }

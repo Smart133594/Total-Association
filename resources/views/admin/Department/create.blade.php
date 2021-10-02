@@ -177,17 +177,21 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add New File</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add File</h5>
                 </div>
                 <div class="modal-body" id="modal-details">
-                    <textarea id="file_text" rows="4" class="form-control" placeholder="Write Details Note" spellcheck="false"></textarea><br>
-                    <div style="width: 180px" class="mb-3">
-                        <input type="file" class="form-control valid" required name="imageA" text="Upload file">
+                    <textarea id="file_note" rows="4" class="form-control" placeholder="Write Details Note" spellcheck="false"></textarea><br>
+                    <div class="form-group">
+                        <input type="file" id="file" style="display: none;" name="logo" onchange="previewA(this)">
+                        <div class="row" style="margin-left:20px">
+                            <label for="file" class="col-md-3 btn btn-primary">Upload File</label><br>
+                            <label class="col-md-3" id="fileName" style="margin-top: 25px;"></label><br>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <input type="submit" value="Save File" class="btn btn-primary">
+                    <input type="button" value="Save File" onclick="addFile()" class="btn btn-primary">
                 </div>
             </div>
         </div>
@@ -198,7 +202,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add New Note</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add Note</h5>
                 </div>
                 <div class="modal-body" id="modal-details">
                     <textarea id="note_text" rows="4" class="form-control" placeholder="Write New Note" spellcheck="false"></textarea>
@@ -218,6 +222,7 @@
                     <h5 class="modal-title" id="exampleModalLabel">Edit Note</h5>
                 </div>
                 <div class="modal-body" id="modal-details">
+                    <input type="text" id="noteid" hidden>
                     <textarea id="note_edit_text" rows="4" class="form-control" placeholder="Write New Note" spellcheck="false"></textarea>
                 </div>
                 <div class="modal-footer">
@@ -228,7 +233,28 @@
         </div>
     </div>
 
+    <div class="modal fade" id="note_delete_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Note</h5>
+                </div>
+                <div class="modal-body" id="modal-details">
+                    <h4>Do you want to delete this note?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" onclick="delete_note()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <script>
+
+    function previewA(input) {
+        $("#fileName").append(input.files[0]['name']);
+    }
     
     var edit_id = -1;
 
@@ -318,14 +344,14 @@
                 console.log({err});
             }
         });
-        $("#exampleModal").modal('hide');
+        $("#note_modal").modal('hide');
     }
 
     function editNote(id) {
+        $("#noteid").val(id);
         var formData = new FormData();
         formData.append('id', id);
         formData.append('_token', "{{csrf_token()}}");
-        console.log(formData);
         $.ajax({
             url: '/department/get_note',
             type: 'POST',
@@ -333,8 +359,8 @@
             processData: false,
             contentType: false,
             success: function (data) {
-                console.log(data['note']);
-                $("#note_edit_text").val(data['note']);
+                console.log(data[0]['note']);
+                $("#note_edit_text").val(data[0]['note']);
                 return;
             },
             error: function(err) {
@@ -346,26 +372,96 @@
     }
 
     function update_note() {
-        const content = $("#note_text1").val();
+        var formData = new FormData();
+        formData.append('id', $("#noteid").val());
+        formData.append('note', $("#note_edit_text").val());
+        formData.append('_token', "{{csrf_token()}}");
+        $.ajax({
+            url: '/department/edit_note',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data);
+                drawTable(data);
+                toastr.success('Note updated', 'Success');
+                return;
+            },
+            error: function(err) {
+                console.log({err});
+            }
+        });
+        $("#note_edit_modal").modal('hide');
+    }
+
+    function deleteNote(id) {
+        $("#noteid").val(id);
+        $("#note_delete_modal").modal('show');
+    }
+
+    function delete_note(){
+        var formData = new FormData();
+        formData.append('id', $("#noteid").val());
+        formData.append('_token', "{{csrf_token()}}");
+        $.ajax({
+            url: '/department/delete_note',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                drawTable(data);
+                toastr.success('Note deleted', 'Success');
+                return;
+            },
+            error: function(err) {
+                console.log({err});
+            }
+        });
+        $("#note_delete_modal").modal('hide');
+    }
+
+    function addFile(){
+        $("#departmentTaskid").val('36');
+        const content = $("#file_note").val();
+        var file = $("#file").val();
+
         if(content == '') {
             toastr.warning('Input new note.', 'Warning');
             return;
         }
-        // var data = {
-        //     id: edit_id,
-        //     note: content,
-        // }
-        // $.get('update_note', data, function(data, status) {
-        //     window.location.reload();
-        // });
+        if(file == "" ){
+            toastr.warning('Input new file.', 'Warning');
+            return;
+        }
 
-        $("#edit_modal").modal('hide');
-    }
-
-    function deleteNote(id) {
-        $.get('delete_note/' + id, function(data, status) {
-            window.location.reload();
+        console.log(content);
+        console.log(file);
+        
+        var formData = new FormData();
+        formData.append('departmenttaskid', $("#departmentTaskid").val());
+        formData.append('note', content);
+        formData.append('file', file);
+        formData.append('_token', "{{csrf_token()}}");
+        console.log(formData);
+        $.ajax({
+            url: '/department/add_file',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data.length);
+                drawTable(data);
+                toastr.success('File added', 'Success');
+                return;
+            },
+            error: function(err) {
+                console.log({err});
+            }
         });
+        $("#note_modal").modal('hide');
     }
 
     function deleteFile(id) {

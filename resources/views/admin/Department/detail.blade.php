@@ -70,12 +70,12 @@
                                                 <i class="fas fa-th"></i>
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                {{-- <a class="dropdown-item" href="/department/{{ $task->edit_id }}/edit">Edit</a>
-                                                <form action="{{ route('department.destroy',$task->edit_id) }}" method="post">
+                                                <button class="dropdown-item" onclick="window.location.href='/department/{{ Crypt::encryptString($task->id) }}/edit'">Edit</button>
+                                                <form action="{{ route('department.destroy',Crypt::encryptString($task->id)) }}" method="post">
                                                     @method("delete")
                                                     @csrf
                                                     <button type="submit" class="dropdown-item" onclick=" return confirm('Are you sure to delete this task? ')">Delete</button>
-                                                </form> --}}
+                                                </form>
                                             </div>
                                         </div>
                                     </td>

@@ -224,6 +224,37 @@ class DepartmentController extends Controller
         return $data;
     }
 
+    public function edit_note(Request $request)
+    {
+        DepartmentNote::where('id', $request->id)
+                ->update([
+                    'note' => $request->note, 
+                ]);
+
+        $user = DB::table('users')->where('name', 'John')->first();
+        $notes = DepartmentNote::where('departmenttaskid', $request->departmenttaskid)->get();
+        $data = DB::table('department_notes as A')->leftjoin('users as B', 'A.userid', '=', 'B.id')->select('A.id', 'B.name', 'A.note', 'A.created_at')->get()->toArray();
+        return $data;
+    }
+
+    public function delete_note(Request $request)
+    {
+        DepartmentNote::where('id', $request->id)->delete();   
+
+        $user = DB::table('users')->where('name', 'John')->first();
+        $notes = DepartmentNote::where('departmenttaskid', $request->departmenttaskid)->get();
+        $data = DB::table('department_notes as A')->leftjoin('users as B', 'A.userid', '=', 'B.id')->select('A.id', 'B.name', 'A.note', 'A.created_at')->get()->toArray();
+        return $data;
+    }
+
+    public function add_file(Request $request){
+        $url = '';
+        foreach ($request->files as $kk => $r) {
+            $url = $this->uploadimage($request, $kk);
+        }
+        return $url;
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -240,11 +271,6 @@ class DepartmentController extends Controller
             session()->flash('error', "Something went wrong.");
         }
         return redirect()->back();
-    }
-
-    public function delete_note($id)
-    {
-        DepartmentNote::where('id', $id)->delete();   
     }
 
     public function delete_file($id)
