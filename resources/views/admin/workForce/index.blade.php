@@ -25,7 +25,7 @@
         </nav>
         <div class="ms-panel">
             <div class="ms-panel-header ms-panel-custome">
-                <h2>All Worker</h2>
+                <h2>Work Force</h2>
                 <a href="{{route('work-force.create')}}" class="ms-text-primary">Add Worker</a>
             </div>
             <div class="ms-panel-body">
@@ -55,7 +55,7 @@
                                     <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $worker->phone }}</td>
                                     <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $worker->whatsapp }}</td>
                                     <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $worker->departname }}</td>
-                                    <td>@if($worker->status==1)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif </td>
+                                    <td>@if($worker->active_state==0)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif </td>
                                     <td class="action">
                                         <div class="dropdown show">
                                             <a class="cust-btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -64,11 +64,19 @@
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                                 <button class="dropdown-item" onclick="window.location.href='{{ $detail_uri }}'">Show Info</button>
                                                 <button class="dropdown-item" onclick="window.location.href='/work-force/{{ $worker->edit_id }}/edit'">Edit</button>
+                                                @if($worker->active_state==0)
                                                 <form action="{{ route('work-force.destroy',$worker->edit_id) }}" method="post">
                                                     @method("delete")
                                                     @csrf
-                                                    <button type="button" class="dropdown-item" onclick="deleteEmployee()">Delete</button>
+                                                    <button type="submit" class="dropdown-item" onclick=" return confirm('Are you sure to archive this? ')">Archive</button>
                                                 </form>
+                                                @else
+                                                <form  action="/work-force/set-active/{{$worker->edit_id}}" method="get">
+                                                    @method("delete")
+                                                    @csrf
+                                                    <button type="submit" class="dropdown-item" onclick=" return confirm('Are you sure to active this? ')">Active</button>
+                                                </form>
+                                                @endif
                                             </div>
                                         </div>
                                     </td>

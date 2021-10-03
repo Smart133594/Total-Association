@@ -12,6 +12,7 @@ use Brick\PhoneNumber\PhoneNumber;
 use Brick\PhoneNumber\PhoneNumberFormat;
 use Brick\PhoneNumber\PhoneNumberParseException;
 use Throwable;
+use DB;
 
 class WorkForceController extends Controller
 {
@@ -88,6 +89,24 @@ class WorkForceController extends Controller
         
         if($edit_id) {
             $workerid = Crypt::decryptString($edit_id);
+
+            if($request->active_state == 0)
+            {
+                DB::table('work_forces')
+                ->where('id', $workerid)
+                ->update([
+                    'active_state' => $request->active_state,
+                    'end_date' => $request->end_date
+                ]);
+            }else{
+                DB::table('work_forces')
+                ->where('id', $workerid)
+                ->update([
+                    'active_state' => $request->active_state,
+                    'end_date' => null
+                ]);
+            }
+
             WorkForce::find($workerid)->update($workforce_data);
         
             foreach ($payroll_data as $key => $value) {
@@ -170,6 +189,14 @@ class WorkForceController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $id = Crypt::decryptString($id);
+        DB::table('work_forces')
+        ->where('id', $id)
+        ->update([
+            'active_state' => 1
+        ]);
+        session()->flash('success', "Actived Successfully.");
+        return redirect()->back();
     }
 
     /**
@@ -181,13 +208,40 @@ class WorkForceController extends Controller
     public function destroy($id)
     {
         //
+        $get_datetime = date('y-m-d');
         $id = Crypt::decryptString($id);
-        $delete = WorkForce::where('id', $id)->delete();
-        if($delete){
-            session()->flash('error', "Deleted Successfully.");
-        }else{
-            session()->flash('error', "Something went wrong.");
-        }
+        DB::table('work_forces')
+        ->where('id', $id)
+        ->update([
+            'active_state' => 1,
+            'end_date' => $get_datetime
+        ]);
+        session()->flash('success', "Archived Successfully.");
         return redirect()->back();
+    }
+
+    public function setActive($id)
+    {
+        //
+        $id = Crypt::decryptString($id);
+        DB::table('work_forces')
+        ->where('id', $id)
+        ->update([
+            'active_state' => 0,
+            'end_date' => null
+        ]);
+        session()->flash('success', "Actived Successfully.");
+
+        $workers = WorkForce::get();
+        foreach ($workers as $key => $value) {
+            $departname = "";
+            if($value->Department != null){
+                $departname = $value->Department->department;
+            }
+            $workers[$key]['departname'] = $departname;
+            
+            $workers[$key]['edit_id'] = Crypt::encryptString($value->id);
+        }
+        return view("admin.workForce.index", compact('workers'));
     }
 }

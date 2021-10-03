@@ -82,6 +82,8 @@ Route::middleware([CheckAdminLogin::class])->group(function () {
     Route::Resource('facilities', facilitiesController::class);
     // employeers
     Route::resource('work-force', WorkForceController::class);
+    Route::get('/work-force/set-active/{id}', [WorkForceController::class, 'setActive']);
+
     Route::resource('department', DepartmentController::class);
     Route::resource('work-log', WorkLogController::class);
     Route::resource('punch-clock', PunchClockController::class);

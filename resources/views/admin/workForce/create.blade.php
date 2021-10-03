@@ -210,7 +210,7 @@
                     <input type="date" name="start_date" id="start_date" placeholder="starting Date" class="form-control" value="{{ _OBJVALUE($worker, 'start_date') }}" required>
                 </div>
                 <div class="col-md-2">
-                    <label for="end_date">End Date</label>
+                    <label for="end_date" id="end_date_label">End Date</label>
                     <input type="date" name="end_date" id="end_date" placeholder="End Date" class="form-control" value="{{ _OBJVALUE($worker, 'end_date') }}">
                 </div>
             </div>
@@ -232,10 +232,9 @@
             <div class="form-row mb-3">
                 <div class="col-md-4">
                     <label for="active_state">Status</label>
-                    <select name="active_state" id="active_state" class="form-control">
+                    <select name="active_state" id="active_state" class="form-control" onchange="changeState(this.value)">
                         <option value="0" {{ _OBJVALUE($worker, 'active_state') == 0 ? "selected" : '' }}>Actived</option>
                         <option value="1" {{ _OBJVALUE($worker, 'active_state') == 1 ? "selected" : '' }}>Archived</option>
-                        <option value="2" {{ _OBJVALUE($worker, 'active_state') == 1 ? "selected" : '' }}>Both</option>
                     </select>
                 </div>
             </div>
@@ -285,7 +284,7 @@
                 </div>
                 <input type="file" id="choose-contracts" name="choose-contracts" accept="image/*" />
             </div>
-            <input type="button" value="View Email" class="btn btn-primary" id="send-contract">
+            <input type="button" value="View Contract" class="btn btn-primary" id="send-contract">
             <hr />
         </div>
         <div class="ms-panel-body">
@@ -367,8 +366,21 @@
         $("#date").empty();
         $("#date").append(ele);
     }
+
+    function changeState(state){
+        if(state == 0){
+            document.getElementById("end_date_label").hidden = true;
+            document.getElementById("end_date").hidden = true;
+        }
+        else{
+            document.getElementById("end_date_label").hidden = false;
+            document.getElementById("end_date").hidden = false;
+        }
+    }
+
     $(document).ready(function() {
         changeDate(init_date);
+        changeState($('#active_state').val());
     });
 
     $("#choose-avatar").on("change", function(e) {

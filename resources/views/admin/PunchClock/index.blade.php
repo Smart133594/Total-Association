@@ -197,7 +197,12 @@
                     @endif
                         </tbody>
                     </table>
-                    <h4>Total Time = {{ $times }}</h4>
+                    @if (!empty($punchClock) &&  $punchClock->count()>0)
+                        <h4>Total Time = {{ $times }}</h4>
+                    @else
+                        <h4>Total Time = 00:00</h4>
+                    @endif
+
                 </div>
             </div>
         </div>
@@ -205,7 +210,7 @@
         <div class="col-xl-12 col-md-12">
             <div class="ms-panel ms-widget ms-panel-fh">
                 <div class="ms-panel-header">
-                <h2 style="font-size:35px !important">Single Employee</h2>
+                <h2 style="font-size:35px !important">Single Employee Report</h2>
                 </div>
                 <div class="ms-panel-body p-0">
                 <div class="table-responsive">
@@ -242,9 +247,9 @@
                                         </label>
                                     </div>
                                     <div class="col-1" id="divb">If over</div>
-                                    <div class="col-2" id="divc"><input type="number" id="in_a" value="0" class="col-12"/></div>
+                                    <div class="col-2" id="divc"><input type="number" id="in_a" value="5" class="col-12"/></div>
                                     <div class="col-2" id="divd">Hours shift, Deduct</div>
-                                    <div class="col-2" id="dive"><input type="number" id="in_b" value="0" class="col-12"/></div>
+                                    <div class="col-2" id="dive"><input type="number" id="in_b" value="30" class="col-12"/></div>
                                     <div class="col-2" id="divf">Min for Break</div>
 
                                     {{-- <div class="col-md-3" style="margin-left: -5%; margin-top: 3px;">If over</div>
@@ -315,7 +320,7 @@
         <div class="col-xl-12 col-md-12">
             <div class="ms-panel ms-widget ms-panel-fh">
                 <div class="ms-panel-header">
-                <h4 style="font-size:35px !important">Single Employee</h4>
+                <h4 style="font-size:35px !important">All Employee Report</h4>
                 </div>
                 <div class="ms-panel-body p-0">
                 <div class="table-responsive">
@@ -356,9 +361,9 @@
                                         </label>
                                     </div>
                                     <div class="col-1" id="divb">If over</div>
-                                    <div class="col-2" id="divc"><input type="number" id="in_a1" value="0" class="col-12"/></div>
+                                    <div class="col-2" id="divc"><input type="number" id="in_a1" value="5" class="col-12"/></div>
                                     <div class="col-2" id="divd">Hours shift, Deduct</div>
-                                    <div class="col-2" id="dive"><input type="number" id="in_b1" value="0" class="col-12"/></div>
+                                    <div class="col-2" id="dive"><input type="number" id="in_b1" value="30" class="col-12"/></div>
                                     <div class="col-2" id="divf">Min for Break</div>
 
                                     {{-- <div class="col-md-3" style="margin-left: -5%; margin-top: 3px;">If over</div>
