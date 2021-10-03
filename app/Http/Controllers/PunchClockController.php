@@ -31,7 +31,6 @@ class PunchClockController extends Controller
             $punchClock = $punchClock->where(function ($query)  use ($pay_from){
                 $query->where('in_date', '>=', $pay_from)->orWhere('in_date', null);
             });
-            $punchClock = $punchClock->where('workerid', $request->date_employees);
         }
         if(isset($request->pay_to)){
             $pay_to = $request->pay_to;
