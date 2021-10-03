@@ -40,7 +40,8 @@
                                 <th>Phone</th>
                                 <th>Whatsapp</th>
                                 <th>Department</th>
-                                <th style="width: 30px;">Action</th>
+                                <th>Status</th>
+                                <th style="width: 80px;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -54,6 +55,7 @@
                                     <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $worker->phone }}</td>
                                     <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $worker->whatsapp }}</td>
                                     <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $worker->departname }}</td>
+                                    <td>@if($worker->status==1)<i class="fas fa-dot-circle dot-green"></i>@else<i class="fas fa-dot-circle dot-red"></i>@endif </td>
                                     <td class="action">
                                         <div class="dropdown show">
                                             <a class="cust-btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -65,7 +67,7 @@
                                                 <form action="{{ route('work-force.destroy',$worker->edit_id) }}" method="post">
                                                     @method("delete")
                                                     @csrf
-                                                    <button type="submit" class="dropdown-item" onclick=" return confirm('Are you sure to delete this Worker? ')">Delete</button>
+                                                    <button type="button" class="dropdown-item" onclick="deleteEmployee()">Delete</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -83,6 +85,10 @@
         });
         function goto(url) {
             window.location.href = url;
+        }
+        function deleteEmployee(){
+            toastr.warning('Employee cannot be deleted.', 'Warning');
+            return;
         }
     </script>
 @endsection

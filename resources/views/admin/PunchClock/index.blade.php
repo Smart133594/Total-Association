@@ -155,6 +155,8 @@
                         </tr>
                         </thead>
                         <tbody>
+                    @if (!empty($punchClock) &&  $punchClock->count()>0)
+
                         @foreach ($punchClock as $index => $item)
                             <?php $detail_uri = '/punch-clock/'.$item->edit_id ?>
                             <tr>
@@ -192,6 +194,7 @@
                                 </td>
                             </tr>
                         @endforeach
+                    @endif
                         </tbody>
                     </table>
                     <h4>Total Time = {{ $times }}</h4>
@@ -253,37 +256,55 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="ms-checkbox-wrap">
-                                <input type="checkbox" name="decimal_total" id="decimal_total" checked>
-                                <i class="ms-checkbox-check"></i>
-                            </label>
-                            <span> Display Totals In Decimal format </span>
-                        </div>
-                        <div class="mb-3">
-                            <label class="ms-checkbox-wrap">
-                                <input type="checkbox" name="time_24_format" id="time_24_format" checked>
-                                <i class="ms-checkbox-check"></i>
-                            </label>
-                            <span> Display Time in 24 hour format. </span>
-                        </div>
-                        <br>
-                        <div id="all_radio">
-                        <div class="mb-3">
-                            <label class="ms-checkbox-wrap">
-                                <input type="radio" name="report_radio" value="groupEmployee" checked="">
-                                <i class="ms-checkbox-check"></i>
-                            </label>
-                            <span> Group Time Entires by Employee </span>
-                        </div>
-                        <div class="mb-3">
+                            <!-- <div class="mb-3">
                                 <label class="ms-checkbox-wrap">
-                                    <input type="radio" name="report_radio" value="groupDay">
+                                    <input type="radio" name="decimal_total" id="decimal_total" checked>
                                     <i class="ms-checkbox-check"></i>
                                 </label>
-                                <span> Group Time Entires by Day </span>
+                                <span> Display Totals In Decimal format </span>
+                            </div>
+                            <div class="mb-3">
+                                <label class="ms-checkbox-wrap">
+                                    <input type="radio" name="time_24_format" id="time_24_format" checked>
+                                    <i class="ms-checkbox-check"></i>
+                                </label>
+                                <span> Display Time in 24 hour format. </span>
+                            </div> -->
+
+                        <div id="all_radio">
+                            <div class="mb-3">
+                                <label class="ms-checkbox-wrap">
+                                    <input type="radio" name="diplay_radio" value="decimal_total" checked="">
+                                    <i class="ms-checkbox-check"></i>
+                                </label>
+                                <span> Display Totals In Decimal format </span>
+                            </div>
+                            <div class="mb-3">
+                                    <label class="ms-checkbox-wrap">
+                                        <input type="radio" name="diplay_radio" value="time_24_format">
+                                        <i class="ms-checkbox-check"></i>
+                                    </label>
+                                    <span> Display Time in 24 hour format. </span>
+                            </div>
                         </div>
-                        </div>
+                        
+                        <br>
+                        <!-- <div id="all_radio">
+                            <div class="mb-3">
+                                <label class="ms-checkbox-wrap">
+                                    <input type="radio" name="group_radio" value="groupEmployee" checked="">
+                                    <i class="ms-checkbox-check"></i>
+                                </label>
+                                <span> Group Time Entires by Employee </span>
+                            </div>
+                            <div class="mb-3">
+                                    <label class="ms-checkbox-wrap">
+                                        <input type="radio" name="group_radio" value="groupDay">
+                                        <i class="ms-checkbox-check"></i>
+                                    </label>
+                                    <span> Group Time Entires by Day </span>
+                            </div>
+                        </div> -->
                         <input type="button" value="Create PDF" class="btn btn-primary col-md-2" onclick="exprtSheet()">
                         </div>
                     </div>
@@ -351,18 +372,19 @@
                         </div>
                         <div class="mb-3">
                             <label class="ms-checkbox-wrap">
-                                <input type="checkbox" name="decimal_total" id="decimal_total1" checked>
+                                <input type="radio" name="diplay_radio1" id="decimal_total1" checked>
                                 <i class="ms-checkbox-check"></i>
                             </label>
                             <span> Display Totals In Decimal format </span>
                         </div>
                         <div class="mb-3">
                             <label class="ms-checkbox-wrap">
-                                <input type="checkbox" name="time_24_format" id="time_24_format1" checked>
+                                <input type="radio" name="diplay_radio1" id="time_24_format1">
                                 <i class="ms-checkbox-check"></i>
                             </label>
                             <span> Display Time in 24 hour format. </span>
                         </div>
+
                         <br>
                         <div id="all_radio">
                         <div class="mb-3">
@@ -503,7 +525,18 @@
         }
         isAll = 'all';
         changeExprtType();
+        selectOriginEmployee();
     });
+
+    function changeOption(){
+        const status = $("#status").val();
+        const tmp = status == 2 ? workers : workers.filter(item => item.active_state == status) || [];
+        var html = ``;
+        tmp.forEach(ele => {
+            html += `<option value="${ele.id}" ${employees == ele.id ? 'selected' : ''}>${ele.firstname} ${ele.middlename} ${ele.lastname}</option>`;
+        });
+        $("#employees").html(html);
+    }
     // ---------------
     function changeExprtType(){
         const tmp = isAll ? workers : workers.filter(item => item.worker_type == 0) || [];
@@ -672,15 +705,7 @@
     function userinfo() {
         $("#filter_form").submit();
     }
-    function changeOption(){
-        const status = $("#status").val();
-        const tmp = status == 2 ? workers : workers.filter(item => item.active_state == status) || [];
-        var html = ``;
-        tmp.forEach(ele => {
-            html += `<option value="${ele.id}" ${employees == ele.id ? 'selected' : ''}>${ele.firstname} ${ele.middlename} ${ele.lastname}</option>`;
-        });
-        $("#employees").html(html);
-    }
+
     function change_export_user() {
         var id = $("#export_user").val();
         if(id == '') {

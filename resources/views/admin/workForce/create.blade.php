@@ -63,20 +63,44 @@
             @include('admin.includes.msg')
             @csrf
             <input type="hidden" name="edit_id" value="{{ $edit_id }}">
-            <h5>Basic Information</h5>
+            <h5>Basic Information</h5><br>
             <label for="userName">User Name</label>
             <div class="form-row" id="userName">
-                <div class="col-md-4 mb-3">
-                    <input type="text" class="form-control" name="firstname" placeholder="First Name" value="{{ _OBJVALUE($worker, 'firstname') }}" required>
+                <div class="col-md-2 mb-1">
+                    <input type="text" style="width:150px !important" class="form-control" name="firstname" placeholder="First Name" value="{{ _OBJVALUE($worker, 'firstname') }}" required>
                 </div>
-                <div class="col-md-4 mb-3">
-                    <input type="text" class="form-control" name="middlename" placeholder="Middle Name"value="{{ _OBJVALUE($worker, 'middlename') }}" required>
+                <div class="col-md-2 mb-1">
+                    <input type="text" style="width:150px !important;margin-left:-50px" class="form-control" name="middlename" placeholder="Middle Name"value="{{ _OBJVALUE($worker, 'middlename') }}" required>
                 </div>
-                <div class="col-md-4 mb-3">
-                    <input type="text" class="form-control" name="lastname" placeholder="Last Name" value="{{ _OBJVALUE($worker, 'lastname') }}" required>
+                <div class="col-md-2 mb-1">
+                    <input type="text" style="width:150px !important;margin-left:-50px" class="form-control" name="lastname" placeholder="Last Name" value="{{ _OBJVALUE($worker, 'lastname') }}" required>
                 </div>
-            </div>
-
+            </div><br>
+            <label for="userName">Date of birth</label>
+            <div class="form-row" id="userName">
+                <div class="col-md-2 mb-1">
+                    <select style="width:150px !important" name="year" id="year" class="form-control" onchange="changeDate()" required>
+                        <option value="">Select Year</option>
+                        @for ($i = 1900; $i < date('Y'); $i++)
+                            <option value="{{ $i }}" {{ _OBJVALUE($worker, 'year') == $i ? "selected" : "" }}>{{ $i }}</option>
+                        @endfor
+                    </select>
+                </div>
+                <div class="col-md-2 mb-1">
+                    <select style="width:150px !important;margin-left:-50px" name="month" id="month" class="form-control" onchange="changeDate()" required>
+                        <option value="">Select Month</option>
+                        @for ($i = 1; $i < 13; $i++)
+                            <option value="{{ $i }}" {{ _OBJVALUE($worker, 'month') == $i ? "selected" : "" }}>{{ $i }}</option>
+                        @endfor
+                    </select>
+                </div>
+                <div class="col-md-2 mb-1">
+                    <select style="width:150px !important;margin-left:-50px" name="date" id="date" class="form-control" required>
+                        <option value="">Select Date</option>
+                    </select>
+                </div>
+            </div><br>
+<!-- 
             <label for="birthday">Date Of Birth</label>
             <div class="" id="birthday">
                 <div class="row">
@@ -111,37 +135,37 @@
                     <div class="col-md-8 mb-8" style="">
                     </div>
                 </div>
-            </div>
+            </div> -->
             <label for="address">Address</label>
             <div class="form-row" id="address">
-                <div class="col-md-5 mb-3">
-                    <input type="text" name="address1" id="address1" class="form-control mb-3" placeholder="address 1" value="{{ _OBJVALUE($worker, 'address1') }}" required>
-                    <input type="text" name="address2" id="address2" class="form-control"  value="{{ _OBJVALUE($worker, 'address2') }}" placeholder="address 2(Opitional)">
+                <div class="col-md-4 mb-3">
+                    <input type="text" style="width:510px !important" name="address1" id="address1" class="form-control mb-3" placeholder="address 1" value="{{ _OBJVALUE($worker, 'address1') }}" required>
+                    <input type="text" style="width:510px !important" name="address2" id="address2" class="form-control"  value="{{ _OBJVALUE($worker, 'address2') }}" placeholder="address 2(Opitional)">
                 </div>
                 <div class="col-md-7"></div>
-                <div class="col-md-3 mb-3">
-                    <input type="text" name="city" id="city" class="form-control" placeholder="City"  value="{{ _OBJVALUE($worker, 'city') }}" required>
+                <div class="col-md-2 mb-2">
+                    <input type="text" style="width:150px !important" name="city" id="city" class="form-control" placeholder="City"  value="{{ _OBJVALUE($worker, 'city') }}" required>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <input type="text" name="state" id="state" class="form-control" placeholder="State" value="{{ _OBJVALUE($worker, 'state') }}" required>
+                <div class="col-md-2 mb-2">
+                    <input type="text" style="width:150px !important" name="state" id="state" class="form-control" placeholder="State" value="{{ _OBJVALUE($worker, 'state') }}" required>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <input type="text" name="zipcode" id="zipcode" class="form-control" placeholder="Zip" value="{{ _OBJVALUE($worker, 'zipcode') }}" required>
-                </div>
-                <div class="col-md-3"></div>
-                <div class="col-md-3 mb-3">
-                    <input type="text" name="phoneNo" id="phoneNo" class="form-control"
+                <div class="col-md-2 mb-2">
+                    <input type="text" style="width:150px !important" name="zipcode" id="zipcode" class="form-control" placeholder="Zip" value="{{ _OBJVALUE($worker, 'zipcode') }}" required>
+                </div><br>
+                <div class="col-md-5"></div>
+                <div class="col-md-2 mb-3">
+                    <input type="text" style="width:150px !important" name="phoneNo" id="phoneNo" class="form-control"
                         placeholder="Phone number"  value="{{ _OBJVALUE($worker, 'phone') }}"required>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <input type="text" name="email" id="email" class="form-control"  value="{{ _OBJVALUE($worker, 'email') }}" placeholder="Email" required>
+                <div class="col-md-2 mb-3">
+                    <input type="text" style="width:150px !important" name="email" id="email" class="form-control"  value="{{ _OBJVALUE($worker, 'email') }}" placeholder="Email" required>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <input type="text" name="whatsapp" id="whatsapp" class="form-control" placeholder="Whatsapp" value="{{ _OBJVALUE($worker, 'whatsapp') }}"
+                <div class="col-md-2 mb-3">
+                    <input type="text" style="width:150px !important" name="whatsapp" id="whatsapp" class="form-control" placeholder="Whatsapp" value="{{ _OBJVALUE($worker, 'whatsapp') }}"
                         required>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <input type="text" name="ssn" id="ssn" class="form-control"
+                <div class="col-md-2 mb-3">
+                    <input type="text" style="width:150px !important" name="ssn" id="ssn" class="form-control"
                         placeholder="Social Security Number"  value="{{ _OBJVALUE($worker, 'ssn') }}"required>
                 </div>
             </div>
@@ -189,8 +213,10 @@
                 <div class="col-md-4">
                     <label for="salary_structure">Salary Structure</label>
                     <select name="salary_structure" id="salary_structure" class="form-control">
-                        <option value="0" {{ _OBJVALUE($worker, 'salary_structure') == 0 ? "selected" : '' }}>Global</option>
-                        <option value="1"{{ _OBJVALUE($worker, 'salary_structure') == 1 ? "selected" : '' }}>Per Hour</option>
+                        <option value="0" {{ _OBJVALUE($worker, 'salary_structure') == 0 ? "selected" : '' }}>By Hour</option>
+                        <option value="1"{{ _OBJVALUE($worker, 'salary_structure') == 1 ? "selected" : '' }}>Every 2 weeks</option>
+                        <option value="2"{{ _OBJVALUE($worker, 'salary_structure') == 1 ? "selected" : '' }}>Monthly</option>
+                        <option value="3"{{ _OBJVALUE($worker, 'salary_structure') == 1 ? "selected" : '' }}>Yearly</option>
                     </select>
                 </div>
                 <div class="col-md-4">
@@ -202,8 +228,9 @@
                 <div class="col-md-4">
                     <label for="active_state">Status</label>
                     <select name="active_state" id="active_state" class="form-control">
-                        <option value="0" {{ _OBJVALUE($worker, 'active_state') == 0 ? "selected" : '' }}>Active</option>
-                        <option value="1" {{ _OBJVALUE($worker, 'active_state') == 1 ? "selected" : '' }}>Archive</option>
+                        <option value="0" {{ _OBJVALUE($worker, 'active_state') == 0 ? "selected" : '' }}>Actived</option>
+                        <option value="1" {{ _OBJVALUE($worker, 'active_state') == 1 ? "selected" : '' }}>Archived</option>
+                        <option value="2" {{ _OBJVALUE($worker, 'active_state') == 1 ? "selected" : '' }}>Both</option>
                     </select>
                 </div>
             </div>
@@ -240,7 +267,7 @@
             <hr />
         </div>
         <div class="ms-panel-body">
-            <h5>Print Contract and have its Signed</h5>
+            <h5>Upload Signed Contract</h5>
             <input type="button" value="Print Contract for this Employee" class="btn btn-primary" id="print-contract" style="display: none;">
             <div>
                 <label for="choose-contracts" class="btn btn-primary mb-4">Upload Signed Contract</label>
@@ -253,28 +280,29 @@
                 </div>
                 <input type="file" id="choose-contracts" name="choose-contracts" accept="image/*" />
             </div>
-            <input type="button" value="Send Contract by Email" class="btn btn-primary" id="send-contract">
+            <input type="button" value="View Email" class="btn btn-primary" id="send-contract">
             <hr />
         </div>
         <div class="ms-panel-body">
             <h5>Password and Access Control</h5>
             <div class="form-row">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="access_control_device">Access Control Device</label>
                     <input type="text" name="access_control_device" id="access_control_device" value="{{ _OBJVALUE($worker, 'access_control_device') }}" class="form-control">
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="punch_clock_code">Punch Clock Code</label>
                     <input type="number" name="punch_clock_code" id="punch_clock_code" class="form-control" value="{{ _OBJVALUE($worker, 'punch_clock_code') }}">
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="employee_pwd">Employee App Password</label>
                     <input type="password" name="employee_pwd" id="employee_pwd" class="form-control" value="{{ _OBJVALUE($worker, 'employee_pwd') }}" >
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label for="manage_pwd">Management Software Password</label>
                     <input type="password" name="manage_pwd" id="manage_pwd" class="form-control" value="{{ _OBJVALUE($worker, 'manage_pwd') }}" >
                 </div>
+                
             </div>
             <hr />
         </div>

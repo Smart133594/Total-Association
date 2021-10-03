@@ -31,6 +31,7 @@ class PunchClockController extends Controller
             $punchClock = $punchClock->where(function ($query)  use ($pay_from){
                 $query->where('in_date', '>=', $pay_from)->orWhere('in_date', null);
             });
+            $punchClock = $punchClock->where('workerid', $request->date_employees);
         }
         if(isset($request->pay_to)){
             $pay_to = $request->pay_to;
@@ -76,6 +77,8 @@ class PunchClockController extends Controller
         foreach ($punchClock as $key => $value) {
             $punchClock[$key]['edit_id'] = Crypt::encryptString($value->id);
         }
+        if(!isset($request->pay_from))
+            $punchClock = null;
 
         return view('admin.PunchClock.index', compact('workers', 'punchClock', 'times', 'departs'));
     }
