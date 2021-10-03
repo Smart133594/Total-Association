@@ -205,17 +205,17 @@
                 </div>
             </div>
             <div class="form-row mb-3">
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <label for="start_date">Starting Date</label>
                     <input type="date" name="start_date" id="start_date" placeholder="starting Date" class="form-control" value="{{ _OBJVALUE($worker, 'start_date') }}" required>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <label for="end_date">End Date</label>
                     <input type="date" name="end_date" id="end_date" placeholder="End Date" class="form-control" value="{{ _OBJVALUE($worker, 'end_date') }}">
                 </div>
             </div>
             <div class="form-row mb-3">
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <label for="salary_structure">Salary Structure</label>
                     <select name="salary_structure" id="salary_structure" class="form-control">
                         <option value="0" {{ _OBJVALUE($worker, 'salary_structure') == 0 ? "selected" : '' }}>By Hour</option>
@@ -224,7 +224,7 @@
                         <option value="3"{{ _OBJVALUE($worker, 'salary_structure') == 1 ? "selected" : '' }}>Yearly</option>
                     </select>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <label for="salary">Salary</label>
                     <input type="number" name="salary" id="salary" placeholder="Salary" class="form-control" value="{{ _OBJVALUE($worker, 'salary') }}" required>
                 </div>
