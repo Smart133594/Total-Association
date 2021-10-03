@@ -70,11 +70,12 @@
                     <input type="text" style="width:150px !important" class="form-control" name="firstname" placeholder="First Name" value="{{ _OBJVALUE($worker, 'firstname') }}" required>
                 </div>
                 <div class="col-md-2 mb-1">
-                    <input type="text" style="width:150px !important;margin-left:-50px" class="form-control" name="middlename" placeholder="Middle Name"value="{{ _OBJVALUE($worker, 'middlename') }}" required>
+                    <input type="text" style="width:150px !important;margin-left:-80px" class="form-control" name="middlename" placeholder="Middle Name"value="{{ _OBJVALUE($worker, 'middlename') }}" required>
                 </div>
                 <div class="col-md-2 mb-1">
-                    <input type="text" style="width:150px !important;margin-left:-50px" class="form-control" name="lastname" placeholder="Last Name" value="{{ _OBJVALUE($worker, 'lastname') }}" required>
+                    <input type="text" style="width:150px !important;margin-left:-160px" class="form-control" name="lastname" placeholder="Last Name" value="{{ _OBJVALUE($worker, 'lastname') }}" required>
                 </div>
+                <div class="col-md-9 mb-1"></div>
             </div><br>
             <label for="userName">Date of birth</label>
             <div class="form-row" id="userName">
@@ -87,7 +88,7 @@
                     </select>
                 </div>
                 <div class="col-md-2 mb-1">
-                    <select style="width:150px !important;margin-left:-50px" name="month" id="month" class="form-control" onchange="changeDate()" required>
+                    <select style="width:150px !important;margin-left:-80px" name="month" id="month" class="form-control" onchange="changeDate()" required>
                         <option value="">Select Month</option>
                         @for ($i = 1; $i < 13; $i++)
                             <option value="{{ $i }}" {{ _OBJVALUE($worker, 'month') == $i ? "selected" : "" }}>{{ $i }}</option>
@@ -95,7 +96,7 @@
                     </select>
                 </div>
                 <div class="col-md-2 mb-1">
-                    <select style="width:150px !important;margin-left:-50px" name="date" id="date" class="form-control" required>
+                    <select style="width:150px !important;margin-left:-160px" name="date" id="date" class="form-control" required>
                         <option value="">Select Date</option>
                     </select>
                 </div>
@@ -138,34 +139,38 @@
             </div> -->
             <label for="address">Address</label>
             <div class="form-row" id="address">
-                <div class="col-md-4 mb-3">
-                    <input type="text" style="width:510px !important" name="address1" id="address1" class="form-control mb-3" placeholder="address 1" value="{{ _OBJVALUE($worker, 'address1') }}" required>
-                    <input type="text" style="width:510px !important" name="address2" id="address2" class="form-control"  value="{{ _OBJVALUE($worker, 'address2') }}" placeholder="address 2(Opitional)">
+                <div class="col-md-2 mb-1">
+                    <input type="text" style="width:480px !important" name="address1" id="address1" class="form-control mb-3" placeholder="address 1" value="{{ _OBJVALUE($worker, 'address1') }}" required>
+                    <input type="text" style="width:480px !important" name="address2" id="address2" class="form-control"  value="{{ _OBJVALUE($worker, 'address2') }}" placeholder="address 2(Opitional)">
                 </div>
-                <div class="col-md-7"></div>
-                <div class="col-md-2 mb-2">
-                    <input type="text" style="width:150px !important" name="city" id="city" class="form-control" placeholder="City"  value="{{ _OBJVALUE($worker, 'city') }}" required>
+            </div>
+            <br>
+            <div class="form-row" id="address"> 
+                <div class="col-md-2 mb-1">
+                    <input type="text" style="width:150px !important;" name="city" id="city" class="form-control" placeholder="City"  value="{{ _OBJVALUE($worker, 'city') }}" required>
+                </div>
+                <div class="col-md-2 mb-1">
+                    <input type="text" style="width:150px !important;margin-left:-80px" name="state" id="state" class="form-control" placeholder="State" value="{{ _OBJVALUE($worker, 'state') }}" required>
                 </div>
                 <div class="col-md-2 mb-2">
-                    <input type="text" style="width:150px !important" name="state" id="state" class="form-control" placeholder="State" value="{{ _OBJVALUE($worker, 'state') }}" required>
+                    <input type="text" style="width:150px !important;margin-left:-160px" name="zipcode" id="zipcode" class="form-control" placeholder="Zip" value="{{ _OBJVALUE($worker, 'zipcode') }}" required>
                 </div>
+            </div>
+                <br>
+            <div class="form-row" id="address"> 
                 <div class="col-md-2 mb-2">
-                    <input type="text" style="width:150px !important" name="zipcode" id="zipcode" class="form-control" placeholder="Zip" value="{{ _OBJVALUE($worker, 'zipcode') }}" required>
-                </div><br>
-                <div class="col-md-5"></div>
-                <div class="col-md-2 mb-3">
-                    <input type="text" style="width:150px !important" name="phoneNo" id="phoneNo" class="form-control"
+                    <input type="text" style="width:150px !important;" name="phoneNo" id="phoneNo" class="form-control"
                         placeholder="Phone number"  value="{{ _OBJVALUE($worker, 'phone') }}"required>
                 </div>
-                <div class="col-md-2 mb-3">
-                    <input type="text" style="width:150px !important" name="email" id="email" class="form-control"  value="{{ _OBJVALUE($worker, 'email') }}" placeholder="Email" required>
+                <div class="col-md-2 mb-2">
+                    <input type="text" style="width:150px !important;margin-left:-80px" name="email" id="email" class="form-control"  value="{{ _OBJVALUE($worker, 'email') }}" placeholder="Email" required>
                 </div>
-                <div class="col-md-2 mb-3">
-                    <input type="text" style="width:150px !important" name="whatsapp" id="whatsapp" class="form-control" placeholder="Whatsapp" value="{{ _OBJVALUE($worker, 'whatsapp') }}"
+                <div class="col-md-2 mb-2">
+                    <input type="text" style="width:150px !important;margin-left:-160px" name="whatsapp" id="whatsapp" class="form-control" placeholder="Whatsapp" value="{{ _OBJVALUE($worker, 'whatsapp') }}"
                         required>
                 </div>
-                <div class="col-md-2 mb-3">
-                    <input type="text" style="width:150px !important" name="ssn" id="ssn" class="form-control"
+                <div class="col-md-2 mb-2">
+                    <input type="text" style="width:150px !important;margin-left:-240px" name="ssn" id="ssn" class="form-control"
                         placeholder="Social Security Number"  value="{{ _OBJVALUE($worker, 'ssn') }}"required>
                 </div>
             </div>
