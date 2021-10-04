@@ -64,7 +64,7 @@
                 </div>
                 </div>
             </div>
-        </div>
+        </div> 
         <!-- Trade History Widget -->
         <div class="col-xl-8 col-md-12" style="padding-right:0px">
             <div class="ms-panel ms-widget ms-panel-fh">
