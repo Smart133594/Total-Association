@@ -80,6 +80,7 @@
             <label for="userName">Date of birth</label>
             <div class="form-row" id="userName">
                 <div class="col-md-2 mb-1">
+                    <label>Year</label>
                     <select style="width:150px !important" name="year" id="year" class="form-control" onchange="changeDate()" required>
                         <option value="">Select Year</option>
                         @for ($i = 1900; $i < date('Y'); $i++)
@@ -88,6 +89,7 @@
                     </select>
                 </div>
                 <div class="col-md-2 mb-1">
+                    <label style="margin-left:-80px">Month</label>
                     <select style="width:150px !important;margin-left:-80px" name="month" id="month" class="form-control" onchange="changeDate()" required>
                         <option value="">Select Month</option>
                         @for ($i = 1; $i < 13; $i++)
@@ -96,6 +98,7 @@
                     </select>
                 </div>
                 <div class="col-md-2 mb-1">
+                    <label style="margin-left:-80px">Day</label>
                     <select style="width:150px !important;margin-left:-160px" name="date" id="date" class="form-control" required>
                         <option value="">Select Date</option>
                     </select>
@@ -147,30 +150,39 @@
             <br>
             <div class="form-row" id="address"> 
                 <div class="col-md-2 mb-1">
+                    <label>City</label>
                     <input type="text" style="width:150px !important;" name="city" id="city" class="form-control" placeholder="City"  value="{{ _OBJVALUE($worker, 'city') }}" required>
                 </div>
                 <div class="col-md-2 mb-1">
+                    <label style="margin-left:-80px">State</label>
                     <input type="text" style="width:150px !important;margin-left:-80px" name="state" id="state" class="form-control" placeholder="State" value="{{ _OBJVALUE($worker, 'state') }}" required>
                 </div>
                 <div class="col-md-2 mb-2">
+                    <label style="margin-left:-160px">Zipcode</label>
                     <input type="text" style="width:150px !important;margin-left:-160px" name="zipcode" id="zipcode" class="form-control" placeholder="Zip" value="{{ _OBJVALUE($worker, 'zipcode') }}" required>
                 </div>
             </div>
                 <br>
             <div class="form-row" id="address"> 
                 <div class="col-md-2 mb-2">
+                    <label>Phone Number</label>
                     <input type="text" style="width:150px !important;" name="phoneNo" id="phoneNo" class="form-control"
                         placeholder="Phone number"  value="{{ _OBJVALUE($worker, 'phone') }}"required>
                 </div>
                 <div class="col-md-2 mb-2">
+                    <label style="margin-left:-80px">Email</label>
                     <input type="text" style="width:150px !important;margin-left:-80px" name="email" id="email" class="form-control"  value="{{ _OBJVALUE($worker, 'email') }}" placeholder="Email" required>
                 </div>
                 <div class="col-md-2 mb-2">
+                    <label style="margin-left:-160px">WhatsApp</label>
                     <input type="text" style="width:150px !important;margin-left:-160px" name="whatsapp" id="whatsapp" class="form-control" placeholder="Whatsapp" value="{{ _OBJVALUE($worker, 'whatsapp') }}"
                         required>
                 </div>
+            </div><br>
+            <div class="form-row" id="address"> 
                 <div class="col-md-2 mb-2">
-                    <input type="text" style="width:150px !important;margin-left:-240px" name="ssn" id="ssn" class="form-control"
+                    <label>Social Security Number</label>
+                    <input type="text" style="width:150px !important;" name="ssn" id="ssn" class="form-control"
                         placeholder="Social Security Number"  value="{{ _OBJVALUE($worker, 'ssn') }}"required>
                 </div>
             </div>
