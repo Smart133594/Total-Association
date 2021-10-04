@@ -524,7 +524,7 @@
         });
         $("#employees").html(html);
     }
-    // ------------ ---
+    // ---------------
     function changeExprtType(){
         const tmp = isAll ? workers : workers.filter(item => item.worker_type == 0) || [];
         var html = `<option value="">ALL</option>`;
