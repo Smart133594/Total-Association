@@ -683,6 +683,8 @@
                 var width;
                 if(txt.length > 30)
                     width = (j==4) ? 210 : 220; //make 4th column smaller
+                else if(!isNaN(txt) || txt == "#")
+                    width = (j==4) ? 50 : 60; //make 4th column smaller
                 else
                     width = (j==4) ? 100 : 110; //make 4th column smaller
 
