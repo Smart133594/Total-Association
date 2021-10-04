@@ -466,7 +466,7 @@ class PunchClockController extends Controller
                 <td></td>
                 <td colspan="2"></td>
             </tr>
-            <tr>
+            <tr> 
                 <td colspan="2">'.$association->email.'</td>
                 <td></td>
                 <td colspan="2"></td>
