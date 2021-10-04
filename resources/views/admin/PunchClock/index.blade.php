@@ -30,6 +30,7 @@
             </nav>
         </div>
         <!-- User Activity By Country Widget -->
+        <form class="row col-xl-12 col-md-12" style="padding-right:0px" id="filter_form">
         <div class="col-xl-4 col-md-12">
             <div class="ms-panel ms-widget">
                 @include('admin.includes.msg')
@@ -45,7 +46,6 @@
                     if(isset($_GET['pay_from'])) $pay_from = $_GET['pay_from'];
                     if(isset($_GET['pay_to'])) $pay_to = $_GET['pay_to'];
                 @endphp
-                <form id="filter_form">
                 <div class="ms-panel-header">
                 <h3 style="font-size:35px !important">Active Employee</h3>
                 </div>
@@ -63,11 +63,10 @@
                 <div class="col-md-12 m-3" id="user_info">
                 </div>
                 </div>
-                </form>
             </div>
         </div>
         <!-- Trade History Widget -->
-        <div class="col-xl-8 col-md-12">
+        <div class="col-xl-8 col-md-12" style="padding-right:0px">
             <div class="ms-panel ms-widget ms-panel-fh">
                 <div class="ms-panel-header">
                 <h3 style="font-size:35px !important">Time Period</h3>
@@ -75,7 +74,6 @@
                 <div class="ms-panel-body p-0">
                 <div class="table-responsive">
                     <div class="col-md-12">
-                            <form id="filter_form">
 
                                 <div class="row">
                                     <div class="col-md-12" style="margin-top: 2%; margin-bottom: 4%;">
@@ -99,12 +97,12 @@
                                         <input type="submit" value="Go" class="btn btn-primary m-0 p-1">
                                     </div>
                                 </div>
-                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        </form>
 
         <div class="col-xl-12 col-md-12">
             <div class="ms-panel ms-widget ms-panel-fh">
