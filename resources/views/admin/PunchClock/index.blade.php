@@ -172,9 +172,9 @@
                                     @endphp
                                 </td>
                                 <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ date('d/m/Y', strtotime($item->in_date)) }}</td>
-                                <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ date('h:i', strtotime($item->in_date)) }}</td>
+                                <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ date('h:i a', strtotime($item->in_date)) }}</td>
                                 <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $item->out_date ? date('d/m/Y', strtotime($item->out_date)) : '-' }}</td>
-                                <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $item->out_date ? date('h:i', strtotime($item->out_date)) : '-' }}</td>
+                                <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $item->out_date ? date('h:i a', strtotime($item->out_date)) : '-' }}</td>
                                 <td class="text-flow" onclick="goto('{{ $detail_uri }}')">{{ $item->duration }}</td>
                                 <td>
                                     <div class="dropdown show">
@@ -261,32 +261,17 @@
                                 </div>
                             </div>
                         </div>
-                            <!-- <div class="mb-3">
-                                <label class="ms-checkbox-wrap">
-                                    <input type="radio" name="decimal_total" id="decimal_total" checked>
-                                    <i class="ms-checkbox-check"></i>
-                                </label>
-                                <span> Display Totals In Decimal format </span>
-                            </div>
-                            <div class="mb-3">
-                                <label class="ms-checkbox-wrap">
-                                    <input type="radio" name="time_24_format" id="time_24_format" checked>
-                                    <i class="ms-checkbox-check"></i>
-                                </label>
-                                <span> Display Time in 24 hour format. </span>
-                            </div> -->
-
                         <div id="all_radio">
                             <div class="mb-3">
                                 <label class="ms-checkbox-wrap">
-                                    <input type="radio" name="diplay_radio" value="decimal_total" checked="">
+                                    <input type="checkbox" name="diplay_radio" id="decimal_total" value="decimal_total" checked="">
                                     <i class="ms-checkbox-check"></i>
                                 </label>
                                 <span> Display Totals In Decimal format </span>
                             </div>
                             <div class="mb-3">
                                     <label class="ms-checkbox-wrap">
-                                        <input type="radio" name="diplay_radio" value="time_24_format">
+                                        <input type="checkbox" name="diplay_radio" id="time_24_format" value="time_24_format" checked="">
                                         <i class="ms-checkbox-check"></i>
                                     </label>
                                     <span> Display Time in 24 hour format. </span>
@@ -377,14 +362,14 @@
                         </div>
                         <div class="mb-3">
                             <label class="ms-checkbox-wrap">
-                                <input type="radio" name="diplay_radio1" id="decimal_total1" checked>
+                                <input type="checkbox" name="diplay_radio1" id="decimal_total1" checked>
                                 <i class="ms-checkbox-check"></i>
                             </label>
                             <span> Display Totals In Decimal format </span>
                         </div>
                         <div class="mb-3">
                             <label class="ms-checkbox-wrap">
-                                <input type="radio" name="diplay_radio1" id="time_24_format1">
+                                <input type="checkbox" name="diplay_radio1" id="time_24_format1" checked>
                                 <i class="ms-checkbox-check"></i>
                             </label>
                             <span> Display Time in 24 hour format. </span>
@@ -394,14 +379,14 @@
                         <div id="all_radio">
                         <div class="mb-3">
                             <label class="ms-checkbox-wrap">
-                                <input type="radio" name="report_radio1" value="groupEmployee" checked="">
+                                <input type="radio" name="report_radio1" id="groupEmployee" value="groupEmployee" checked>
                                 <i class="ms-checkbox-check"></i>
                             </label>
                             <span> Group Time Entires by Employee </span>
                         </div>
                         <div class="mb-3">
                                 <label class="ms-checkbox-wrap">
-                                    <input type="radio" name="report_radio1" value="groupDay">
+                                    <input type="radio" name="report_radio1" id="groupDay" value="groupDay">
                                     <i class="ms-checkbox-check"></i>
                                 </label>
                                 <span> Group Time Entires by Day </span>
@@ -563,6 +548,7 @@
         var unit_hours = $("#in_a").val();
         var per_minutes = $("#in_b").val();
         var decimal_total = $('#decimal_total').is(":checked");
+        var time_24_format = $('#time_24_format').is(":checked");
         var time_format = $('#time_format').is(":checked");
         var hours_shift = $('#hours_shift').is(":checked");
 
@@ -584,6 +570,7 @@
         formData.append('pay_period_from', pay_period_from);
         formData.append('pay_period_to', pay_period_to);
         formData.append('decimal_total', decimal_total);
+        formData.append('time_24_format', time_24_format);
         formData.append('time_format', time_format);
         formData.append('hours_shift', hours_shift);
         formData.append('unit_hours', time_format);
@@ -596,6 +583,7 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
+                    console.log(data);
                     if(data == "noData")
                     {
                         toastr.warning('No Data', 'Warning');
@@ -626,8 +614,10 @@
         var unit_hours = $("#in_a1").val();
         var per_minutes = $("#in_b1").val();
         var decimal_total = $('#decimal_total1').is(":checked");
+        var time_24_format = $('#time_24_format1').is(":checked");
         var time_format = $('#time_format1').is(":checked");
         var hours_shift = $('#hours_shift1').is(":checked");
+        var groupEmployee = $('#groupEmployee').is(":checked");
 
         if(pay_period_from == "" || pay_period_to == ""){
             toastr.warning('Input the valid from time and to time.', 'Warning');
@@ -648,8 +638,10 @@
         formData.append('pay_period_from', pay_period_from);
         formData.append('pay_period_to', pay_period_to);
         formData.append('decimal_total', decimal_total);
+        formData.append('time_24_format', time_24_format);
         formData.append('time_format', time_format);
         formData.append('hours_shift', hours_shift);
+        formData.append('groupEmployee', groupEmployee);
         formData.append('unit_hours', time_format);
         formData.append('per_minutes', per_minutes);
         formData.append('_token', "{{csrf_token()}}");
