@@ -513,7 +513,6 @@
         }
         isAll = 'all';
         changeExprtType();
-        selectOriginEmployee();
     });
 
     function changeOption(){
