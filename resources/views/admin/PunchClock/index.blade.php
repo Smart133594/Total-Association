@@ -213,23 +213,6 @@
                 <div class="ms-panel-body p-0">
                 <div class="table-responsive">
                     <div class="col-md-12" style="margin-bottom:1%">
-                        <ul class="ms-list d-flex horizontal_ads">
-                            <li class="ms-list-item pl-0">
-                                <label class="ms-checkbox-wrap">
-                                    <input type="radio" name="worker_type" value="employee" >
-                                    <i class="ms-checkbox-check"></i>
-                                </label>
-                                <span> Employee </span>
-                            </li>
-                            <li class="ms-list-item">
-                                <label class="ms-checkbox-wrap">
-                                    <input type="radio" name="worker_type" value="all" checked="">
-                                    <i class="ms-checkbox-check"></i>
-                                </label>
-                                <span> All </span>
-                            </li>
-                        </ul>
-                        
                         <div class="mb-3" style="margin-top:1%">
                             <h6 style="font-size 18px !important;">
                                 In order to print a report of the above Employee and time interval. Please select bottom settings and click on "Create PDF"
@@ -293,6 +276,7 @@
                                     <span> Group Time Entires by Day </span>
                             </div>
                         </div> -->
+                        <a href="{{ Storage::url('./pdf/PunchClock.pdf') }}" download id="downloadPDF" hidden>DownLoad</a>
                         <input type="button" value="Create PDF" class="btn btn-primary col-md-2" onclick="exprtSheet()">
                         </div>
                     </div>
@@ -303,7 +287,7 @@
         <div class="col-xl-12 col-md-12">
             <div class="ms-panel ms-widget ms-panel-fh">
                 <div class="ms-panel-header">
-                <h4 style="font-size:35px !important">All Employee Report</h4>
+                <h4 style="font-size:35px !important">All Employees Report</h4>
                 </div>
                 <div class="ms-panel-body p-0">
                 <div class="table-responsive">
@@ -433,7 +417,6 @@
         </div>
     </div>
 </div>
-
 <style>
     @media screen and (max-width: 966px) {
         #divb { min-width: 22% !important; margin-left: -2% !important; }
@@ -581,14 +564,16 @@
                 contentType: false,
                 success: function (data) {
                     console.log(data);
-                    if(data == "noData")
+                    if(data == "success")
                     {
-                        toastr.warning('No Data', 'Warning');
+                        document.getElementById("downloadPDF").click();
+                        toastr.success('Download Success', 'Success');
                         $('#preloader-wrap').addClass('loaded');
                         return;
                     }else{
-                        table2pdf(data);
+                        toastr.warning('No data to show', 'Warning');
                         $('#preloader-wrap').addClass('loaded');
+                        return;
                     }
                 },
                 error: function(err) {
@@ -649,14 +634,17 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    if(data == "noData")
+                    console.log(data);
+                    if(data == "success")
                     {
-                        toastr.warning('No Data', 'Warning');
+                        document.getElementById("downloadPDF").click();
+                        toastr.success('Download Success', 'Success');
                         $('#preloader-wrap').addClass('loaded');
                         return;
                     }else{
-                        table2pdf(data);
+                        toastr.warning('No data to show', 'Warning');
                         $('#preloader-wrap').addClass('loaded');
+                        return;
                     }
                 },
                 error: function(err) {
@@ -665,35 +653,6 @@
                 }
             });
     }
-    function table2pdf(data) {
-        console.log(data);
-        $("#export_table1").append(data);
-        // var elt = document.getElementById('export_table1');
-        // var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
-        // XLSX.writeFile(wb, ('Punch Clock.xlsx'));
-        // $("#export_table1").empty();
-
-        var pdf = new jsPDF('p', 'pt', 'letter');
-
-        pdf.cellInitialize();
-        pdf.setFontSize(10);
-        $.each( $('#customers tr'), function (i, row){
-            $.each( $(row).find("td, th"), function(j, cell){
-                var txt = $(cell).text().trim() || " ";
-                var width;
-                if(txt.length > 30)
-                    width = (j==4) ? 210 : 220; //make 4th column smaller
-                else
-                    width = (j==4) ? 100 : 110; //make 4th column smaller
-
-                pdf.cell(10, 50, width, 30, txt, i);
-            });
-        });
-
-        pdf.save('PunchClock.pdf');
-        $("#export_table1").empty();
-
-    } 
 
     // ---------------
     function userinfo() {

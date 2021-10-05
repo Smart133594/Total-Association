@@ -245,7 +245,7 @@
                 <div class="col-md-4">
                     <label for="active_state">Status</label>
                     <select name="active_state" id="active_state" class="form-control" onchange="changeState(this.value)">
-                        <option value="0" {{ _OBJVALUE($worker, 'active_state') == 0 ? "selected" : '' }}>Actived</option>
+                        <option value="0" {{ _OBJVALUE($worker, 'active_state') == 0 ? "selected" : '' }}>Activate</option>
                         <option value="1" {{ _OBJVALUE($worker, 'active_state') == 1 ? "selected" : '' }}>Archived</option>
                     </select>
                 </div>

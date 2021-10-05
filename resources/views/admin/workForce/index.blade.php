@@ -68,13 +68,13 @@
                                                 <form action="{{ route('work-force.destroy',$worker->edit_id) }}" method="post">
                                                     @method("delete")
                                                     @csrf
-                                                    <button type="submit" class="dropdown-item" onclick=" return confirm('Are you sure to archive this? ')">Archive</button>
+                                                    <button type="submit" class="dropdown-item" onclick=" return confirm('Are you sure to archive this? ')">Archived</button>
                                                 </form>
                                                 @else
                                                 <form  action="/work-force/set-active/{{$worker->edit_id}}" method="get">
                                                     @method("delete")
                                                     @csrf
-                                                    <button type="submit" class="dropdown-item" onclick=" return confirm('Are you sure to active this? ')">Active</button>
+                                                    <button type="submit" class="dropdown-item" onclick=" return confirm('Are you sure to active this? ')">Activate</button>
                                                 </form>
                                                 @endif
                                             </div>
