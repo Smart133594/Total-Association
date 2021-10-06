@@ -188,6 +188,14 @@ class PunchClockController extends Controller
         return "success";
     }
 
+    public function download()
+    {
+        $myFile = storage_path("app/public/pdf/PunchClock.pdf");
+        $headers = ['Content-Type: application/pdf'];
+
+        return response()->download($myFile, "PunchClock.pdf", $headers);
+    }
+
     public function exportTimeSheet1(Request $request)
     {
         $decimal_total = $request->decimal_total;
@@ -303,7 +311,7 @@ class PunchClockController extends Controller
 
             }
 
-            if($request->groupEmployee == "true")
+            if($request->groupEmployee == "false")
             {
                 view()->share('totalData', compact('totalData'));
                 $pdf_doc = PDF::loadView('admin.PunchClock.export_all_employee',  compact('totalData'));
