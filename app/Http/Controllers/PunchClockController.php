@@ -319,13 +319,11 @@ class PunchClockController extends Controller
                 view()->share('totalData', compact('totalData'));
                 $pdf_doc = PDF::loadView('admin.PunchClock.export_all_day',  compact('totalData'));
             }
-            try {
-                Storage::put('public/pdf/PunchClock.pdf', $pdf_doc->output());
-            } catch (\Throwable $th) {
-                return "false";
-            }
 
-            return "success";
+            if(!Storage::disk('public')->put("PunchClock.pdf", $pdf_doc->output())) {
+                return false;
+            }
+            return true;
         // }else{
 
         //     $workforce = WorkForce::get();
