@@ -563,8 +563,7 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    console.log(data);
-                    if(data == "success")
+                    if(data == true)
                     {
                         document.getElementById("downloadPDF").click();
                         toastr.success('Download Success', 'Success');

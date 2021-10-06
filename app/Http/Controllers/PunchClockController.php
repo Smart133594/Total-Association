@@ -102,8 +102,7 @@ class PunchClockController extends Controller
         $punchClock = $punchClock->get();
         $result = ''; $res2 = ''; $result_duration = 0;
         $association = null;
-        print_r(count($punchClock));exit();
-        if($request->pay_period_from == "")
+        if(!isset($request->pay_period_from))
             return "noData";
 
         $totalArray = [];
@@ -183,9 +182,10 @@ class PunchClockController extends Controller
         view()->share('employee', compact('data'));
         $pdf_doc = PDF::loadView('admin.PunchClock.export_pdf',  compact('data'));
 
-        Storage::put('public/pdf/PunchClock.pdf', $pdf_doc->output());
-
-        return "success";
+        if(!Storage::disk('public')->put("uploads/PunchClock.pdf", $pdf_doc->output())) {
+            return false;
+        }
+        return true;
     }
 
     public function download()
