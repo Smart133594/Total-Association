@@ -276,7 +276,7 @@
                                     <span> Group Time Entires by Day </span>
                             </div>
                         </div> -->
-                        <a href="{{ Storage::url('./pdf/PunchClock.pdf') }}" download id="downloadPDF" hidden>DownLoad</a>
+                        <a href="{{ Storage::url('./app/public/pdf/PunchClock.pdf') }}" download id="downloadPDF" hidden>DownLoad</a>
                         <input type="button" value="Create PDF" class="btn btn-primary col-md-2" onclick="exprtSheet()">
                         </div>
                     </div>
