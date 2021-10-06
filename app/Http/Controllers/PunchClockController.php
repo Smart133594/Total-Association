@@ -320,7 +320,7 @@ class PunchClockController extends Controller
                 $pdf_doc = PDF::loadView('admin.PunchClock.export_all_day',  compact('totalData'));
             }
 
-            if(!Storage::disk('public')->put("PunchClock.pdf", $pdf_doc->output())) {
+            if(!Storage::disk('public')->put("uploads/PunchClock.pdf", $pdf_doc->output())) {
                 return false;
             }
             return true;
