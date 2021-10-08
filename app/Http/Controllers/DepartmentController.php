@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\DepartmentTask;
 use App\Models\DepartmentNote;
+use App\Models\DepartmentFile;
 use App\Models\WorkForce;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -47,6 +48,8 @@ class DepartmentController extends Controller
     public function create(Request $request)
     {
         //
+        $workforce = WorkForce::get();
+
         $departs = Department::get();
         $notes = DepartmentNote::get();
         $str_departs = '';
@@ -59,10 +62,11 @@ class DepartmentController extends Controller
         $department['edit_id'] = Crypt::encryptString($department->id);
         $departmentTask = null;
         $display_property = "display: none;";
+        $taskState = false;
 
         $tasks = DepartmentTask::get();
 
-        return view("admin.Department.create" , compact('department', 'notes', 'departmentTask', 'display_property', 'str_departs', 'tasks'));
+        return view("admin.Department.create" , compact('department', 'notes', 'departmentTask', 'workforce', 'display_property', 'str_departs', 'tasks', 'taskState'));
     }
 
     /**
@@ -157,8 +161,12 @@ class DepartmentController extends Controller
     public function edit($id)
     {
         //
+        $workforce = WorkForce::get();
+
         $id = Crypt::decryptString($id);
         $departs = Department::get();
+
+        $taskState = true;
         
         $departmentTask = DepartmentTask::where('id', $id)->first();
         // $id = Crypt::decryptString($request->department);
@@ -173,7 +181,11 @@ class DepartmentController extends Controller
 
         $department['edit_id'] = Crypt::encryptString($department->id);
         $display_property = "";
-        return view("admin.Department.create" , compact('departid', 'department', 'departmentTask', 'display_property', 'str_departs'));
+
+        $files = DB::table('department_files as A')->leftjoin('users as B', 'A.userid', '=', 'B.id')->where('A.departmenttaskid', $id)->select('A.id', 'B.name', 'A.name as fileName', 'A.type', 'A.note', 'A.updated_at')->get()->toArray();
+        $notes = DB::table('department_notes as A')->leftjoin('users as B', 'A.userid', '=', 'B.id')->where('A.departmenttaskid', $id)->select('A.id', 'B.name', 'A.note', 'A.updated_at')->get()->toArray();
+
+        return view("admin.Department.create" , compact('departid', 'department', 'workforce', 'files', 'notes', 'departmentTask', 'taskState', 'display_property', 'str_departs'));
     }
 
     /**
@@ -201,20 +213,20 @@ class DepartmentController extends Controller
             'description' => $request->description,
         ])->all())->id;
 
-        return $departmentTaskid;
+        return Crypt::encryptString($departmentTaskid);
     }
 
     public function add_note(Request $request)
     {
+
+        $departmenttaskid = Crypt::decryptString($request->departmenttaskid);
         $table = new DepartmentNote;
-        $table->departmenttaskid = $request->departmenttaskid;
+        $table->departmenttaskid = $departmenttaskid;
         $table->userid = Auth::user()->id;
         $table->note = $request->note;
         $table->save();
 
-        $user = DB::table('users')->where('name', 'John')->first();
-        $notes = DepartmentNote::where('departmenttaskid', $request->departmenttaskid)->get();
-        $data = DB::table('department_notes as A')->leftjoin('users as B', 'A.userid', '=', 'B.id')->select('A.id', 'B.name', 'A.note', 'A.created_at')->get()->toArray();
+        $data = DB::table('department_notes as A')->leftjoin('users as B', 'A.userid', '=', 'B.id')->where('A.departmenttaskid', $departmenttaskid)->select('A.id', 'B.name', 'A.note', 'A.created_at')->get()->toArray();
         return $data;
     }
 
@@ -226,33 +238,76 @@ class DepartmentController extends Controller
 
     public function edit_note(Request $request)
     {
+        $departmenttaskid = Crypt::decryptString($request->departmenttaskid);
+
         DepartmentNote::where('id', $request->id)
                 ->update([
                     'note' => $request->note, 
                 ]);
 
-        $user = DB::table('users')->where('name', 'John')->first();
-        $notes = DepartmentNote::where('departmenttaskid', $request->departmenttaskid)->get();
-        $data = DB::table('department_notes as A')->leftjoin('users as B', 'A.userid', '=', 'B.id')->select('A.id', 'B.name', 'A.note', 'A.created_at')->get()->toArray();
+        $data = DB::table('department_notes as A')->leftjoin('users as B', 'A.userid', '=', 'B.id')->where('A.departmenttaskid', $departmenttaskid)->select('A.id', 'B.name', 'A.note', 'A.created_at')->get()->toArray();
         return $data;
     }
 
     public function delete_note(Request $request)
     {
+        
         DepartmentNote::where('id', $request->id)->delete();   
+        $departmentid = Crypt::decryptString($request->departmenttaskid);
 
-        $user = DB::table('users')->where('name', 'John')->first();
-        $notes = DepartmentNote::where('departmenttaskid', $request->departmenttaskid)->get();
-        $data = DB::table('department_notes as A')->leftjoin('users as B', 'A.userid', '=', 'B.id')->select('A.id', 'B.name', 'A.note', 'A.created_at')->get()->toArray();
+        $data = DB::table('department_notes as A')->leftjoin('users as B', 'A.userid', '=', 'B.id')->where('departmenttaskid', $departmentid)->select('A.id', 'B.name', 'A.note', 'A.created_at')->get()->toArray();
         return $data;
     }
 
     public function add_file(Request $request){
-        $url = '';
-        foreach ($request->files as $kk => $r) {
-            $url = $this->uploadimage($request, $kk);
+
+        $request->departmenttaskid = Crypt::decryptString($request->departmenttaskid);
+
+        $store = new DepartmentFile();
+
+        $store->userid = Auth::user()->id;
+
+        $all = $request->all();
+
+        unset($all['_token']);
+        foreach ($all as $k => $v) {
+            $store->$k = $request->$k;
         }
-        return $url;
+        foreach ($request->files as $kk => $r) {
+            $store->$kk = $this->uploadimage($request, $kk);
+        }
+        $store->save();
+
+        $data = DB::table('department_files as A')->leftjoin('users as B', 'A.userid', '=', 'B.id')->where('A.departmenttaskid', $request->departmenttaskid)->select('A.id', 'B.name', 'A.name as fileName', 'A.type', 'A.note', 'A.created_at')->get()->toArray();
+        return $data;
+    }
+
+    public function edit_file(Request $request){
+
+        $departmenttaskid = Crypt::decryptString($request->departmenttaskid);
+
+        $store = new DepartmentFile();
+
+        if($request->fileEditState == "true")
+        {
+            DepartmentFile::where('id', $request->id)
+                ->update([
+                    'type' => $request->type,
+                    'name' => $request->name,
+                    'note' => $request->note, 
+                ]);
+            foreach ($request->files as $kk => $r) {
+                $store->$kk = $this->uploadimage($request, $kk);
+            }
+        }else{
+            DepartmentFile::where('id', $request->id)
+            ->update([
+                'note' => $request->note, 
+            ]);
+        }
+
+        $data = DB::table('department_files as A')->leftjoin('users as B', 'A.userid', '=', 'B.id')->where('A.departmenttaskid', $departmenttaskid)->select('A.id', 'B.name', 'A.name as fileName', 'A.type', 'A.note', 'A.created_at')->get()->toArray();
+        return $data;
     }
 
     /**
@@ -273,8 +328,12 @@ class DepartmentController extends Controller
         return redirect()->back();
     }
 
-    public function delete_file($id)
+    public function delete_file(Request $request)
     {
-        DepartmentTask::where('id', $id)->delete();
+        $id = Crypt::decryptString($request->departmenttaskid);
+
+        DepartmentFile::where('id', $request->id)->delete();
+        $data = DB::table('department_files as A')->leftjoin('users as B', 'A.userid', '=', 'B.id')->where('A.departmenttaskid', $id)->select('A.id', 'B.name', 'A.name as fileName', 'A.type', 'A.note', 'A.created_at')->get()->toArray();
+        return $data;
     }
 }

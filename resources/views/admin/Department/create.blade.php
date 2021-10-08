@@ -33,6 +33,7 @@
             <div class="ms-panel-body">
                 @include('admin.includes.msg')
                 @csrf
+                
                 <input type="hidden" name="departmentid" id="departmentid" value="{{ _OBJVALUE($department, 'edit_id') }}">
                 <input type="hidden" name="departmentTaskid" id="departmentTaskid" value="{{ _OBJVALUE($departmentTask, 'edit_id') }}">
 
@@ -47,14 +48,18 @@
                     <label for="date">Due Date</label>
                     <input type="date" name="date" id="date" class="form-control" required value="{{ _OBJVALUE($departmentTask, 'date') }}">
                 </div>
-                <div style="width: 180px" class="mb-3" style="display: none;">
-                    <label for="status" style="display: none;">Worker</label>
-                    <select name="workerid" id="workerid" class="form-control" required style="display: none;">
-                        @if (_OBJVALUE($department, "Workers"))
-                            @foreach (_OBJVALUE($department, "Workers") as $worker)
-                            <option value="{{ $worker->id }}"  {{ _OBJVALUE($departmentTask, 'workerid') == $worker->id ? 'selected' : '' }}>{{     $worker->firstname }} {{ $worker->middlename }} {{ $worker->lastname }}</option>
-                            @endforeach
-                        @endif
+                <div style="width: 180px" class="mb-3">
+                    <label for="status">Worker</label>
+                    <select name="workerid" id="workerid" class="form-control" required>
+                        @foreach ($workforce as $value)
+                            @php
+                                $selected = false;
+                                if(isset($_GET['emp_'.$department->id])) {
+                                    $selected = $_GET['emp_'.$department->id] == $value->id;
+                                }
+                            @endphp
+                                <option value='{{$value->id}}' {{$selected ? "selected" : ""}}>{{$value->firstname.' '.$value->middlename.' '.$value->lastname}}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div style="width: 180px" class="mb-3">
@@ -91,37 +96,40 @@
                     </div>
                 </div>
                 <br>
-                <table id="data-table1" class="d-block d-md-table table-responsive table table-striped thead-primary w-100">
+                <table id="data-table2" class="d-block d-md-table table-responsive table table-striped thead-primary w-100">
                     <thead>
                     <tr role="row">
                         <th>#</th>
                         <th>Time</th>
                         <th>By</th>
-                        <th>Note</th>
+                        <th style="min-width:150px;align:center">Note</th>
                         <th class="no-sort" style="max-width:100px;align:center">Action</th>
                     </tr>
                     </thead>
                     <tbody id="noteBody">
-                    @if (!empty($notes) &&  $notes->count()>0)
-                        @foreach ($notes as $key => $val)
-                        <tr role="row" class="odd">
-                            <td class="sorting_1">{{$key+1}}</td>
-                            <td class="sorting_1">{{$val->updated_at}}</td>
-                            <td class="sorting_1">{{$val->userid}}</td>
-                            <td class="sorting_1" id="td_note_{{$val->id}}">{{$val->note}}</td>
-                            <td class="action">
-                                <div class="dropdown show">
-                                    <a class="cust-btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-th ms-text-primary"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="#" onclick="editNote({{$val->id}})">Edit</a>
-                                        <a class="dropdown-item" href="#" onclick="deleteNote({{$val->id}})">Delete</a>
+                        
+                    @if ($taskState)
+                        @if (!empty($notes))
+                            @foreach ($notes as $key => $val)
+                            <tr role="row" class="odd">
+                                <td class="sorting_1">{{$key+1}}</td>
+                                <td class="sorting_1">{{date('d/m/Y g:i A', strtotime($notes[$key]->updated_at))}}</td>
+                                <td class="sorting_1">{{$notes[$key]->name}}</td>
+                                <td class="sorting_1" id="td_note_{{$val->id}}">{{$notes[$key]->note}}</td>
+                                <td class="action">
+                                    <div class="dropdown show">
+                                        <a class="cust-btn dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-th ms-text-primary"></i>
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                            <a class="dropdown-item" onclick="editNote({{$notes[$key]->id}})">Edit</a>
+                                            <a class="dropdown-item" onclick="delete_note({{$notes[$key]->id}})">Delete</a>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
+                                </td>
+                            </tr>
+                            @endforeach
+                        @endif
                     @endif
                     </tbody>
                 </table>
@@ -129,7 +137,7 @@
                 <div class="row">
                     <div class="col-6"><h5>File</h5></div>
                     <div class="col-6">
-                        <button type="button" class="btn btn-primary" style="min-width: 5px !important; margin-top: -3px; margin-left: 90%;" data-toggle="modal" data-target="#fileModal">+</button>
+                        <button type="button" class="btn btn-primary" style="min-width: 5px !important; margin-top: -3px; margin-left: 90%;" onclick="addFileModalShow()">+</button>
                     </div>
                 </div>
                 <br>
@@ -140,32 +148,35 @@
                         <th>Time</th>
                         <th>By</th>
                         <th>File Type</th>
-                        <th>Note</th>
-                        <th class="no-sort">Action</th>
+                        <th style="min-width:200px;align:center">Note</th>
+                        <th class="no-sort" style="max-width:100px;align:center">Action</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    @if (!empty($tasks) &&  $tasks->count()>0)
-                        @foreach ($tasks as $key => $val)
-                        <tr role="row" class="odd">
-                            <td class="sorting_1">{{$key+1}}</td>
-                            <td class="sorting_1">{{$val->updated_at}}</td>
-                            <td class="sorting_1">{{$val->workerid}}</td>
-                            <td class="sorting_1">{{substr($val->image, -3)}} File</td>
-                            <td class="sorting_1" id="td_file_{{$val->id}}">{{$val->description}}</td>
-                            <td class="action">
-                                <div class="dropdown show">
-                                    <a class="cust-btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-th ms-text-primary"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="#" onclick="editFile({{$val->id}}, {{$val->note}})">Edit</a>
-                                        <a class="dropdown-item" href="#" onclick="deleteFile({{$val->id}})">Delete</a>
+                    <tbody id="fileBody">
+                    @if ($taskState)
+                        @if (!empty($files))
+                            @foreach ($files as $key => $val)
+                            <tr role="row" class="odd">
+                                <td class="sorting_1">{{$key+1}}</td>
+                                <td class="sorting_1">{{date('d/m/Y g:i A', strtotime($files[$key]->updated_at))}}</td>
+                                <td class="sorting_1" id="file_name_{{$files[$key]->id}}" hidden>{{$files[$key]->fileName}}</td>
+                                <td class="sorting_1" id="name_{{$files[$key]->id}}">{{$files[$key]->name}}</td>
+                                <td class="sorting_1">{{$files[$key]->type}}</td>
+                                <td class="sorting_1" id="note_{{$files[$key]->id}}">{{$files[$key]->note}}</td>
+                                <td class="action">
+                                    <div class="dropdown show">
+                                        <a class="cust-btn dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-th ms-text-primary"></i>
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                            <a class="dropdown-item" onclick="editFile({{$files[$key]->id}})">Edit</a>
+                                            <a class="dropdown-item" onclick="delete_file({{$files[$key]->id}})">Delete</a>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
+                                </td>
+                            </tr>
+                            @endforeach
+                        @endif
                     @endif
                     </tbody>
                 </table>
@@ -173,7 +184,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="file_add_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -185,13 +196,37 @@
                         <input type="file" id="file" style="display: none;" name="logo" onchange="previewA(this)">
                         <div class="row" style="margin-left:20px">
                             <label for="file" class="col-md-3 btn btn-primary">Upload File</label><br>
-                            <label class="col-md-3" id="fileName" style="margin-top: 25px;"></label><br>
+                            <label class="col-md-3" id="file_add_name" style="margin-top: 25px;"></label><br>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <input type="button" value="Save File" onclick="addFile()" class="btn btn-primary">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="file_edit_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit File</h5>
+                </div>
+                <div class="modal-body" id="modal-details">
+                    <textarea id="file_edit_note" rows="4" class="form-control" placeholder="Write Details Note" spellcheck="false"></textarea><br>
+                    <div class="form-group">
+                        <input type="file" id="file_edit" style="display: none;" name="logo" onchange="previewB(this)">
+                        <div class="row" style="margin-left:20px">
+                            <label for="file_edit" class="col-md-3 btn btn-primary">Upload File</label><br>
+                            <label class="col-md-3" id="file_edit_name" style="margin-top: 25px;"></label><br>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="button" value="Save File" onclick="saveFile()" class="btn btn-primary">
                 </div>
             </div>
         </div>
@@ -251,9 +286,15 @@
     </div>
 
 <script>
-
+    var fileCount = 0;
     function previewA(input) {
-        $("#fileName").append(input.files[0]['name']);
+        $("#file_add_name").text(input.files[0]['name']);
+    }
+
+    var fileEditState = false;
+    function previewB(input) {
+        fileEditState = true;
+        $("#file_edit_name").text(input.files[0]['name']);
     }
     
     var edit_id = -1;
@@ -263,9 +304,20 @@
         $('#data-table1').DataTable();
         $('#data-table2').DataTable();
     });
+
+    function addFileModalShow()
+    {
+        if($("#departmentTaskid").val() == "")
+        {
+            toastr.warning('First, register task.', 'Warning');
+            return;
+        }
+        $('#file_note').val("");
+        $("#file_add_name").text("");
+        $('#file_add_modal').modal('show');
+    }
     
     const init_modal = () => {
-        $("#departmentTaskid").val("36");
         if($("#departmentTaskid").val() == "")
         {
             toastr.warning('First, register task.', 'Warning');
@@ -316,7 +368,6 @@
     }
 
     function addNote(){
-        $("#departmentTaskid").val('36');
         const content = $("#note_text").val();
         if(content == '') {
             toastr.warning('Input new note.', 'Warning');
@@ -336,7 +387,7 @@
             contentType: false,
             success: function (data) {
                 console.log(data.length);
-                drawTable(data);
+                drawNoteTable(data);
                 toastr.success('Note added', 'Success');
                 return;
             },
@@ -374,6 +425,7 @@
     function update_note() {
         var formData = new FormData();
         formData.append('id', $("#noteid").val());
+        formData.append('departmenttaskid', $("#departmentTaskid").val());
         formData.append('note', $("#note_edit_text").val());
         formData.append('_token', "{{csrf_token()}}");
         $.ajax({
@@ -384,7 +436,7 @@
             contentType: false,
             success: function (data) {
                 console.log(data);
-                drawTable(data);
+                drawNoteTable(data);
                 toastr.success('Note updated', 'Success');
                 return;
             },
@@ -395,14 +447,10 @@
         $("#note_edit_modal").modal('hide');
     }
 
-    function deleteNote(id) {
-        $("#noteid").val(id);
-        $("#note_delete_modal").modal('show');
-    }
-
-    function delete_note(){
+    function delete_note(id){
         var formData = new FormData();
-        formData.append('id', $("#noteid").val());
+        formData.append('id', id);
+        formData.append('departmenttaskid', $("#departmentTaskid").val());
         formData.append('_token', "{{csrf_token()}}");
         $.ajax({
             url: '/department/delete_note',
@@ -411,7 +459,7 @@
             processData: false,
             contentType: false,
             success: function (data) {
-                drawTable(data);
+                drawNoteTable(data);
                 toastr.success('Note deleted', 'Success');
                 return;
             },
@@ -423,28 +471,49 @@
     }
 
     function addFile(){
-        $("#departmentTaskid").val('36');
         const content = $("#file_note").val();
-        var file = $("#file").val();
+        var file = $('#file')[0].files[0];
+        var type = $("#file_add_name").text().split(".")[1];
 
         if(content == '') {
             toastr.warning('Input new note.', 'Warning');
             return;
         }
-        if(file == "" ){
+
+        if(file == null){
             toastr.warning('Input new file.', 'Warning');
             return;
         }
 
-        console.log(content);
-        console.log(file);
-        
+        if(type == "png"){
+            type = "PNG Image";
+        }else if(type == "jpg"){
+            type = "JPG Image";
+        }else if(type == "svg"){
+            type = "SVG Image";
+        }else if(type == "pdf"){
+            type = "PDF Document";
+        }else if(type == "avi")
+        {
+            type = "AVI Video";
+        }else if(type == "wmv")
+        {
+            type = "WMV Video";
+        }else if(type == "mp4"){
+            type = "MP4 Video";
+        }else{
+            toastr.warning('Only allow images, pdf, videos', 'Warning');
+            return;
+        }
+
+        console.log(type);
+
         var formData = new FormData();
         formData.append('departmenttaskid', $("#departmentTaskid").val());
+        formData.append('type', type);
         formData.append('note', content);
-        formData.append('file', file);
+        formData.append('name', file);
         formData.append('_token', "{{csrf_token()}}");
-        console.log(formData);
         $.ajax({
             url: '/department/add_file',
             type: 'POST',
@@ -452,8 +521,9 @@
             processData: false,
             contentType: false,
             success: function (data) {
-                console.log(data.length);
-                drawTable(data);
+                console.log("server data");
+                console.log(data);
+                drawFileTable(data);
                 toastr.success('File added', 'Success');
                 return;
             },
@@ -461,22 +531,116 @@
                 console.log({err});
             }
         });
-        $("#note_modal").modal('hide');
-    }
-
-    function deleteFile(id) {
-        $.get('delete_file/' + id, function(data, status) {
-            window.location.reload();
-        });
+        $("#file_add_modal").modal('hide');
     }
 
     function editFile(id) {
-        $("#file_text").val($("#td_file_"+id).html());
+        $("#file_edit").val("");
+        var note = $("#note_" + id).text();
+        var fileName = $("#file_name_" + id).text().substring(10, $("#file_name_" + id).text().length);
+
+        console.log(fileName);
+
+        $("#file_edit_note").val(note);
+        $("#file_edit_name").text(fileName);
+
         edit_id = id;
-        $("#fileModal").modal('show');
+        $("#file_edit_modal").modal('show');
     }
 
-    function drawTable(data)
+    function saveFile()
+    {
+        const content = $("#file_edit_note").val();
+        var file = "";
+        var type = "";
+        if(fileEditState == true)
+        {
+            file = $('#file_edit')[0].files[0];
+            type = $("#file_edit_name").text().split(".")[1];
+            if(type == "png"){
+                type = "PNG Image";
+            }else if(type == "jpg"){
+                type = "JPG Image";
+            }else if(type == "svg"){
+                type = "SVG Image";
+            }else if(type == "pdf"){
+                type = "PDF Document";
+            }else if(type == "avi")
+            {
+                type = "AVI Video";
+            }else if(type == "wmv")
+            {
+                type = "WMV Video";
+            }else if(type == "mp4"){
+                type = "MP4 Video";
+            }else{
+                toastr.warning('Only allow images, pdf, videos', 'Warning');
+                return;
+            }
+
+            if(file == "" ){
+                toastr.warning('Input new file.', 'Warning');
+                return;
+            }
+        }
+
+        if(content == '') {
+            toastr.warning('Input new note.', 'Warning');
+            return;
+        }
+
+        var formData = new FormData();
+        formData.append('departmenttaskid', $("#departmentTaskid").val());
+        formData.append('fileEditState', fileEditState);
+        formData.append('id', edit_id);
+        formData.append('type', type);
+        formData.append('note', content);
+        formData.append('name', file);
+        formData.append('_token', "{{csrf_token()}}");
+        $.ajax({
+            url: '/department/edit_file',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log("server data");
+                console.log(data);
+                drawFileTable(data);
+                toastr.success('File edited', 'Success');
+                fileEditState = false;
+                return;
+            },
+            error: function(err) {
+                console.log({err});
+            }
+        });
+        $("#file_edit_modal").modal('hide');
+    }
+
+    function delete_file(id){
+        var formData = new FormData();
+        formData.append('id', id);
+        formData.append('departmenttaskid', $("#departmentTaskid").val());
+        formData.append('_token', "{{csrf_token()}}");
+        $.ajax({
+            url: '/department/delete_file',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                drawFileTable(data);
+                toastr.success('File deleted', 'Success');
+                return;
+            },
+            error: function(err) {
+                console.log({err});
+            }
+        });
+    }
+
+    function drawNoteTable(data)
     {
         $('#noteBody').empty();
         var html = ' ';
@@ -485,7 +649,7 @@
         {
             html +=     '<tr role="row" class="odd">';
             html +=        '<td class="sorting_1">' + k + '</td>';
-            html +=        '<td class="sorting_1">' + data[i]['created_at'] + '</td>';
+            html +=        '<td class="sorting_1">' + moment(data[i]['created_at']).format('d/M/Y hh:mm A') + '</td>';
             html +=        '<td class="sorting_1">' + data[i]['name'] + '</td>';
             html +=        '<td class="sorting_1">' + data[i]['note'] + '</td>';
             html +=        '<td class="action">';
@@ -495,7 +659,7 @@
             html +=                '</a>';
             html +=                '<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">';
             html +=                    '<a class="dropdown-item" onclick="editNote(' + data[i]['id'] + ')">Edit</a>';
-            html +=                    '<a class="dropdown-item" onclick="deleteNote(' + data[i]['id'] + ')">Delete</a>';
+            html +=                    '<a class="dropdown-item" onclick="delete_note(' + data[i]['id'] + ')">Delete</a>';
             html +=                '</div>';
             html +=            '</div>';
             html +=        '</td>';
@@ -503,6 +667,37 @@
             k ++;
         }
         $('#noteBody').append(html);
+    }
+
+    function drawFileTable(data)
+    {
+        $('#fileBody').empty();
+        var html = ' ';
+        var k = 1;
+        for(i = 0; i < data.length; i ++)
+        {
+            html +=     '<tr role="row" class="odd">';
+            html +=        '<td class="sorting_1">' + k + '</td>';
+            html +=        '<td class="sorting_1">' + moment(data[i]['created_at']).format('d/M/Y hh:mm A') + '</td>';
+            html +=        '<td class="sorting_1" id="file_name_' + data[i]['id'] + '" hidden>' + data[i]['fileName'] + '</td>';
+            html +=        '<td class="sorting_1" id="name_' + data[i]['id'] + '">' + data[i]['name'] + '</td>';
+            html +=        '<td class="sorting_1">' + data[i]['type'] + '</td>';
+            html +=        '<td class="sorting_1" id="note_' + data[i]['id'] + '">' + data[i]['note'] + '</td>';
+            html +=        '<td class="action">';
+            html +=            '<div class="dropdown show">';
+            html +=                '<a class="cust-btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+            html +=                    '<i class="fas fa-th ms-text-primary"></i>';
+            html +=                '</a>';
+            html +=                '<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">';
+            html +=                    '<a class="dropdown-item" onclick="editFile(' + data[i]['id'] + ')">Edit</a>';
+            html +=                    '<a class="dropdown-item" onclick="delete_file(' + data[i]['id'] + ')">Delete</a>';
+            html +=                '</div>';
+            html +=            '</div>';
+            html +=        '</td>';
+            html +=    '</tr>';
+            k ++;
+        }
+        $('#fileBody').append(html);
     }
 
 </script>
