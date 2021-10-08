@@ -96,6 +96,7 @@
                                     </tr>   
                                 </thead>
                                 <tbody>
+                                @if ($dataState)
                                     @foreach ($worklogs as $index => $item)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
@@ -120,6 +121,7 @@
                                             </td>
                                         <tr>
                                     @endforeach
+                                @endif
                                 </tbody>
                             </table>
                         </div>
@@ -146,7 +148,7 @@
                         <div class="form-group col-md-4">
                             <label for="exampleEmail">Date</label>
                             <select name="date" id="date" class="form-control" required>
-                                <option>{{ date('m/d/Y', strtotime('-3 days')) }}</option>
+                                <option selected>{{ date('m/d/Y', strtotime('-3 days')) }}</option>
                                 <option>{{ date('m/d/Y', strtotime('-2 days')) }}</option>
                                 <option>{{ date('m/d/Y', strtotime('-1 days')) }}</option>
                                 <option>{{ date('m/d/Y') }}</option>

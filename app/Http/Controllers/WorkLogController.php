@@ -23,6 +23,7 @@ class WorkLogController extends Controller
         $employees = 0;
         $start_date = 0;
         $end_date = 0;
+        $dataState = true;
         if(isset($request->status)){
             $status = $request->status;
         }
@@ -33,13 +34,15 @@ class WorkLogController extends Controller
         if(isset($request->start_date)){
             $start_date = $request->start_date;
             $worklogs = $worklogs->where('date', '>=', $start_date);
+        }else{
+            $dataState = false;
         }
         if(isset($request->end_date)){
             $end_date = $request->end_date;
             $worklogs = $worklogs->where('date', '<=', $end_date);
         }
         $worklogs = $worklogs->get();
-        return view("admin.WorkLog.index" , compact('worklogs', 'workers'));
+        return view("admin.WorkLog.index" , compact('worklogs', 'workers', 'dataState'));
     }
 
     /**
