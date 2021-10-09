@@ -36,8 +36,8 @@
                     @php
                         $status = 0;
                         $employees = 0;
-                        $start_date = null;
-                        $end_date = null;
+                        $start_date = "10/01/2021";
+                        $end_date = "10/31/2021";
                         if(isset($_GET['status'])) $status = $_GET['status'];
                         if(isset($_GET['employees'])) $employees = $_GET['employees'];
                         if(isset($_GET['start_date'])) $start_date = $_GET['start_date'];
@@ -53,19 +53,19 @@
                     </div>
                     <div class="form-group col-md-3 mb-3">
                         <label for="employees">Employees</label>
-                        <select name="employees" id="employees" class="form-control">
+                        <select name="employees" id="employees" class="form-control" onchange="changeData()">
                         </select>
                     </div>
                     <div class="form-group col-md-3 mb-3">
                         <label for="start_date">Start Date</label>
-                        <input type="date" name="start_date" id="start_date" class="form-control" value="{{ $start_date }}">
+                        <input type="date" name="start_date" id="start_date" class="form-control" value="{{ $start_date }}" onchange="changeData()">
                     </div>
                     <div class="form-group col-md-3 mb-3">
                         <label for="end_date">End Date</label>
-                        <input type="date" name="end_date" id="end_date" class="form-control"value="{{ $end_date }}">
+                        <input type="date" name="end_date" id="end_date" class="form-control"value="{{ $end_date }}" onchange="changeData()">
                     </div>
                     <div class="form-group col-md-12"></div>
-                    <div class="col-md-3 mb-3">
+                    <div class="col-md-3 mb-3" hidden>
                         <input type="submit" value="Get Work Log" class="btn btn-primary">
                     </div>
                     <!-- <div class="form-group col-md-3 mb-3">
@@ -87,15 +87,15 @@
                             <table class="table table-striped thead-primary w-100 data-table">
                                 <thead>
                                     <tr>
-                                    <th>#</th>
-                                    <th>From</th>
-                                    <th>To</th>
-                                    <th>By</th>
+                                    <th style="max-width: 20px">#</th>
+                                    <th style="max-width: 100px">From</th>
+                                    <th style="max-width: 100px">To</th>
+                                    <th style="min-width: 50px">By</th>
                                     <th style="min-width: 100px">Log</th>
                                     <th style="max-width: 100px">Action</th>
                                     </tr>   
                                 </thead>
-                                <tbody>
+                                <tbody id="logBody">
                                 @if ($dataState)
                                     @foreach ($worklogs as $index => $item)
                                         <tr>
@@ -175,7 +175,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="submit" value="Save Log" class="btn btn-success">
+                        <input type="button" value="Save Log" onclick="saveLog()" class="btn btn-success">
                     </div>
                 </form>
             </div>
@@ -185,10 +185,151 @@
     const workers = JSON.parse(`<?php echo json_encode($workers)?>`);
     const employees = `{{ $employees }}`;
     $(document).ready(function() {
+
+        var month = 0; // January
+        var d = new Date();
+        var year = d.getFullYear();
+        var month = d.getMonth() + 1;
+        var d = new Date(year, month, 0).getDate();
+
+        var startDate = year + "-" + month + "-" + "01";
+        var endDate = year + "-" + month + "-" + d;
+
+        $("#start_date").val(startDate);
+        $("#end_date").val(endDate);
+
+        changeData();
         changeOption();
         $('.data-table').DataTable();
 
     });
+
+    function changeData()
+    {
+        var employee = $("#employees").val();
+        var start_date = $("#start_date").val();
+        var end_date = $("#end_date").val();
+
+        var formData = new FormData();
+        formData.append('employees', employee);
+        formData.append('start_date', start_date);
+        formData.append('end_date', end_date);
+        formData.append('_token', "{{csrf_token()}}");
+        console.log("client data");
+        console.log(employee);
+        console.log(start_date);
+        console.log(end_date);
+        console.log("sever Data");
+        $.ajax({
+            url: '/worklog/getData',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                drawTable(data);
+                console.log(data);
+                return;
+            },
+            error: function(err) {
+                console.log({err});
+            }
+        });
+    }
+
+    function saveLog()
+    {
+        var employee = $("#employees").val();
+        var start_date = $("#start_date").val();
+        var end_date = $("#end_date").val();
+
+        var date = $('#date').val();
+        var from_time = $('#from_time').val();
+        var to_time = $('#to_time').val();
+        var comment = $('#comment').val();
+
+        if(from_time == ""){
+            toastr.warning('Please select from date', 'Warning');
+            return;
+        }else if(to_time == ""){
+            toastr.warning('Please select to date', 'Warning');
+            return;
+        }else if(comment == "")
+        {
+            toastr.warning('Please input comment', 'Warning');
+            return;
+        }else if(from_time > to_time)
+        {
+            toastr.warning('Please input correct "from, to" time.', 'Warning');
+            return;
+        }
+
+        console.log(date);
+        console.log(from_time);
+        console.log(to_time);
+        console.log(comment);
+
+        var formData = new FormData();
+        formData.append('employees', employee);
+        formData.append('start_date', start_date);
+        formData.append('end_date', end_date);
+        formData.append('date', $('#date').val());
+        formData.append('from_time', $('#from_time').val());
+        formData.append('to_time', $('#to_time').val());
+        formData.append('comment', $('#comment').val());
+        formData.append('editid', $("#editid").val());
+        formData.append('_token', "{{csrf_token()}}");
+        $.ajax({
+            url: '/worklog/saveData',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                drawTable(data);
+                $("#log_modal").modal('hide');
+                toastr.success('Log saved', 'Success');
+                return;
+            },
+            error: function(err) {
+                console.log({err});
+            }
+        });
+    }
+
+    var g_data;
+    function drawTable(data)
+    {
+        g_data = data;
+        $('#logBody').empty();
+        var html = ' ';
+        var k = 1;
+        for(i = 0; i < data.length; i ++)
+        {
+            console.log(moment(data[i]['date']).format('YYYY/MM/DD'));
+            html +=     '<tr role="row" class="odd">';
+            html +=        '<td class="sorting_1">' + k + '</td>';
+            html +=        '<td class="sorting_1">' + moment(data[i]['date'] + " " + data[i]['from_time']).format('YYYY/MM/DD hh:mm A') + '</td>';
+            html +=        '<td class="sorting_1">' + moment(data[i]['date'] + " " + data[i]['to_time']).format('YYYY/MM/DD hh:mm A') + '</td>';
+            html +=        '<td class="sorting_1" id="name_' + data[i]['id'] + '">' + data[i]['firstname'] + ' ' + data[i]['middlename'] + ' ' + data[i]['lastname'] + '</td>';
+            html +=        '<td class="sorting_1" id="log_' + data[i]['id'] + '">' + data[i]['comment'] + '</td>';
+            html +=        '<td class="action">';
+            html +=            '<div class="dropdown show">';
+            html +=                '<a class="cust-btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+            html +=                    '<i class="fas fa-th ms-text-primary"></i>';
+            html +=                '</a>';
+            html +=                '<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">';
+            html +=                    '<a class="dropdown-item" onclick="editModal(' + i + ')">Edit</a>';
+            html +=                    '<a class="dropdown-item" onclick="deleteLog(' + data[i]['id'] + ')">Delete</a>';
+            html +=                '</div>';
+            html +=            '</div>';
+            html +=        '</td>';
+            html +=    '</tr>';
+            k ++;
+        }
+        $('#logBody').append(html);
+    }
+
     $("#log_form").submit(e => {
         var from_time = $("#from_time").val();
         var to_time = $("#to_time").val();
@@ -209,33 +350,56 @@
         $("#employees").empty();
         $("#employees").append(html);
     }
-    function openModal(data) {
-        console.log(data);
+
+    function openModal(){
+        var employee = $("#employees").val();
+        if(employee == 0){
+            toastr.warning('Please select worker.', 'Warning');
+            return;
+        }
+
+        $("#editid").val(0);
+        $("#log_modal").modal('show');
+    }
+    function editModal(i) {
         var date = "{{ date('m/d/Y') }}";
         var from_time = null;
         var to_time = null;
         var comment = null;
         var editid = 0;
 
-        if(data){
-            var formattedDate = new Date(data.date);
-            var d = formattedDate.getDate();
-            var m =  formattedDate.getMonth();
-            m += 1;
-            var y = formattedDate.getFullYear();
-            date = `${m < 10 ? '0' : ''}${m}/${d < 10 ? "0" : ''}${d}/${y}`;
-            from_time = data.from_time;
-            to_time = data.to_time;
-            comment = data.comment;
-            editid = data.id;
-        }
-
-        $("#date").val(date);
-        $("#from_time").val(from_time);
-        $("#to_time").val(to_time);
-        $("#comment").val(comment);
-        $("#editid").val(editid);
+        $("#from_time").val(g_data[i]['from_time']);
+        $("#to_time").val(g_data[i]['to_time']);
+        $("#comment").val(g_data[i]['comment']);
+        $("#editid").val(g_data[i]['id']);
         $("#log_modal").modal('show');
+    }
+    function deleteLog(id){
+        var employee = $("#employees").val();
+        var start_date = $("#start_date").val();
+        var end_date = $("#end_date").val();
+
+        var formData = new FormData();
+        formData.append('employees', employee);
+        formData.append('start_date', start_date);
+        formData.append('end_date', end_date);
+        formData.append('id', id);
+        formData.append('_token', "{{csrf_token()}}");
+        $.ajax({
+            url: '/worklog/deleteData',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                drawTable(data);
+                toastr.success('Log deleted', 'Success');
+                return;
+            },
+            error: function(err) {
+                console.log({err});
+            }
+        });
     }
 </script>
 @endsection

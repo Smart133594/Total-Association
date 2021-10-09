@@ -86,6 +86,10 @@ Route::middleware([CheckAdminLogin::class])->group(function () {
 
     Route::resource('department', DepartmentController::class);
     Route::resource('work-log', WorkLogController::class);
+    Route::post('/worklog/getData', [WorkLogController::class, 'getData']);
+    Route::post('/worklog/saveData', [WorkLogController::class, 'saveData']);
+    Route::post('/worklog/deleteData', [WorkLogController::class, 'deleteData']);
+
     Route::resource('punch-clock', PunchClockController::class);
     Route::get('/downlaod/pdf', [PunchClockController::class, 'download']);
     Route::resource('departmanage', DepartManageController::class);
