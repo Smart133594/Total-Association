@@ -43,7 +43,7 @@
                         if(isset($_GET['start_date'])) $start_date = $_GET['start_date'];
                         if(isset($_GET['end_date'])) $end_date = $_GET['end_date'];
                     @endphp
-                    <div class="form-group col-md-3 mb-3">
+                    <div class="form-group col-md-3 mb-3" hidden>
                         <label for="status">Status</label>
                         <select name="status" id="status" class="form-control" onchange="changeOption()">
                             <option value="0" {{ $status == 0 ? 'selected' : '' }}>Active</option>
@@ -343,7 +343,7 @@
     function changeOption(){
         const status = $("#status").val();
         const tmp = status == 2 ? workers : workers.filter(item => item.active_state == status) || [];
-        var html = ` <option value="0">All</option>`;
+        var html = ``;
         tmp.forEach(ele => {
             html += `<option value="${ele.id}" ${employees == ele.id ? 'selected' : ''}>${ele.firstname} ${ele.middlename} ${ele.lastname}</option>`;
         });
