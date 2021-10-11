@@ -169,6 +169,7 @@
                                             <i class="fas fa-th ms-text-primary"></i>
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                            <a class="dropdown-item"  href="../../upload/{{$files[$key]->fileName}}" target="blank" id="downloadPDF">View</a>
                                             <a class="dropdown-item" onclick="editFile({{$files[$key]->id}})">Edit</a>
                                             <a class="dropdown-item" onclick="delete_file({{$files[$key]->id}})">Delete</a>
                                         </div>
@@ -330,6 +331,8 @@
     function saveTask()
     {
         var departmentid = $("#departmentid").val();
+        var departmenttaskid = $('#departmentTaskid').val();
+
         var workderId = $("#workerid").val();
         var task = $('#task').val();
         var description = $('#description').val();
@@ -340,8 +343,15 @@
             toastr.warning('Input above values.(task, description or date)', 'Warning');
             return;
         }
+
+        console.log(departmenttaskid);
+        console.log(task);
+        console.log(description);
+        console.log(date);
+
         var formData = new FormData();
         formData.append('departmentid', departmentid);
+        formData.append('departmenttaskid', departmenttaskid);
         formData.append('workerid', workderId);
         formData.append('task', task);
         formData.append('description', description);
@@ -349,16 +359,21 @@
         formData.append('priority', priority);
         formData.append('state', state);
         formData.append('_token', "{{csrf_token()}}");
-        console.log(formData);
         $.ajax({
-            url: '/department/add_task_note',
+            url: '/department/save_task',
             type: 'POST',
             data: formData,
             processData: false,
             contentType: false,
             success: function (data) {
-                $("#departmentTaskid").val(data);
-                toastr.success('Task register success', 'Success');
+                console.log(data);
+                if(data == "success")
+                {
+                    toastr.success('Task edit success', 'Success');
+                }else{
+                    $("#departmentTaskid").val(data);
+                    toastr.success('Task register success', 'Success');
+                }
                 return;
             },
             error: function(err) {
@@ -689,6 +704,7 @@
             html +=                    '<i class="fas fa-th ms-text-primary"></i>';
             html +=                '</a>';
             html +=                '<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">';
+            html +=                    '<a class="dropdown-item"  href="../../upload/' + data[i]['fileName'] + '" target="blank" id="downloadPDF">View</a>';
             html +=                    '<a class="dropdown-item" onclick="editFile(' + data[i]['id'] + ')">Edit</a>';
             html +=                    '<a class="dropdown-item" onclick="delete_file(' + data[i]['id'] + ')">Delete</a>';
             html +=                '</div>';
@@ -698,6 +714,7 @@
             k ++;
         }
         $('#fileBody').append(html);
+        
     }
 
 </script>

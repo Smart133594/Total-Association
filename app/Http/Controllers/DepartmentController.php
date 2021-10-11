@@ -200,20 +200,37 @@ class DepartmentController extends Controller
         //
     }
 
-    public function add_task_note(Request $request)
+    public function save_task(Request $request)
     {
         $departmentid = Crypt::decryptString($request->departmentid);
+        $departmentTaskid = '';
+        if(isset($request->departmenttaskid))
+        {
+            $departmenttaskid = Crypt::decryptString($request->departmenttaskid);
+            DepartmentTask::where('id', $departmenttaskid)
+            ->update([
+                'workerid' => $request->workerid,
+                'task' => $request->task,
+                'description' => $request->description,
+                'date' => $request->date,
+                'priority' => $request->priority,
+                'state' => $request->state,
+            ]);
+            return "success";
 
-        $departmentTaskid = DepartmentTask::create($request->merge([
-            'workerid' => $request->workerid,
-            'departmentid' => $departmentid,
-            'task' => $request->task,
-            'priority' => $request->priority,
-            'state' => $request->state,
-            'description' => $request->description,
-        ])->all())->id;
+        }else{
+            $departmentTaskid = DepartmentTask::create($request->merge([
+                'workerid' => $request->workerid,
+                'departmentid' => $departmentid,
+                'task' => $request->task,
+                'date' => $request->date,
+                'priority' => $request->priority,
+                'state' => $request->state,
+                'description' => $request->description,
+            ])->all())->id;
+            return Crypt::encryptString($departmentTaskid);
+        }
 
-        return Crypt::encryptString($departmentTaskid);
     }
 
     public function add_note(Request $request)
