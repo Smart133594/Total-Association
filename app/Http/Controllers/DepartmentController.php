@@ -307,15 +307,16 @@ class DepartmentController extends Controller
 
         if($request->fileEditState == "true")
         {
+            foreach ($request->files as $kk => $r) {
+                $url = $this->uploadimage($request, $kk);
+            }
             DepartmentFile::where('id', $request->id)
                 ->update([
                     'type' => $request->type,
-                    'name' => $request->name,
+                    'name' => $url,
                     'note' => $request->note, 
                 ]);
-            foreach ($request->files as $kk => $r) {
-                $store->$kk = $this->uploadimage($request, $kk);
-            }
+            
         }else{
             DepartmentFile::where('id', $request->id)
             ->update([
