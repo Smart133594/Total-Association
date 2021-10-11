@@ -193,11 +193,23 @@
                 </div>
                 <div class="modal-body" id="modal-details">
                     <textarea id="file_note" rows="4" class="form-control" placeholder="Write Details Note" spellcheck="false"></textarea><br>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <input type="file" id="file" style="display: none;" name="logo" onchange="previewA(this)">
                         <div class="row" style="margin-left:20px">
                             <label for="file" class="col-md-3 btn btn-primary">Upload File</label><br>
                             <label class="col-md-3" id="file_add_name" style="margin-top: 25px;"></label><br>
+                        </div>
+                    </div> -->
+                    <div class="row">
+                        <div class="col-md-4 form-group" style="margin-top:25px">
+                            <label for="file" class="btn btn-primary">Choose File</label><br>
+                            <input type="file" id="file" style="display: none;" name="logo" onchange="previewA(this)">
+                        </div>
+                        <div class="col-md-4">
+                            <div style="width: 100px; height: 100px; border: 2px dashed #333; margin-top: 17px;">
+                                <img src="https://via.placeholder.com/100" id="preview_a" style="height: 96px; width: 100px; object-fit: cover;">
+                            </div>
+                            <label class="col-md-3" id="file_add_name" style="margin-top: 25px;" hidden></label><br>
                         </div>
                     </div>
                 </div>
@@ -217,11 +229,23 @@
                 </div>
                 <div class="modal-body" id="modal-details">
                     <textarea id="file_edit_note" rows="4" class="form-control" placeholder="Write Details Note" spellcheck="false"></textarea><br>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <input type="file" id="file_edit" style="display: none;" name="logo" onchange="previewB(this)">
                         <div class="row" style="margin-left:20px">
                             <label for="file_edit" class="col-md-3 btn btn-primary">Upload File</label><br>
                             <label class="col-md-3" id="file_edit_name" style="margin-top: 25px;"></label><br>
+                        </div>
+                    </div> -->
+                    <div class="row">
+                        <div class="col-md-4 form-group" style="margin-top:25px">
+                            <label for="file_edit" class="btn btn-primary">Choose File</label><br>
+                            <input type="file" id="file_edit" style="display: none;" name="logo" onchange="previewB(this)">
+                        </div>
+                        <div class="col-md-4">
+                            <div style="width: 100px; height: 100px; border: 2px dashed #333; margin-top: 17px;" id="editImage">
+                                <img src="https://via.placeholder.com/100" id="preview_b" style="height: 96px; width: 100px; object-fit: cover;">
+                            </div>
+                            <label class="col-md-3" id="file_edit_name" style="margin-top: 25px;" hidden></label><br>
                         </div>
                     </div>
                 </div>
@@ -288,14 +312,42 @@
 
 <script>
     var fileCount = 0;
+
+
     function previewA(input) {
         $("#file_add_name").text(input.files[0]['name']);
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $(`#preview_a`)
+                    .attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
     }
 
     var fileEditState = false;
+    // function previewB(input) {
+    //     fileEditState = true;
+    //     $("#file_edit_name").text(input.files[0]['name']);
+    // }
+
     function previewB(input) {
         fileEditState = true;
+
         $("#file_edit_name").text(input.files[0]['name']);
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $(`#preview_b`)
+                    .attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
     }
     
     var edit_id = -1;
@@ -551,13 +603,13 @@
 
     function editFile(id) {
         $("#file_edit").val("");
-        var note = $("#note_" + id).text();
         var fileName = $("#file_name_" + id).text().substring(10, $("#file_name_" + id).text().length);
+        var note = $("#note_" + id).text();
 
-        console.log(fileName);
+        $("#editImage").empty();
+        $("#editImage").append('<img src="../../upload/' + $("#file_name_" + id).text() + '" id="preview_b" style="height: 96px; width: 100px; object-fit: cover;">')
 
         $("#file_edit_note").val(note);
-        $("#file_edit_name").text(fileName);
 
         edit_id = id;
         $("#file_edit_modal").modal('show');
